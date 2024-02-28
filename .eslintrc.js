@@ -11,13 +11,13 @@ module.export = {
   rules: {
     "no-unexpected-multiline": "error",
     "no-console": "warn",
-    // "@typescript-eslint/no-unused-vars": [
-    //   "error",
-    //   {
-    //     ignoreRestSiblings: true,
-    //     argsIgnorePattern: "^_",
-    //   },
-    // ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        ignoreRestSiblings: true,
+        argsIgnorePattern: "^_",
+      },
+    ],
     "@typescript-eslint/no-empty-function": "warn",
     "@typescript-eslint/no-var-requires": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
