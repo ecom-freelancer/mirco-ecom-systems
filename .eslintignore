@@ -1,0 +1,10 @@
+node_modules/
+dist
+packages/kit/
+yarn.lock
+*.svg
+*.png
+env.js
+.yarn/**
+*.mjs
+rollup.base.js
