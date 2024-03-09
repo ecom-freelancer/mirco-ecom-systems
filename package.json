@@ -31,5 +31,8 @@
     "*.{ts,tsx}": [
       "eslint --fix"
     ]
+  },
+  "dependencies": {
+    "@types/node": "^20.11.25"
   }
 }
