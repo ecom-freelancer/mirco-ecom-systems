@@ -1,5 +1,8 @@
 export const theme = {
   colors: {
+    primary: '#313efa',
+    crollThumb: '#7a8efe',
+    primaryLight: '#f0f2ff',
     activeMenu: '#eb1f3a',
     activeMenuBackground: '#272d36',
     sideBar: '#1c222b',

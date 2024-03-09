@@ -3,8 +3,37 @@ export const routeKeys = {
   login: '/login',
   dashboard: '/dashboard',
   notFound: '/404',
+
+  /**
+   * start of catalog
+   */
+  catalog: '/catalog',
+  products: '/catalog/products',
+  category: '/catalog/category',
+  importProducts: '/catalog/import-products',
+  createProduct: '/catalog/create-product',
+  productDetail: '/catalog/products/:id',
+  productDetailEdit: '/catalog/products/:id/edit',
+  productDetailVariants: '/catalog/products/:id/variants',
+  productDetailInventory: '/catalog/products/:id/inventory',
+
+  /**
+   * end of catalog
+   */
+  blogs: '/blogs',
+  settings: '/settings',
+  orders: '/orders',
+  customers: '/customers',
+  inventory: '/inventory',
+  reports: '/reports',
 };
 
 export const dynamicRouteKeys = {
-  productDetail: (id: string) => `/product/${id}`,
+  /**
+   * start of catalog
+   */
+  productDetail: (id: string) => routeKeys.productDetail.replace(':id', id),
+  /**
+   * end of catalog
+   */
 };

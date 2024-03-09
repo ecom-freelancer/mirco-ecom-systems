@@ -13,7 +13,23 @@ function App() {
   const router = createBrowserRouter(allRoutes as RouteObject[]);
   return (
     <React.Fragment>
-      <ConfigProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: theme.colors.primary,
+          },
+          components: {
+            Layout: {
+              headerBg: '#ffffff',
+              siderBg: '#ffffff',
+            },
+            Menu: {
+              itemPaddingInline: 20,
+              iconSize: 20,
+            },
+          },
+        }}
+      >
         <ThemeProvider theme={theme}>
           <Suspense>
             <RouterProvider router={router} />

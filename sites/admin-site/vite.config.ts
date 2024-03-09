@@ -9,7 +9,7 @@ export default ({ mode }: { mode: string }) => {
     resolve: {
       alias: [
         {
-          find: /^(components|configs|types|modules|assets|helpers|hooks|pages|providers|libs)([^]*)/, // Sử dụng regex để tìm các đường dẫn bắt đầu bằng '/components/'
+          find: /^(components|configs|types|modules|assets|helpers|hooks|pages|providers|libs|locales)([^]*)/, // Sử dụng regex để tìm các đường dẫn bắt đầu bằng '/components/'
           replacement: '/src/$1$2', // Thay thế bằng đường dẫn tương ứng trong thư mục /src/components/
         },
       ],
