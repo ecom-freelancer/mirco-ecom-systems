@@ -1,0 +1,79 @@
+
+
+
+enum delivery_type {
+    email_delivery 
+    offline_delivery
+}
+
+Table products  {
+    id int [pk, increment]
+    name varchar
+    category_id int [ref: > categories.id]
+    delivery_type delivery_type
+}
+
+Table categories {
+    id int [pk, increment]
+    name varchar
+}
+
+Table product_property_groups {
+    id int [pk, increment]
+    product_id int [ref: > products.id]
+    title nvarchar
+    order int
+
+}
+
+Table product_property {
+    id int [pk, increment]
+    product_property_id int [ref: > product_property_group.id]
+    title nvarchar
+    value nvarchar
+    color nvarchar
+}
+
+Table product_variants {
+    id int [pk, increment]
+    product_id int [ref: > products.id]
+    product_sku varchar [ref: > product_skus.sku]
+}
+
+Table product_variant_property_mapping {
+    id int [pk, increment]
+    product_property_id int [ref: > product_property.id]
+
+    variant_id int [ref: > product_variants.id]
+    product_property_group_id int [ref: > product_property_group.id]
+}
+
+Table product_skus {
+    id int [pk, increment]
+    sku varchar [not null]
+    product_id int [ref: > products.id]
+    title nvarchar
+    description nvarchar
+    images string
+    status int [index]
+
+    listed_price decimal
+    
+    meta_title nvarchar
+    meta_description nvarchar
+}
+
+
+Table product_sku_price {
+    id int [pk, increment]
+    sku_id int [ref: > product_skus.id]
+    price decimal
+    discount decimal
+    start_date datetime
+    end_date datetime
+}
+
+
+
+
+
