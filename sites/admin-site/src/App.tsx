@@ -1,7 +1,6 @@
-import { ThemeProvider } from '@emotion/react';
+import { ThemeProvider } from '@packages/ds-core';
 import { ConfigProvider } from 'antd';
 import { allRoutes } from 'configs/router';
-import { theme } from 'configs/theme';
 import React, { Suspense } from 'react';
 import {
   RouteObject,
@@ -13,29 +12,26 @@ function App() {
   const router = createBrowserRouter(allRoutes as RouteObject[]);
   return (
     <React.Fragment>
-      <ConfigProvider
-        theme={{
-          token: {
-            colorPrimary: theme.colors.primary,
-          },
-          components: {
-            Layout: {
-              headerBg: '#ffffff',
-              siderBg: '#ffffff',
+      <ThemeProvider>
+        <ConfigProvider
+          theme={{
+            components: {
+              Layout: {
+                headerBg: '#ffffff',
+                siderBg: '#ffffff',
+              },
+              Menu: {
+                itemPaddingInline: 20,
+                iconSize: 20,
+              },
             },
-            Menu: {
-              itemPaddingInline: 20,
-              iconSize: 20,
-            },
-          },
-        }}
-      >
-        <ThemeProvider theme={theme}>
+          }}
+        >
           <Suspense>
             <RouterProvider router={router} />
           </Suspense>
-        </ThemeProvider>
-      </ConfigProvider>
+        </ConfigProvider>
+      </ThemeProvider>
     </React.Fragment>
   );
 }
