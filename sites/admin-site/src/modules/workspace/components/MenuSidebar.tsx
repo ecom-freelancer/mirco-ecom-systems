@@ -1,7 +1,7 @@
 import { Divider, Layout, Menu } from 'antd';
 import { useWorkSpaceContext } from '../context';
 import { useMenuItems } from '../hooks/useMenuItems';
-import styled from '@emotion/styled';
+import { styled } from '@packages/ds-core';
 
 export const MenuSidebar: React.FC = () => {
   const { collapsed } = useWorkSpaceContext();
@@ -47,7 +47,7 @@ const MenuStyled = styled(Menu)`
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: ${(props) => props.theme.colors.crollThumb};
+    background-color: ${(props) => props.theme.colors.gray300};
   }
 `;
 const Wrapper = styled.div`

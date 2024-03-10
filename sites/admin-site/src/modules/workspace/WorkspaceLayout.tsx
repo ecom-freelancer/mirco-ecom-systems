@@ -1,6 +1,6 @@
 import React from 'react';
 import { Layout } from 'antd';
-import styled from '@emotion/styled';
+import { styled } from '@packages/ds-core';
 import { Topbar } from './components/Topbar';
 import { MenuSidebar } from './components/MenuSidebar';
 
