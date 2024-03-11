@@ -1,8 +1,18 @@
-import { NestFactory } from '@nestjs/core';
+import { createNestApp } from '@packages/nest-helper';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await createNestApp(AppModule, {
+    swagger: {
+      enabled: true,
+      title: 'Consumer Server',
+      description: 'Consumer Server API',
+      version: '1.0',
+      bearerAuth: true,
+      path: 'api_docs',
+    },
+  });
   await app.listen(3000);
 }
-bootstrap();
+
+bootstrap().then();
