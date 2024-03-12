@@ -3811,6 +3811,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@packages/nest-mysql@npm:^1.0.0, @packages/nest-mysql@workspace:packages/nest-mysql":
+  version: 0.0.0-use.local
+  resolution: "@packages/nest-mysql@workspace:packages/nest-mysql"
+  dependencies:
+    "@nestjs/common": "npm:^10.0.0"
+    "@nestjs/core": "npm:^10.0.0"
+    "@nestjs/typeorm": "npm:^10.0.2"
+    "@packages/kit": "npm:^1.0.0"
+    reflect-metadata: "npm:^0.2.0"
+    tslib: "npm:^2.6.2"
+    typeorm: "npm:^0.3.20"
+    typeorm-naming-strategies: "npm:^4.1.0"
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
+    "@nestjs/core": ^10.0.0
+    typeorm: ^0.3.20
+  languageName: unknown
+  linkType: soft
+
 "@packages/react-user@workspace:packages/react-user":
   version: 0.0.0-use.local
   resolution: "@packages/react-user@workspace:packages/react-user"
@@ -7452,8 +7471,8 @@ __metadata:
     "@nestjs/schematics": "npm:^10.0.0"
     "@nestjs/swagger": "npm:^7.3.0"
     "@nestjs/testing": "npm:^10.0.0"
-    "@nestjs/typeorm": "npm:^10.0.2"
     "@packages/nest-helper": "npm:^1.0.0"
+    "@packages/nest-mysql": "npm:^1.0.0"
     "@types/express": "npm:^4.17.17"
     "@types/jest": "npm:^29.5.2"
     "@types/node": "npm:^20.3.1"
@@ -7479,7 +7498,6 @@ __metadata:
     tsconfig-paths: "npm:^4.2.0"
     tslib: "npm:^2.6.2"
     typeorm: "npm:^0.3.20"
-    typeorm-naming-strategies: "npm:^4.1.0"
   languageName: unknown
   linkType: soft
 
