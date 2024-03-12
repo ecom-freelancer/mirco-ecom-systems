@@ -86,9 +86,11 @@ const privateRoutes: IRoute = {
 
 const publicRoutes: IRoute[] = [
   {
-    path: routeKeys.login,
+    path: routeKeys.signin,
     lazy: () =>
-      import('pages/Login').then((module) => ({ Component: module.LoginPage })),
+      import('pages/SignIn').then((module) => ({
+        Component: module.SignInPage,
+      })),
   },
   {
     path: routeKeys.notFound,
