@@ -5,8 +5,8 @@ async function bootstrap() {
   const app = await createNestApp(AppModule, {
     swagger: {
       enabled: true,
-      title: 'Admin Server',
-      description: 'Admin Server API',
+      title: 'Consumer Server',
+      description: 'Consumer Server API',
       version: '1.0',
       bearerAuth: true,
       path: 'api_docs',
@@ -14,4 +14,5 @@ async function bootstrap() {
   });
   await app.listen(3000);
 }
+
 bootstrap().then();
