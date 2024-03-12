@@ -1,6 +1,12 @@
 import { createNestApp } from '@packages/nest-helper';
 import { AppModule } from './app.module';
 
+import * as dotenv from 'dotenv';
+
+dotenv.config({
+  path: '.env.local',
+});
+
 async function bootstrap() {
   const app = await createNestApp(AppModule, {
     swagger: {
@@ -14,4 +20,5 @@ async function bootstrap() {
   });
   await app.listen(3000);
 }
+
 bootstrap().then();
