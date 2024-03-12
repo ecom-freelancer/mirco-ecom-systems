@@ -7,17 +7,32 @@ import {
 } from './colors';
 
 export const fontSizes = {
-  x: '0.75rem',
+  xs: '0.75rem',
   s: '0.875rem',
   m: '1rem',
   l: '1.125rem',
 
-  h1: '1rem',
-  h2: '1rem',
-  h3: '1rem',
-  h4: '1rem',
-  h5: '1rem',
+  h1: '2.375rem',
+  h2: '1.875rem',
+  h3: '1.5rem',
+  h4: '1.25rem',
+  h5: '1.125rem',
+  h6: '1rem',
 };
+
+export const fontWeights = {
+  '100': 100,
+  '200': 200,
+  '300': 300,
+  '400': 400,
+  '500': 500,
+  '600': 600,
+  '700': 700,
+  normal: 400,
+  bold: 500,
+  booler: 600,
+};
+export type FontWeight = keyof typeof fontWeights;
 
 export type FontSize = keyof typeof fontSizes;
 
@@ -61,6 +76,7 @@ export const defaultTheme = {
   },
   fontSizes: { ...fontSizes },
   spaces: { ...spaces },
+  fontWeights,
   breakpoints: {
     xs: '(max-width: 575px)',
     sm: '(min-width: 576px)',
@@ -73,7 +89,9 @@ export const defaultTheme = {
 };
 
 export type ThemeToken = typeof defaultTheme;
+export type Color = keyof ThemeToken['colors'];
 
 export type CustomTheme = {
   colors?: ThemeColor;
+  fontSizes?: Partial<typeof fontSizes>;
 };
