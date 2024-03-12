@@ -1,6 +1,8 @@
+import AntdProvider from '@/providers/AntdProvider';
+import { CounterProvider } from '@/providers/CounterProvider';
+import EmotionProvider from '@/providers/EmotionProvider';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -11,12 +13,26 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  header,
+  footer,
 }: Readonly<{
   children: React.ReactNode;
+  header: React.ReactNode;
+  footer: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <EmotionProvider>
+          <AntdProvider>
+            <CounterProvider>
+              {header}
+              {children}
+              {footer}
+            </CounterProvider>
+          </AntdProvider>
+        </EmotionProvider>
+      </body>
     </html>
   );
 }
