@@ -23,6 +23,10 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
   const emotionTheme: Theme = {
     ...defaultTheme,
     colors,
+    fontSizes: {
+      ...defaultTheme.fontSizes,
+      ...theme?.fontSizes,
+    },
   };
 
   return <BaseThemeProvider theme={emotionTheme}>{children}</BaseThemeProvider>;

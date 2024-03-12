@@ -1,0 +1,30 @@
+{
+  "name": "@packages/react-user",
+  "version": "1.0.0",
+  "packageManager": "yarn@4.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "kit build-package .",
+    "dev": "kit watch-package ."
+  },
+  "dependencies": {
+    "@packages/ds-core": "^1.0.0",
+    "@types/facebook-js-sdk": "^3.3.10",
+    "antd": "^5.15.2",
+    "react": "^18.2.0",
+    "react-icons": "^5.0.1"
+  },
+  "devDependencies": {
+    "@packages/kit": "1.0.0",
+    "@storybook/react": "^7.6.17",
+    "prop-types": "^15.8.1",
+    "storybook": "^7.6.17"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0"
+  }
+}

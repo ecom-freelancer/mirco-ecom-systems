@@ -9,10 +9,10 @@ export const themeColors = {
   warning: '#ffc107',
 
   textPrimary: '#343a40',
-  textSecondary: '#424b55',
-  background: '#000000',
+  textSecondary: '#9a9a9a',
+  background: '#ffffff',
   divider: '#767c81',
-  border: '#6c757d',
+  border: '#d9d9d9',
 };
 
 export type ThemeColor = Partial<typeof themeColors>;

@@ -10,7 +10,10 @@ function getAbsolutePath(value) {
 
 /** @type { import('@storybook/react-vite').StorybookConfig } */
 const config = {
-  stories: ['../../../packages/ds-core/src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: [
+    '../../../packages/ds-core/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/react-user/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+  ],
   addons: [
     getAbsolutePath('@storybook/addon-links'),
     getAbsolutePath('@storybook/addon-essentials'),
