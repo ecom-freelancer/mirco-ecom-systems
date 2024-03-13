@@ -23,9 +23,6 @@ export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
       layout="vertical"
       name="form-sigin-in"
       form={form}
-      onChange={() => {
-        console.log('onChange');
-      }}
       onFinish={(values) => {
         onSubmit(values.username, values.password);
       }}

@@ -14,9 +14,7 @@ export const SignInContainer: React.FC = () => {
           <SiginInForm
             configs={{
               passwordLess: {
-                onSubmit: async () => {
-                  console.log('submit');
-                },
+                onSubmit: async () => {},
               },
             }}
           />
