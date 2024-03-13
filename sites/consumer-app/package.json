@@ -1,5 +1,5 @@
 {
-  "name": "consumer-app",
+  "name": "@sites/consumer-app",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,7 +11,7 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "@packages/ds-core": "workspace:^",
-    "antd": "^5.15.2",
+    "antd": "^5.15.1",
     "next": "14.1.0",
     "react": "^18",
     "react-dom": "^18"

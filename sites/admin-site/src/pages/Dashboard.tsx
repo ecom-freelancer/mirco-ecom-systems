@@ -5,6 +5,7 @@ export const DashboardPage = () => {
   return (
     <div>
       <Box />
+
       {t('dashboard')}
     </div>
   );
