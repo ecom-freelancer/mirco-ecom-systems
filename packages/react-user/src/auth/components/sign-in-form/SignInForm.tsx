@@ -11,6 +11,7 @@ import { Box, Flex, Heading, Text, styled } from '@packages/ds-core';
 import { GoogleAuthConfig, GoogleLoginButtonIcon } from './GoogleLoginButton';
 
 export interface SiginFormProps {
+  loading?: boolean;
   configs: {
     facebook?: FacebookAuthConfig;
     google?: GoogleAuthConfig;
@@ -18,7 +19,7 @@ export interface SiginFormProps {
   };
 }
 
-export const SiginInForm: React.FC<SiginFormProps> = ({ configs }) => {
+export const SiginInForm: React.FC<SiginFormProps> = ({ configs, loading }) => {
   return (
     <Flex direction="column" align="center">
       <Box marginBottom="s16">
@@ -51,7 +52,7 @@ export const SiginInForm: React.FC<SiginFormProps> = ({ configs }) => {
         </Box>
       )}
       <Box style={{ minWidth: 300 }} marginTop="s16">
-        <LoginByPasswordForm config={configs.passwordLess} />
+        <LoginByPasswordForm config={configs.passwordLess} loading={loading} />
       </Box>
     </Flex>
   );

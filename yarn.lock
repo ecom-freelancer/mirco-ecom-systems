@@ -3830,15 +3830,28 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@packages/react-helper@npm:^1.0.0, @packages/react-helper@workspace:packages/react-helper":
+  version: 0.0.0-use.local
+  resolution: "@packages/react-helper@workspace:packages/react-helper"
+  dependencies:
+    "@packages/kit": "npm:1.0.0"
+    react: "npm:^18.2.0"
+  peerDependencies:
+    react: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
 "@packages/react-user@npm:^1.0.0, @packages/react-user@workspace:packages/react-user":
   version: 0.0.0-use.local
   resolution: "@packages/react-user@workspace:packages/react-user"
   dependencies:
     "@packages/ds-core": "npm:^1.0.0"
     "@packages/kit": "npm:1.0.0"
+    "@packages/react-helper": "npm:^1.0.0"
     "@storybook/react": "npm:^7.6.17"
     "@types/facebook-js-sdk": "npm:^3.3.10"
     antd: "npm:^5.15.1"
+    lodash: "npm:^4.17.21"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-icons: "npm:^5.0.1"

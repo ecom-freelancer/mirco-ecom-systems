@@ -1,5 +1,4 @@
-import { Box, Flex, Text, styled } from '@packages/ds-core';
-import { Input } from 'antd';
+import { Box, Flex, Text } from '@packages/ds-core';
 import React, { useMemo } from 'react';
 import { IoCheckmark } from 'react-icons/io5';
 
@@ -14,13 +13,14 @@ export const PasswordWithRules: React.FC<PasswordInputAsyncProps> = ({
 }) => {
   const { value } = props;
 
+  console.log(props);
+
   return (
     <React.Fragment>
-      <StyledInputPassword {...props} />
       <Box marginTop="s12">
         <Flex direction="column">
-          {rules.map((rule) => (
-            <Message rule={rule} value={value} />
+          {rules.map((rule, index) => (
+            <Message rule={rule} value={value} key={index} />
           ))}
         </Flex>
       </Box>
@@ -52,25 +52,3 @@ export interface InputRule {
   message: string;
   validate: (value: string) => boolean;
 }
-
-const StyledInputPassword = styled(Input.Password)`
-  background-color: rgb(245, 248, 253) !important;
-  border: none;
-  padding: 0.45rem 0.45rem;
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px rgb(245, 248, 253) inset !important;
-  }
-
-  :focus-within {
-    border: none;
-    box-shadow: none;
-  }
-
-  input:placeholder {
-    font-size: ${({ theme }) => theme.fontSizes.s} !important;
-  }
-`;

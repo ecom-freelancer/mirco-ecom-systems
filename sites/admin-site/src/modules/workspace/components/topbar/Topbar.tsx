@@ -8,6 +8,7 @@ export interface TopbarProps {}
 
 export const Topbar: React.FC<TopbarProps> = () => {
   const { collapsed, toggleCollapsed } = useWorkSpaceContext();
+
   return (
     <StyledHeader>
       <StyleHeaderSidebar collapsed={collapsed}>

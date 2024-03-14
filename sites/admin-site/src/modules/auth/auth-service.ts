@@ -1,5 +1,6 @@
 import appApi from 'configs/fetchers/app-api';
-import { IUser } from './types';
+import { ILoginResponse, IUser } from './types';
+import { IApiResponse } from 'modules/_shared/types';
 
 export const authService = {
   getUserInfo: () => {
@@ -9,6 +10,56 @@ export const authService = {
       .catch(() => {
         console.log('fetch error');
         return mockUser;
+      });
+  },
+  loginWithPassword: async (
+    email: string,
+    password: string,
+  ): Promise<ILoginResponse> => {
+    return appApi
+      .post<IApiResponse<ILoginResponse>>('/login-with-password', {
+        email,
+        password,
+      })
+      .then((res) => res.data.data)
+      .catch(() => {
+        return {
+          idToken: 'fake',
+          token: 'fake',
+          user: mockUser,
+        };
+      });
+  },
+
+  checkPassword: async (password: string): Promise<boolean> => {
+    return appApi
+      .post<IApiResponse<boolean>>(
+        '/check-password',
+        { password },
+        {
+          timeout: 1000,
+        },
+      )
+      .then((res) => res.data.data)
+      .catch(() => {
+        return false;
+      });
+  },
+  changePassword: async (
+    oldPassword: string,
+    newPassword: string,
+  ): Promise<boolean> => {
+    return appApi
+      .post<IApiResponse<boolean>>(
+        '/change-password',
+        { oldPassword, newPassword },
+        {
+          timeout: 1000,
+        },
+      )
+      .then((res) => res.data.data)
+      .catch(() => {
+        return false;
       });
   },
 };
