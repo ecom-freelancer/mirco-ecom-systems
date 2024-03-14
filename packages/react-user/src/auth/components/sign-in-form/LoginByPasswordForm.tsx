@@ -5,16 +5,19 @@ import React from 'react';
 import { useForm } from 'antd/es/form/Form';
 
 export interface PasswordLessAuthConfig {
+  usernameType?: 'email' | 'text';
   onSubmit?: (username: string, password: string) => Promise<void>;
   onForgotPassword?: () => void;
 }
 
 export interface LoginByPasswordFormProps {
   config: PasswordLessAuthConfig;
+  loading?: boolean;
 }
 
 export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
-  config: { onSubmit, onForgotPassword },
+  config: { onSubmit, onForgotPassword, usernameType },
+  loading,
 }) => {
   const [form] = useForm();
 
@@ -36,10 +39,12 @@ export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
             required: true,
             message: 'Please input your username!',
           },
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
+          usernameType === 'email'
+            ? {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              }
+            : {},
         ]}
       >
         <StyledInput placeholder="email or username" />
@@ -73,6 +78,7 @@ export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
               type="primary"
               htmlType="submit"
               size="large"
+              loading={loading}
             >
               <Text fontWeight="bold">Sign In</Text>
             </LoginButton>

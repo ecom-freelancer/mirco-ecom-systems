@@ -1,12 +1,14 @@
 // create context
 
 import React from 'react';
-import { ILoginPayload, IUser } from '../types';
+import { ILoginResponse, IUser } from '../types';
+import { KeyedMutator } from 'swr';
 
 export interface IAuthContext {
   user?: IUser;
-  login?: (payload: ILoginPayload) => Promise<void>;
   logout?: () => void;
+  refresh?: KeyedMutator<IUser | undefined>;
+  setUserLoggedIn?: (data: ILoginResponse) => void;
 }
 
 export const AuthContext = React.createContext<IAuthContext>({});

@@ -2,6 +2,7 @@ import { DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
 import { Avatar, Dropdown, MenuProps, Space } from 'antd';
 import { AccountModal } from 'modules/auth/components';
+import { ChangePasswordModal } from 'modules/auth/containers/ChangePasswordModal';
 import { useAuthContext } from 'modules/auth/hooks';
 import React, { useState } from 'react';
 import { FaExchangeAlt } from 'react-icons/fa';
@@ -11,7 +12,7 @@ export const AccountDropDown: React.FC = () => {
 
   const [showAccountModal, setAccountModalOpen] = useState(false);
 
-  const [, setPasswordModalOpen] = useState(false);
+  const [showPasswordModal, setPasswordModalOpen] = useState(false);
 
   const items: MenuProps['items'] = [
     {
@@ -46,6 +47,10 @@ export const AccountDropDown: React.FC = () => {
         onOpenChange={setAccountModalOpen}
         open={showAccountModal}
         user={user}
+      />
+      <ChangePasswordModal
+        isOpen={showPasswordModal}
+        onClose={() => setPasswordModalOpen(false)}
       />
     </React.Fragment>
   );

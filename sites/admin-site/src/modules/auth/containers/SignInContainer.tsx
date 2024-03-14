@@ -2,8 +2,11 @@ import { styled, Flex, Box, Text, Heading } from '@packages/ds-core';
 import { SiginInForm } from '@packages/react-user';
 import { Logo } from 'modules/_shared/components/Logo';
 import React from 'react';
+import { useLogin } from '../hooks/useLogin';
 
 export const SignInContainer: React.FC = () => {
+  const { loginWithPassword, loading } = useLogin();
+
   return (
     <SignInWrapper>
       <Flex align="stretch">
@@ -12,9 +15,11 @@ export const SignInContainer: React.FC = () => {
             <Logo size="small" />
           </Box>
           <SiginInForm
+            loading={loading}
             configs={{
               passwordLess: {
-                onSubmit: async () => {},
+                onSubmit: loginWithPassword,
+                usernameType: 'text',
               },
             }}
           />

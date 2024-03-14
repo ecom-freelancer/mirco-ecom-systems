@@ -1,7 +1,16 @@
 import { styled } from '@packages/ds-core';
+import { routeKeys } from 'configs/constants';
 import { SignInContainer } from 'modules/auth';
+import { useAuthContext } from 'modules/auth/hooks';
+import { Navigate } from 'react-router';
 
 export const SignInPage: React.FC = () => {
+  const { user } = useAuthContext();
+
+  if (user) {
+    return <Navigate to={routeKeys.home} />;
+  }
+
   return (
     <LoginPageWrapper>
       <Center>
