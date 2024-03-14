@@ -1,7 +1,8 @@
-import { Avatar, Button, Layout, Row } from 'antd';
-import { useWorkSpaceContext } from '../context';
+import { Button, Layout, Row } from 'antd';
+import { useWorkSpaceContext } from '../../context';
 import { FiMenu } from 'react-icons/fi';
 import { styled } from '@packages/ds-core';
+import { AccountDropDown } from './AccountDropDown';
 
 export interface TopbarProps {}
 
@@ -24,7 +25,7 @@ export const Topbar: React.FC<TopbarProps> = () => {
           />
         </Row>
         <Row>
-          <Avatar>U</Avatar>
+          <AccountDropDown />
         </Row>
       </MainTopBar>
     </StyledHeader>

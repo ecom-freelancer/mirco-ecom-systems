@@ -1,7 +1,7 @@
 import React from 'react';
 import { Layout } from 'antd';
 import { styled } from '@packages/ds-core';
-import { Topbar } from './components/Topbar';
+import { Topbar } from './components/topbar/Topbar';
 import { MenuSidebar } from './components/MenuSidebar';
 
 export interface WorkspaceLayoutProps {

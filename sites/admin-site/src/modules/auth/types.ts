@@ -1,8 +1,12 @@
-export interface IUser {
-  id: number;
-  name: string;
+import { IBase } from 'modules/_shared/types';
+
+export interface IUser extends IBase {
+  id: string;
+  displayName?: string;
   email: string;
-  avatar: string;
+  avatarUrl?: string;
+  isVerified?: boolean;
+  phonenumber?: string;
 }
 
 export interface ILoginPayload {
