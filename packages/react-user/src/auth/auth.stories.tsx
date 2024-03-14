@@ -4,6 +4,7 @@ import { Box, styled } from '@packages/ds-core';
 import { Meta } from '@storybook/react';
 import { SiginInForm } from './components/sign-in-form';
 import { SignUpForm } from './components/sign-up-form/SignUpForm';
+import { ChangePasswordForm } from './components/ChangePasswordForm';
 
 export default {
   title: 'React-User/Authrization',
@@ -43,8 +44,17 @@ export const SignUp = () => {
   );
 };
 
+export const ChangePassword = () => {
+  return (
+    <Wrapper padding={['s24', 's16']}>
+      <ChangePasswordForm />
+    </Wrapper>
+  );
+};
+
 SignUp.storyName = 'Sign Up Form';
 Default.storyName = 'Sign In Form';
+ChangePassword.storyName = 'Change password Form';
 
 const Wrapper = styled(Box)`
   background-color: ${({ theme }) => theme.colors?.background};

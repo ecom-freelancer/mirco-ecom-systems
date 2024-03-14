@@ -2,75 +2,87 @@ import { Box, Flex, Text, styled } from '@packages/ds-core';
 import { Button, Checkbox, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React from 'react';
-import { LabelFormInputWrapper } from '../label-with-form-input/LabelWraper';
 import { useForm } from 'antd/es/form/Form';
 
 export interface PasswordLessAuthConfig {
+  usernameType?: 'email' | 'text';
   onSubmit?: (username: string, password: string) => Promise<void>;
   onForgotPassword?: () => void;
 }
 
 export interface LoginByPasswordFormProps {
   config: PasswordLessAuthConfig;
+  loading?: boolean;
 }
 
 export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
-  config: { onSubmit, onForgotPassword },
+  config: { onSubmit, onForgotPassword, usernameType },
+  loading,
 }) => {
   const [form] = useForm();
 
   return (
     <Form
-      spellCheck={false}
+      layout="vertical"
+      name="form-sigin-in"
       form={form}
       onFinish={(values) => {
-        onSubmit(values.email, values.password);
+        onSubmit(values.username, values.password);
       }}
     >
-      <LabelFormInputWrapper label="Email">
-        <StyledFormItem
-          name="email"
-          rules={[
-            {
-              required: true,
-              message: 'Please input your email!',
-            },
-            {
-              type: 'email',
-              message: 'Please input valid email!',
-            },
-          ]}
-        >
-          <Input placeholder="Email" />
-        </StyledFormItem>
-      </LabelFormInputWrapper>
-      <LabelFormInputWrapper label="Password">
-        <StyledFormItem name="password">
-          <Input.Password placeholder="password" />
-        </StyledFormItem>
-      </LabelFormInputWrapper>
+      <StyledFormItem
+        label="Username"
+        name="username"
+        required={false}
+        rules={[
+          {
+            required: true,
+            message: 'Please input your username!',
+          },
+          usernameType === 'email'
+            ? {
+                type: 'email',
+                message: 'The input is not valid E-mail!',
+              }
+            : {},
+        ]}
+      >
+        <StyledInput placeholder="email or username" />
+      </StyledFormItem>
+
+      <StyledFormItem name="password" label="Password">
+        <StyledInputPassword placeholder="password" />
+      </StyledFormItem>
 
       <Flex justify="space-between">
-        <Checkbox>
+        <Checkbox name="rememberme">
           <Text fontWeight="bold" fontSize="s">
             Remember me
           </Text>
         </Checkbox>
 
-        <Text fontWeight="bold" fontSize="s" onClick={onForgotPassword}>
+        <Text
+          fontWeight="bold"
+          fontSize="s"
+          onClick={onForgotPassword}
+          color="blue"
+        >
           Forgot password?
         </Text>
       </Flex>
       <Box marginTop="s16">
         <Flex justify="center">
-          <LoginButton
-            color="primary"
-            type="primary"
-            htmlType="submit"
-            size="large"
-          >
-            <Text fontWeight="bold">Sign In</Text>
-          </LoginButton>
+          <FormItem>
+            <LoginButton
+              color="primary"
+              type="primary"
+              htmlType="submit"
+              size="large"
+              loading={loading}
+            >
+              <Text fontWeight="bold">Sign In</Text>
+            </LoginButton>
+          </FormItem>
         </Flex>
       </Box>
     </Form>
@@ -78,16 +90,35 @@ export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
 };
 
 const StyledFormItem = styled(FormItem)`
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem !important;
 
-  .ant-form-item-explain-error {
+  .ant-form-item-explain {
     font-size: ${({ theme }) => theme.fontSizes.xs};
-    margin-bottom: 0.5rem;
-    margin-top: 0.25rem;
+    margin-top: 0.5rem;
   }
 `;
 
 const LoginButton = styled(Button)`
   border-radius: 999rem;
   padding: 0 2rem;
+`;
+
+const StyledInput = styled(Input)`
+  background-color: rgb(232, 240, 254) !important;
+  border: none;
+  padding: 0.45rem 0.45rem;
+  :focus-within {
+    border: none;
+    box-shadow: none;
+  }
+`;
+
+const StyledInputPassword = styled(Input.Password)`
+  background-color: rgb(232, 240, 254) !important;
+  border: none;
+  padding: 0.45rem 0.45rem;
+  :focus-within {
+    border: none;
+    box-shadow: none;
+  }
 `;

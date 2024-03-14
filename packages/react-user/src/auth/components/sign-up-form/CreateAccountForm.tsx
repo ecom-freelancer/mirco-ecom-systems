@@ -94,9 +94,16 @@ const Label = styled(Text)`
 `;
 
 const StyledInput = styled(Input)`
-  background-color: #f5f5f5 !important;
+  background-color: rgb(245, 248, 253) !important;
   border: none;
   padding: 0.45rem 0.45rem;
+
+  :-webkit-autofill,
+  :-webkit-autofill:hover,
+  :-webkit-autofill:focus,
+  :-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(245, 248, 253) inset !important;
+  }
   :focus-within {
     border: none;
     box-shadow: none;
@@ -104,9 +111,17 @@ const StyledInput = styled(Input)`
 `;
 
 const StyledInputPassword = styled(Input.Password)`
-  background-color: #f5f5f5 !important;
+  background-color: rgb(245, 248, 253) !important;
   border: none;
   padding: 0.45rem 0.45rem;
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    -webkit-box-shadow: 0 0 0 30px rgb(245, 248, 253) inset !important;
+  }
+
   :focus-within {
     border: none;
     box-shadow: none;

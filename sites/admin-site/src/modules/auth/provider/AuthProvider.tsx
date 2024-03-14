@@ -5,7 +5,7 @@ export interface AuthProviderProps {
   children: React.ReactNode;
 }
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const { user, loading } = useUserInfo();
+  const { user, loading, mutate, setUserLoged, logout } = useUserInfo();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -15,6 +15,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     <AuthContext.Provider
       value={{
         user: user,
+        refresh: mutate,
+        setUserLoggedIn: setUserLoged,
+        logout,
       }}
     >
       {children}

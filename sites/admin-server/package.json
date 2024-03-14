@@ -1,5 +1,5 @@
 {
-  "name": "admin-server",
+  "name": "@sites/admin-server",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -17,7 +17,9 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "migration:generate": "typeorm migration:generate --dataSource dist/configs/mysql.datasource.js src/migrations/migration",
+    "migration": "typeorm migration:run -d dist/configs/mysql.datasource.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",
@@ -25,8 +27,8 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.3.0",
-    "@nestjs/typeorm": "^10.0.2",
     "@packages/nest-helper": "^1.0.0",
+    "@packages/nest-mysql": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "dotenv": "^16.4.5",
@@ -34,8 +36,7 @@
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "tslib": "^2.6.2",
-    "typeorm": "^0.3.20",
-    "typeorm-naming-strategies": "^4.1.0"
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

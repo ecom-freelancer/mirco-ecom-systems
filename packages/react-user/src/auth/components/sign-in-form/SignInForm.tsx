@@ -11,6 +11,7 @@ import { Box, Flex, Heading, Text, styled } from '@packages/ds-core';
 import { GoogleAuthConfig, GoogleLoginButtonIcon } from './GoogleLoginButton';
 
 export interface SiginFormProps {
+  loading?: boolean;
   configs: {
     facebook?: FacebookAuthConfig;
     google?: GoogleAuthConfig;
@@ -18,7 +19,7 @@ export interface SiginFormProps {
   };
 }
 
-export const SiginInForm: React.FC<SiginFormProps> = ({ configs }) => {
+export const SiginInForm: React.FC<SiginFormProps> = ({ configs, loading }) => {
   return (
     <Flex direction="column" align="center">
       <Box marginBottom="s16">
@@ -31,23 +32,27 @@ export const SiginInForm: React.FC<SiginFormProps> = ({ configs }) => {
       </Box>
 
       {/* socical login row */}
-      <Box>
-        <Flex justify="center" gapX="s16">
-          {configs.facebook && (
-            <FacebookLoginButtonIcon config={configs.facebook} />
-          )}
+      {(configs.facebook || configs.google) && (
+        <Box>
+          <Flex justify="center" gapX="s16">
+            {configs.facebook && (
+              <FacebookLoginButtonIcon config={configs.facebook} />
+            )}
 
-          {configs.google && <GoogleLoginButtonIcon config={configs.google} />}
-        </Flex>
+            {configs.google && (
+              <GoogleLoginButtonIcon config={configs.google} />
+            )}
+          </Flex>
 
-        <Box marginTop="s16" marginBottom="s10">
-          <Text fontSize="s" color="textSecondary">
-            or use your email account
-          </Text>
+          <Box marginTop="s16" marginBottom="s10">
+            <Text fontSize="s" color="textSecondary">
+              or use your email account
+            </Text>
+          </Box>
         </Box>
-      </Box>
-      <Box style={{ minWidth: 300 }}>
-        <LoginByPasswordForm config={configs.passwordLess} />
+      )}
+      <Box style={{ minWidth: 300 }} marginTop="s16">
+        <LoginByPasswordForm config={configs.passwordLess} loading={loading} />
       </Box>
     </Flex>
   );

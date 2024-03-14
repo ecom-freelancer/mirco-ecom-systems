@@ -14,9 +14,9 @@ const WorkspaceProvider = React.lazy(() =>
   })),
 );
 
-const AuthProvider = React.lazy(() =>
-  import('modules/auth/provider/AuthProvider').then((module) => ({
-    default: module.AuthProvider,
+const ProtectedRouterProvider = React.lazy(() =>
+  import('modules/auth/provider/ProctectRouterProvider').then((module) => ({
+    default: module.ProtectedRouterProvider,
   })),
 );
 
@@ -70,11 +70,10 @@ export const workspacesRoutes: IRoute[] = [
 const privateRoutes: IRoute = {
   path: '/',
   element: (
-    <AuthProvider>
+    <ProtectedRouterProvider>
       <Outlet />
-    </AuthProvider>
+    </ProtectedRouterProvider>
   ),
-
   children: [
     {
       path: '/',
@@ -86,9 +85,11 @@ const privateRoutes: IRoute = {
 
 const publicRoutes: IRoute[] = [
   {
-    path: routeKeys.login,
+    path: routeKeys.signin,
     lazy: () =>
-      import('pages/Login').then((module) => ({ Component: module.LoginPage })),
+      import('pages/SignIn').then((module) => ({
+        Component: module.SignInPage,
+      })),
   },
   {
     path: routeKeys.notFound,

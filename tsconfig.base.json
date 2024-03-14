@@ -18,5 +18,13 @@
     "noFallthroughCasesInSwitch": true,
     "resolveJsonModule": true,
     "allowJs": true
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.stories.tsx",
+    "**/*.test.tsx",
+    "**/*.test.ts",
+    "**/*.spec.tsx",
+    "**/*.spec.ts"
+  ]
 }

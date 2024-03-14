@@ -1,6 +1,6 @@
 export const routeKeys = {
   home: '/',
-  login: '/login',
+  signin: '/login',
   dashboard: '/dashboard',
   notFound: '/404',
 
