@@ -7,8 +7,16 @@ export interface IUseUserInfoReturn {
   loading: boolean;
 }
 export const useUserInfo = () => {
-  const { data, isLoading } = useSWR('user-info', authService.getUserInfo, {});
-  console.log(data, isLoading);
+  const { data, isLoading } = useSWR(
+    'user-info',
+    () => authService.getUserInfo(),
+    {
+      revalidateOnFocus: true,
+    },
+  );
+
+  console.log(data);
+
   return {
     user: data,
     loading: isLoading,

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {
+  accessApplicationJsonIntercepter,
   accessTokenInterceptor,
   errorInterceptor,
   responseInterceptor,
@@ -9,6 +10,8 @@ const appApi = axios.create({
   baseURL: import.meta.env.VITE_APP_API_URL || '',
   timeout: 100000,
 });
+
+appApi.interceptors.request.use(accessApplicationJsonIntercepter);
 
 appApi.interceptors.request.use(accessTokenInterceptor);
 

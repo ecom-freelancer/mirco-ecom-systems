@@ -1,6 +1,7 @@
 import { ThemeProvider } from '@packages/ds-core';
 import { ConfigProvider } from 'antd';
 import { allRoutes } from 'configs/router';
+import { AuthProvider } from 'modules/auth/provider/AuthProvider';
 import React, { Suspense } from 'react';
 import {
   RouteObject,
@@ -19,6 +20,7 @@ function App() {
               Layout: {
                 headerBg: '#ffffff',
                 siderBg: '#ffffff',
+                headerPadding: 0,
               },
               Menu: {
                 itemPaddingInline: 20,
@@ -28,7 +30,9 @@ function App() {
           }}
         >
           <Suspense>
-            <RouterProvider router={router} />
+            <AuthProvider>
+              <RouterProvider router={router} />
+            </AuthProvider>
           </Suspense>
         </ConfigProvider>
       </ThemeProvider>

@@ -8,6 +8,13 @@ export const accessTokenInterceptor = (request: InternalAxiosRequestConfig) => {
   return request;
 };
 
+export const accessApplicationJsonIntercepter = (
+  request: InternalAxiosRequestConfig,
+) => {
+  request.headers['Content-Type'] = 'application/json';
+  return request;
+};
+
 export const responseInterceptor = (response: AxiosResponse) => {
   return response.data;
 };
