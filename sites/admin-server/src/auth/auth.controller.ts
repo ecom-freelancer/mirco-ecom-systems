@@ -16,18 +16,19 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Post('login')
-  signIn(@Body() signInDto: Record<string, any>) {
-    return this.authService.signIn(signInDto.username, signInDto.password);
+  @Public()
+  login(@Body() loginDto: Record<string, any>) {
+    return this.authService.login(loginDto.username, loginDto.password);
+  }
+
+  @Post('register')
+  @Public()
+  register(@Body() registerDto: Record<string, string>) {
+    return this.authService.register(registerDto);
   }
 
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;
-  }
-
-  @Public()
-  @Get('public')
-  getProfilePublic() {
-    return 'hello';
   }
 }
