@@ -20,6 +20,7 @@
     "allowJs": true
   },
   "exclude": [
+    "dist",
     "node_modules",
     "**/*.stories.tsx",
     "**/*.test.tsx",
