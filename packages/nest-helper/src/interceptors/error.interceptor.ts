@@ -1,20 +1,23 @@
 import {
-  CallHandler,
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
   HttpException,
-  InternalServerErrorException,
-  NestInterceptor,
 } from '@nestjs/common';
-import { catchError, throwError } from 'rxjs';
+import { Response } from 'express';
 
-export class ErrorInterceptor implements NestInterceptor {
-  intercept(_, next: CallHandler) {
-    return next.handle().pipe(
-      catchError((err) => {
-        if (err instanceof HttpException) {
-          return throwError(err);
-        }
-        throw new InternalServerErrorException(err);
-      }),
-    );
+@Catch(HttpException)
+export class HttpExceptionFilter implements ExceptionFilter {
+  catch(exception: HttpException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+    const status = exception.getStatus();
+    const cause = exception.cause;
+
+    response.status(status).json({
+      status: status,
+      message: exception.message,
+      cause,
+    });
   }
 }

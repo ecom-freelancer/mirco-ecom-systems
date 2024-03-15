@@ -6,7 +6,7 @@ import {
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { classValidatorException } from './validators';
-import { ErrorInterceptor, TransformInterceptor } from './interceptors';
+import { HttpExceptionFilter, TransformInterceptor } from './interceptors';
 
 export interface ICreateServerOptions {
   swagger?: {
@@ -30,7 +30,16 @@ export const createNestApp = async (
     const documentBuilder = new DocumentBuilder()
       .setTitle(options.swagger.title)
       .setDescription(options.swagger.description)
-      .setVersion(options.swagger.version ?? '1.0');
+      .setVersion(options.swagger.version ?? '1.0')
+      .setVersion('1.0')
+      .addBearerAuth(
+        {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+        'Authorization',
+      );
 
     const config = documentBuilder.build();
 
@@ -51,9 +60,10 @@ export const createNestApp = async (
 
   app.useGlobalInterceptors(
     new TransformInterceptor(),
-    new ErrorInterceptor(),
     ...(options.interceptors || []),
   );
+
+  app.useGlobalFilters(new HttpExceptionFilter());
 
   return app;
 };

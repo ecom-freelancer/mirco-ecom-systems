@@ -13,7 +13,6 @@ export class MysqlModule {
       imports: [
         TypeOrmModule.forRootAsync({
           useFactory: async (value: MysqlModuleOptions) => {
-            console.log({ inputOption: value });
             return {
               ...getDataSourceOption(options),
               logging: false,
@@ -21,7 +20,12 @@ export class MysqlModule {
               synchronize: false,
             };
           },
-          inject: [options],
+          extraProviders: [
+            {
+              provide: 'MYSQL_MODULE_OPTIONS',
+              useValue: options,
+            },
+          ],
         }),
       ],
     };
