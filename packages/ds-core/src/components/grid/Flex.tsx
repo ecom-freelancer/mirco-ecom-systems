@@ -58,15 +58,10 @@ const buildVariant = (variant: string) => {
   }
 };
 
-StyledFlex.defaultProps = {
-  direction: 'row',
-  justify: 'start',
-  align: 'baseline',
-  flexWrap: 'nowrap',
-};
-
 export const Flex = React.forwardRef<HTMLDivElement, FlexProps>(
   (props, ref) => {
     return <StyledFlex {...props} ref={ref} />;
   },
 );
+
+Flex.displayName = 'Flex';
