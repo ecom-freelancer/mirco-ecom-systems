@@ -29,6 +29,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/swagger": "^7.3.0",
     "@packages/nest-helper": "^1.0.0",
+    "@packages/nest-mail": "^1.0.0",
     "@packages/nest-mysql": "^1.0.0",
     "@packages/nest-redis": "^1.0.0",
     "bcrypt": "^5.1.1",

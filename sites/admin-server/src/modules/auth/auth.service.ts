@@ -17,6 +17,7 @@ import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { RedisService } from '@packages/nest-redis';
+import { MailerService } from '@packages/nest-mail';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly redisService: RedisService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async getProfileById(id: string): Promise<GetProfileResponse> {
@@ -101,6 +103,16 @@ export class AuthService {
 
   async testRedis() {
     await this.redisService.redis.keys('*');
+    this.mailerService
+      .sendMail({
+        to: '20165755@student.hust.edu.vn', // list of receivers
+        from: 'quanganhpham31101998@gmail.com', // sender address
+        subject: 'Testing Nest MailerModule ✔', // Subject line
+        text: 'welcome', // plaintext body
+        html: '<b>welcome</b>', // HTML body content
+      })
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
   }
 
   //---------------------------- Helpers function ----------------------------

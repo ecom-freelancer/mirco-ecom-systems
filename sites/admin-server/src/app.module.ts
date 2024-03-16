@@ -5,6 +5,8 @@ import { getMysqlOptions } from './configs/mysql.datasource';
 import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from '@packages/nest-redis';
 import { getRedisOptions } from './configs/redis.datasource';
+import { EmailModule } from '@packages/nest-mail';
+import { getEmailConfigOptions } from './configs/email-config';
 
 @Module({
   imports: [
@@ -15,6 +17,7 @@ import { getRedisOptions } from './configs/redis.datasource';
     MysqlModule.forRootAsync(getMysqlOptions()),
     AuthModule,
     RedisModule.forRootAsync(getRedisOptions()),
+    EmailModule.forRootAsync(getEmailConfigOptions()),
   ],
   controllers: [],
 })

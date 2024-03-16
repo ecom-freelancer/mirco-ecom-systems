@@ -77,5 +77,7 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  async forgotPassword() {}
+  async forgotPassword() {
+    await this.authService.testRedis();
+  }
 }
