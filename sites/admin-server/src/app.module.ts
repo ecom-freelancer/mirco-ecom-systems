@@ -3,6 +3,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { MysqlModule } from '@packages/nest-mysql';
 import { getMysqlOptions } from './configs/mysql.datasource';
 import { ConfigModule } from '@nestjs/config';
+import { RedisModule } from '@packages/nest-redis';
+import { getRedisOptions } from './configs/redis.datasource';
 
 @Module({
   imports: [
@@ -12,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     MysqlModule.forRootAsync(getMysqlOptions()),
     AuthModule,
+    RedisModule.forRootAsync(getRedisOptions()),
   ],
   controllers: [],
 })

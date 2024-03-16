@@ -16,6 +16,7 @@ import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import { RedisService } from '@packages/nest-redis';
 
 @Injectable()
 export class AuthService {
@@ -23,6 +24,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
+    private readonly redisService: RedisService,
   ) {}
 
   async getProfileById(id: string): Promise<GetProfileResponse> {
@@ -95,6 +97,10 @@ export class AuthService {
     }
 
     return this.generateTokens(user);
+  }
+
+  async testRedis() {
+    await this.redisService.redis.keys('*');
   }
 
   //---------------------------- Helpers function ----------------------------
