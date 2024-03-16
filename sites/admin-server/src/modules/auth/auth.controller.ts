@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post, Request } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
 import { LoginResponse, LoginWithPasswordDto } from './dtos/login.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiErrorResponse, ApiSuccessResponse } from '@packages/nest-helper';
@@ -7,6 +7,8 @@ import { Protected } from './auth.guard';
 import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import { Request } from 'express';
 
 @Controller()
 @ApiTags('auth')
@@ -18,7 +20,8 @@ export class AuthController {
   @Protected()
   @HttpCode(200)
   @ApiSuccessResponse({ type: GetProfileResponse, status: 200 })
-  async getProfile(@Request() req): Promise<GetProfileResponse> {
+  async getProfile(@Req() req: Request): Promise<GetProfileResponse> {
+    // @ts-ignore
     return await this.authService.getProfileById(req.userId);
   }
 
@@ -26,7 +29,7 @@ export class AuthController {
   @HttpCode(200)
   @HttpCode(401)
   @ApiSuccessResponse({ type: LoginResponse, status: 200 })
-  async login(@Body() payload: LoginWithPasswordDto) {
+  async login(@Body() payload: LoginWithPasswordDto): Promise<LoginResponse> {
     return await this.authService.loginWithPassword(
       payload.username,
       payload.password,
@@ -36,7 +39,7 @@ export class AuthController {
   @Post('register')
   @HttpCode(201)
   @ApiErrorResponse({ status: 400 })
-  async register(@Body() payload: RegisterDto) {
+  async register(@Body() payload: RegisterDto): Promise<void> {
     return await this.authService.registerWithAccount(payload);
   }
 
@@ -51,15 +54,27 @@ export class AuthController {
   @HttpCode(200)
 
   // TODO: If password is changed -> Clear all session
-  async changePassword(@Request() req, @Body() payload: ChangePasswordDto) {
+  async changePassword(
+    @Req() req: Request,
+    @Body() payload: ChangePasswordDto,
+  ): Promise<void> {
+    // @ts-ignore
     return await this.authService.changePassword(req.userId, payload);
   }
 
   @Post('logout')
   async logout() {}
 
-  @Post('refresh-token')
-  async refreshToken() {}
+  @Get('refresh-token')
+  @Protected()
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
+  // TODO: If token is changed -> Clear all session
+  async refreshToken(@Req() req: Request): Promise<RefreshTokenResponse> {
+    // @ts-ignore
+    return await this.authService.refreshToken(req.userId);
+  }
 
   @Post('forgot-password')
   async forgotPassword() {}

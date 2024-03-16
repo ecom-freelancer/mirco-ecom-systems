@@ -15,6 +15,7 @@ import { ConfigService } from '@nestjs/config';
 import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -86,6 +87,16 @@ export class AuthService {
     await this.userService.updateAccount({ ...user, password: hashedPassword });
   }
 
+  async refreshToken(id: string): Promise<RefreshTokenResponse> {
+    const user = await this.userService.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return this.generateTokens(user);
+  }
+
   //---------------------------- Helpers function ----------------------------
 
   async generateTokens(user: UserEntity) {
@@ -102,11 +113,9 @@ export class AuthService {
 
   async verifyAsync(token: string) {
     try {
-      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
+      return await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: this.configService.get('JWT_SECRET'),
       });
-
-      return payload;
     } catch (error) {
       throw new UnauthorizedException('Token is invalid');
     }
