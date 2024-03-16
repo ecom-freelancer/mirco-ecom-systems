@@ -21,7 +21,7 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly configSerivce: ConfigService,
+    private readonly configService: ConfigService,
   ) {}
 
   async loginWithPassword(
@@ -50,7 +50,7 @@ export class AuthService {
       throw new BadRequestException('User is duplicated');
     }
 
-    const hashedPassword = await this.hassPassword(password);
+    const hashedPassword = await this.hashPassword(password);
     await this.userService.createAccount({
       ...registerDto,
       password: hashedPassword,
@@ -72,28 +72,27 @@ export class AuthService {
   async verifyAsync(token: string) {
     try {
       const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
-        secret: this.configSerivce.get('JWT_SECRET'),
+        secret: this.configService.get('JWT_SECRET'),
       });
 
       return payload;
     } catch (error) {
-      throw new UnauthorizedException('Token Inavalid');
+      throw new UnauthorizedException('Token is invalid');
     }
   }
 
   async generateJWT(payload, expiresIn = '1d') {
-    const accessToken = await this.jwtService.signAsync(payload, {
+    return await this.jwtService.signAsync(payload, {
       expiresIn,
-      secret: this.configSerivce.get('JWT_SECRET'),
+      secret: this.configService.get('JWT_SECRET'),
     });
-    return accessToken;
   }
 
-  async hassPassword(password: string, saltOrRounds = 10): Promise<string> {
-    return bcrypt.hash(password, saltOrRounds);
+  async hashPassword(password: string, saltOrRounds = 10): Promise<string> {
+    return await bcrypt.hash(password, saltOrRounds);
   }
 
   async comparePassword(password: string, hash: string): Promise<boolean> {
-    return bcrypt.compare(password, hash);
+    return await bcrypt.compare(password, hash);
   }
 }
