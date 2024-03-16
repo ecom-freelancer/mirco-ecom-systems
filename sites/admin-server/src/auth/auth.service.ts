@@ -8,6 +8,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from 'users/users.service';
 
 import * as bcrypt from 'bcrypt';
+import { RegisterDto } from './dtos/register.dto';
 
 const saltOrRounds = 10;
 
@@ -35,7 +36,7 @@ export class AuthService {
     };
   }
 
-  async register(registerDto: any): Promise<any> {
+  async register(registerDto: RegisterDto): Promise<any> {
     const { username, password, name } = registerDto;
     const duplicatedUser = await this.usersService.findOne(username);
 
@@ -44,8 +45,8 @@ export class AuthService {
     }
 
     const hashedPassword = await bcrypt.hash(password, saltOrRounds);
-    return await this.usersService.create({
-      id: undefined,
+
+    return await this.usersService.createUser({
       username,
       name,
       password: hashedPassword,

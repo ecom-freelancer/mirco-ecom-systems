@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity, InjectRepository } from '@packages/nest-mysql';
+import { RegisterDto } from '../auth/dtos/register.dto';
 
 @Injectable()
 export class UsersService {
@@ -17,7 +18,13 @@ export class UsersService {
     });
   }
 
-  async create(createUserPayload: UserEntity): Promise<UserEntity> {
-    return await this.userRepository.save(createUserPayload);
+  async createUser(createUserPayload: RegisterDto): Promise<UserEntity> {
+    const { username, name, password } = createUserPayload;
+
+    return await this.userRepository.save({
+      username,
+      password,
+      name,
+    });
   }
 }
