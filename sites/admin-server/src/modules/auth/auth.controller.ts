@@ -1,27 +1,57 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { LoginDto, LoginResponse } from './dtos/login.dto';
-import { plainToInstance } from 'class-transformer';
-import { ApiSuccessResponse } from '@packages/nest-helper';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import {
+  LoginResponse,
+  LoginWithPasswordDto,
+  RegisterPayloadDto,
+} from './dtos/login.dto';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiErrorResponse, ApiSuccessResponse } from '@packages/nest-helper';
+import { AuthService } from './auth.service';
+import { Protected } from './auth.guard';
 
-@Controller({
-  version: '1',
-})
-@ApiTags('Authorize')
+@Controller()
+@ApiTags('auth')
+@ApiBearerAuth('Authorization')
 export class AuthController {
-  constructor() {}
+  constructor(private readonly authService: AuthService) {}
 
-  @Post('/login')
+  @Get('me')
+  @Protected()
+  async getProfile() {}
+
+  @Post('login')
   @HttpCode(200)
-  @ApiSuccessResponse({
-    status: 200,
-    type: LoginResponse,
-    message: 'Login success',
-  })
-  async login(@Body() body: LoginDto): Promise<LoginResponse> {
-    return plainToInstance(LoginResponse, {
-      token: 'Bearer',
-      refreshToken: 'Bearer',
-    });
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: LoginResponse, status: 200 })
+  async login(@Body() payload: LoginWithPasswordDto) {
+    return this.authService.loginWithPassword(
+      payload.username,
+      payload.password,
+    );
   }
+
+  @Post('register')
+  @HttpCode(201)
+  @ApiErrorResponse({ status: 400 })
+  async register(@Body() payload: RegisterPayloadDto) {
+    return this.authService.registerWithAccount(payload);
+  }
+
+  @Post('login-with-google')
+  async loginWithGoogle() {}
+
+  @Post('login-with-facebook')
+  async loginWithFacebook() {}
+
+  @Post('change-password')
+  async changePassword() {}
+
+  @Post('logout')
+  async logout() {}
+
+  @Post('refresh-token')
+  async refreshToken() {}
+
+  @Post('forgot-password')
+  async forgotPassword() {}
 }

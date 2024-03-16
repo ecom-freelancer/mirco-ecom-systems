@@ -11,6 +11,6 @@ export class UserEntity {
   @Column({ type: 'text', nullable: false })
   password: string;
 
-  @Column({ type: 'varchar', default: '', nullable: true })
-  name: string | null;
+  @Column({ type: 'varchar', default: '', length: 255, nullable: true })
+  name?: string | null;
 }

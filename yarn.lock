@@ -3390,6 +3390,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@nestjs/config@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@nestjs/config@npm:3.2.0"
+  dependencies:
+    dotenv: "npm:16.4.1"
+    dotenv-expand: "npm:10.0.0"
+    lodash: "npm:4.17.21"
+    uuid: "npm:9.0.1"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    rxjs: ^7.1.0
+  checksum: 10/8d401d3f26f0aa00422f6ee1a6c4ef8dcfad7225417be958be0a3b8876c7f9227cbe1ac55148776d9f3522e165517289116d81b1aee5ec1f1ce0095c75cf55b7
+  languageName: node
+  linkType: hard
+
 "@nestjs/core@npm:^10.0.0":
   version: 10.3.3
   resolution: "@nestjs/core@npm:10.3.3"
@@ -3815,6 +3830,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@packages/nest-file@workspace:packages/nest-file":
+  version: 0.0.0-use.local
+  resolution: "@packages/nest-file@workspace:packages/nest-file"
+  dependencies:
+    "@nestjs/common": "npm:^10.0.0"
+    "@packages/kit": "npm:^1.0.0"
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
+    tslib: ^2.6.2
+  languageName: unknown
+  linkType: soft
+
 "@packages/nest-helper@npm:^1.0.0, @packages/nest-helper@workspace:packages/nest-helper":
   version: 0.0.0-use.local
   resolution: "@packages/nest-helper@workspace:packages/nest-helper"
@@ -3838,6 +3865,18 @@ __metadata:
     class-validator: ^0.14.1
     reflect-metadata: ^0.2.0
     rxjs: ^7.8.1
+    tslib: ^2.6.2
+  languageName: unknown
+  linkType: soft
+
+"@packages/nest-mail@workspace:packages/nest-mail":
+  version: 0.0.0-use.local
+  resolution: "@packages/nest-mail@workspace:packages/nest-mail"
+  dependencies:
+    "@nestjs/common": "npm:^10.0.0"
+    "@packages/kit": "npm:^1.0.0"
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
     tslib: ^2.6.2
   languageName: unknown
   linkType: soft
@@ -4932,6 +4971,7 @@ __metadata:
   dependencies:
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.0.0"
+    "@nestjs/config": "npm:^3.2.0"
     "@nestjs/core": "npm:^10.0.0"
     "@nestjs/jwt": "npm:^10.2.0"
     "@nestjs/platform-express": "npm:^10.0.0"
@@ -10546,7 +10586,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv-expand@npm:^10.0.0, dotenv-expand@npm:~10.0.0":
+"dotenv-expand@npm:10.0.0, dotenv-expand@npm:^10.0.0, dotenv-expand@npm:~10.0.0":
   version: 10.0.0
   resolution: "dotenv-expand@npm:10.0.0"
   checksum: 10/b41eb278bc96b92cbf3037ca5f3d21e8845bf165dc06b6f9a0a03d278c2bd5a01c0cfbb3528ae3a60301ba1a8a9cace30e748c54b460753bc00d4c014b675597
@@ -10557,6 +10597,13 @@ __metadata:
   version: 5.1.0
   resolution: "dotenv-expand@npm:5.1.0"
   checksum: 10/d52af2a6e4642979ae4221408f1b75102508dbe4f5bac1c0613f92a3cf3880d5c31f86b2f5cff3273f7c23e10421e75028546e8b6cd0376fcd20e3803b374e15
+  languageName: node
+  linkType: hard
+
+"dotenv@npm:16.4.1":
+  version: 16.4.1
+  resolution: "dotenv@npm:16.4.1"
+  checksum: 10/8da20250633703686961004df3ea81b1f81e16fbe873372050676f54ca4053172d0589aae902e683eb575884d56b6bc89fe48bbac5e1e0bef606a061389ca33c
   languageName: node
   linkType: hard
 

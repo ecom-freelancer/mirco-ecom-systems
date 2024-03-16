@@ -62,7 +62,10 @@ export const ApiErrorResponse = (options: {
             description: 'Error message',
           },
           errors: {
-            type: 'object',
+            type: 'array',
+            items: {
+              type: 'string',
+            },
             description: 'Error details',
           },
         },

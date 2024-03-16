@@ -18,6 +18,7 @@ async function bootstrap() {
       path: 'api_docs',
     },
   });
+
   await app.listen(3000);
 }
 

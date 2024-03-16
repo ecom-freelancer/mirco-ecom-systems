@@ -1,0 +1,24 @@
+{
+  "name": "@packages/nest-mail",
+  "version": "1.0.0",
+  "packageManager": "yarn@4.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "kit build-package .",
+    "dev": "kit watch-package ."
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0"
+  },
+  "devDependencies": {
+    "@packages/kit": "^1.0.0"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^10.0.0",
+    "tslib": "^2.6.2"
+  }
+}

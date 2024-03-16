@@ -15,14 +15,14 @@ export class MysqlModule {
           useFactory: async (_: MysqlModuleOptions) => {
             return {
               ...getDataSourceOption(options),
-              logging: true,
+              logging: false,
               cache: true,
               synchronize: false,
             };
           },
           extraProviders: [
             {
-              provide: 'MysqlModuleOptions',
+              provide: 'MYSQL_MODULE_OPTIONS',
               useValue: options,
             },
           ],
