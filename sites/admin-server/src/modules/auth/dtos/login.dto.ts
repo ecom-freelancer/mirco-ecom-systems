@@ -53,8 +53,3 @@ export class LoginResponse {
   @ApiProperty()
   refreshToken: string;
 }
-
-export class JwtPayload {
-  username: string;
-  sub: string;
-}

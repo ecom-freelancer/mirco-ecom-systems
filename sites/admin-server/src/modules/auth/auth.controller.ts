@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Request } from '@nestjs/common';
 import {
   LoginResponse,
   LoginWithPasswordDto,
@@ -8,6 +8,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiErrorResponse, ApiSuccessResponse } from '@packages/nest-helper';
 import { AuthService } from './auth.service';
 import { Protected } from './auth.guard';
+import { GetProfileResponse } from './dtos/profile.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -16,15 +17,19 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('me')
+  @HttpCode(200)
   @Protected()
-  async getProfile() {}
+  @ApiSuccessResponse({ type: GetProfileResponse, status: 200 })
+  async getProfile(@Request() req): Promise<GetProfileResponse> {
+    return await this.authService.getProfileById(req.userId);
+  }
 
   @Post('login')
   @HttpCode(200)
   @HttpCode(401)
   @ApiSuccessResponse({ type: LoginResponse, status: 200 })
   async login(@Body() payload: LoginWithPasswordDto) {
-    return this.authService.loginWithPassword(
+    return await this.authService.loginWithPassword(
       payload.username,
       payload.password,
     );
@@ -34,7 +39,7 @@ export class AuthController {
   @HttpCode(201)
   @ApiErrorResponse({ status: 400 })
   async register(@Body() payload: RegisterPayloadDto) {
-    return this.authService.registerWithAccount(payload);
+    return await this.authService.registerWithAccount(payload);
   }
 
   @Post('login-with-google')
@@ -44,6 +49,8 @@ export class AuthController {
   async loginWithFacebook() {}
 
   @Post('change-password')
+  @HttpCode(201)
+  @Protected()
   async changePassword() {}
 
   @Post('logout')

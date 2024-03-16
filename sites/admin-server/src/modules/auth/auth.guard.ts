@@ -16,7 +16,10 @@ export const Protected = () => SetMetadata(ROUTE_IS_PROTECTED, true);
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private authService: AuthService, private reflector: Reflector) {}
+  constructor(
+    private authService: AuthService,
+    private reflector: Reflector,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const isProtected = this.reflector.getAllAndOverride<boolean>(
@@ -36,7 +39,7 @@ export class AuthGuard implements CanActivate {
     }
 
     const payload = await this.authService.verifyAsync(token);
-    request['user-id'] = payload.sub;
+    request['userId'] = payload.sub;
     return true;
   }
 

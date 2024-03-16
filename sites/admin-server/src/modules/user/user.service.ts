@@ -10,15 +10,15 @@ export class UserService {
     private readonly userRepository: Repository<UserEntity>,
   ) {}
 
-  async findOneByUsername(username: string) {
+  async getUserByUsername(username: string) {
     return this.userRepository.findOneBy({
-      username: username,
+      username,
     });
   }
 
-  async getUserInfo(id: string) {
+  async getUserById(id: string) {
     return this.userRepository.findOneBy({
-      id: id,
+      id,
     });
   }
 

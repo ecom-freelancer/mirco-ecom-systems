@@ -8,13 +8,11 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import {
-  JwtPayload,
-  LoginResponse,
-  RegisterPayloadDto,
-} from './dtos/login.dto';
+import { LoginResponse, RegisterPayloadDto } from './dtos/login.dto';
+import { JwtPayload } from './interfaces/jwt.interface';
 import { UserEntity } from '@packages/nest-mysql';
 import { ConfigService } from '@nestjs/config';
+import { GetProfileResponse } from './dtos/profile.dto';
 
 @Injectable()
 export class AuthService {
@@ -24,11 +22,22 @@ export class AuthService {
     private readonly configService: ConfigService,
   ) {}
 
+  async getProfileById(id: string): Promise<GetProfileResponse> {
+    const user = await this.userService.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { password, ...response } = user;
+    return response;
+  }
+
   async loginWithPassword(
     username: string,
     password: string,
   ): Promise<LoginResponse> {
-    const user = await this.userService.findOneByUsername(username);
+    const user = await this.userService.getUserByUsername(username);
 
     if (!user) {
       throw new NotFoundException('User not found');
@@ -44,7 +53,7 @@ export class AuthService {
   async registerWithAccount(registerDto: RegisterPayloadDto) {
     const { username, password } = registerDto;
 
-    const duplicatedUser = await this.userService.findOneByUsername(username);
+    const duplicatedUser = await this.userService.getUserByUsername(username);
 
     if (duplicatedUser) {
       throw new BadRequestException('User is duplicated');
@@ -58,7 +67,7 @@ export class AuthService {
   }
 
   async generateTokens(user: UserEntity) {
-    const payload: JwtPayload = { username: user.username, sub: user.id };
+    const payload: JwtPayload = { sub: user.id };
 
     const accessToken = await this.generateJWT(payload);
     const refreshToken = await this.generateJWT(payload, '7d');
@@ -88,7 +97,10 @@ export class AuthService {
     });
   }
 
-  async hashPassword(password: string, saltOrRounds = 10): Promise<string> {
+  async hashPassword(password: string): Promise<string> {
+    const saltOrRounds = parseInt(
+      this.configService.get('BCRYPT_SALT_OR_ROUNDS'),
+    );
     return await bcrypt.hash(password, saltOrRounds);
   }
 
