@@ -1,5 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsOptional, IsString, Length } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
+import { RegisterDto } from './register.dto';
 
 export class LoginWithPasswordDto {
   @ApiProperty()
@@ -11,24 +12,7 @@ export class LoginWithPasswordDto {
   password: string;
 }
 
-export class RegisterPayloadDto {
-  @ApiProperty()
-  @IsString()
-  @Length(0, 255)
-  password: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(0, 255)
-  username: string;
-
-  @ApiProperty()
-  @IsString()
-  @Length(0, 255)
-  name: string;
-}
-
-export class CreateAccountPayloadDto extends RegisterPayloadDto {
+export class CreateAccountDto extends RegisterDto {
   @ApiPropertyOptional()
   @IsOptional()
   avatarUrl?: string;

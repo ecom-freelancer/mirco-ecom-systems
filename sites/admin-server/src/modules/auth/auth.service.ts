@@ -8,11 +8,13 @@ import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
-import { LoginResponse, RegisterPayloadDto } from './dtos/login.dto';
+import { LoginResponse } from './dtos/login.dto';
 import { JwtPayload } from './interfaces/jwt.interface';
 import { UserEntity } from '@packages/nest-mysql';
 import { ConfigService } from '@nestjs/config';
 import { GetProfileResponse } from './dtos/profile.dto';
+import { RegisterDto } from './dtos/register.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,14 +45,14 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    if (!(await this.comparePassword(password, user?.password))) {
+    if (!(await this.comparePassword(password, user.password))) {
       throw new UnauthorizedException('Username or password is incorrect.');
     }
 
     return this.generateTokens(user);
   }
 
-  async registerWithAccount(registerDto: RegisterPayloadDto) {
+  async registerWithAccount(registerDto: RegisterDto) {
     const { username, password } = registerDto;
 
     const duplicatedUser = await this.userService.getUserByUsername(username);
@@ -65,6 +67,26 @@ export class AuthService {
       password: hashedPassword,
     });
   }
+
+  async changePassword(id: string, payload: ChangePasswordDto) {
+    const user = await this.userService.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { oldPassword, newPassword } = payload;
+
+    if (!(await this.comparePassword(oldPassword, user.password))) {
+      throw new UnauthorizedException('Current password is incorrect.');
+    }
+
+    const hashedPassword = await this.hashPassword(newPassword);
+
+    await this.userService.updateAccount({ ...user, password: hashedPassword });
+  }
+
+  //---------------------------- Helpers function ----------------------------
 
   async generateTokens(user: UserEntity) {
     const payload: JwtPayload = { sub: user.id };
