@@ -1,7 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { MailerModule } from '@nestjs-modules/mailer';
 import { TransporterConfigOptions } from '../interfaces/transporter-config.interface';
-import nodemailer from 'nodemailer';
 
 @Module({})
 export class EmailModule {
@@ -11,8 +10,8 @@ export class EmailModule {
       global: true,
       imports: [
         MailerModule.forRootAsync({
-          useFactory: () => {
-            const transporter = nodemailer.createTransport({
+          useFactory: () => ({
+            transport: {
               host: options.host,
               port: options.port,
               secure: !!options.secure, // Use `true` for port 465, `false` for all other ports
@@ -20,19 +19,13 @@ export class EmailModule {
                 user: options.authUser,
                 pass: options.authPassword,
               },
-            });
-
-            return {
-              transport: transporter,
-              defaults: {
-                from: 'Hello <modules@nestjs.com>',
-              },
-            };
-          },
+            },
+            defaults: {
+              from: 'Hello <modules@nestjs.com>',
+            },
+          }),
         }),
       ],
-      // providers: [MailerService],
-      // exports: [MailerService],
     };
   }
 }

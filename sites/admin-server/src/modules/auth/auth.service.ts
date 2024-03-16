@@ -103,13 +103,13 @@ export class AuthService {
 
   async testRedis() {
     await this.redisService.redis.keys('*');
-    this.mailerService
+    await this.mailerService
       .sendMail({
-        to: '20165755@student.hust.edu.vn', // list of receivers
+        to: 'quanganhpham31101998@gmail.com', // list of receivers
         from: 'quanganhpham31101998@gmail.com', // sender address
-        subject: 'Testing Nest MailerModule ✔', // Subject line
-        text: 'welcome', // plaintext body
-        html: '<b>welcome</b>', // HTML body content
+        subject: 'Meow meow', // Subject line
+        text: 'Xin trào', // plaintext body
+        html: '<b>Xin trào</b>', // HTML body content
       })
       .then((res) => console.log(res))
       .catch((error) => console.log(error));
