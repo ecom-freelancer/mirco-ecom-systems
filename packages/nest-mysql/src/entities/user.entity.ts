@@ -5,7 +5,7 @@ export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   username: string;
 
   // Password can be empty when login with Google, or Facebook
@@ -17,6 +17,6 @@ export class UserEntity {
 
   // Email can be empty when login with username or Facebook
   // It will be required when purchasing order
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true, unique: true })
   email?: string;
 }

@@ -58,9 +58,12 @@ export class AuthService {
   }
 
   async registerWithAccount(registerDto: RegisterDto) {
-    const { username, password } = registerDto;
+    const { username, password, email } = registerDto;
 
-    const duplicatedUser = await this.userService.getUserByUsername(username);
+    const duplicatedUser = await this.userService.checkDuplicatedUser({
+      username,
+      email,
+    });
 
     if (duplicatedUser) {
       throw new BadRequestException('User is duplicated');

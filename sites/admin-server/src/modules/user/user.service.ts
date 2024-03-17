@@ -22,11 +22,31 @@ export class UserService {
     });
   }
 
+  async checkDuplicatedUser({
+    username,
+    email,
+  }: {
+    username?: string;
+    email?: string;
+  }): Promise<boolean> {
+    const condition = [];
+    if (!!username) {
+      condition.push({ username });
+    }
+
+    if (!!email) {
+      condition.push({ email });
+    }
+
+    return (await this.userRepository.count({ where: condition })) !== 0;
+  }
+
   async createAccount(payload: CreateAccountDto) {
     const user = this.userRepository.create({
       name: payload.name,
       username: payload.username,
       password: payload.password,
+      email: payload.email,
     });
     return this.userRepository.save(user);
   }
