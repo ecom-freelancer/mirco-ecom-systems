@@ -9,4 +9,7 @@ export class GetProfileResponse {
 
   @ApiProperty()
   name?: string;
+
+  @ApiProperty()
+  email?: string;
 }

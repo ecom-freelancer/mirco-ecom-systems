@@ -11,13 +11,13 @@ export class UserService {
   ) {}
 
   async getUserByUsername(username: string) {
-    return this.userRepository.findOneBy({
+    return await this.userRepository.findOneBy({
       username,
     });
   }
 
   async getUserById(id: string) {
-    return this.userRepository.findOneBy({
+    return await this.userRepository.findOneBy({
       id,
     });
   }
