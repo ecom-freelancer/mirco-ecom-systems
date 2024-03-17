@@ -1,13 +1,15 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
-import {
-  LoginResponse,
-  LoginWithPasswordDto,
-  RegisterPayloadDto,
-} from './dtos/login.dto';
+import { Body, Controller, Get, HttpCode, Post, Req } from '@nestjs/common';
+import { LoginResponse, LoginWithPasswordDto } from './dtos/login.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ApiErrorResponse, ApiSuccessResponse } from '@packages/nest-helper';
 import { AuthService } from './auth.service';
 import { Protected } from './auth.guard';
+import { GetProfileResponse } from './dtos/profile.dto';
+import { RegisterDto } from './dtos/register.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import { Request } from 'express';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -17,14 +19,19 @@ export class AuthController {
 
   @Get('me')
   @Protected()
-  async getProfile() {}
+  @HttpCode(200)
+  @ApiSuccessResponse({ type: GetProfileResponse, status: 200 })
+  async getProfile(@Req() req: Request): Promise<GetProfileResponse> {
+    // @ts-ignore
+    return await this.authService.getProfileById(req.userId);
+  }
 
   @Post('login')
   @HttpCode(200)
   @HttpCode(401)
   @ApiSuccessResponse({ type: LoginResponse, status: 200 })
-  async login(@Body() payload: LoginWithPasswordDto) {
-    return this.authService.loginWithPassword(
+  async login(@Body() payload: LoginWithPasswordDto): Promise<LoginResponse> {
+    return await this.authService.loginWithPassword(
       payload.username,
       payload.password,
     );
@@ -33,8 +40,8 @@ export class AuthController {
   @Post('register')
   @HttpCode(201)
   @ApiErrorResponse({ status: 400 })
-  async register(@Body() payload: RegisterPayloadDto) {
-    return this.authService.registerWithAccount(payload);
+  async register(@Body() payload: RegisterDto): Promise<void> {
+    return await this.authService.registerWithAccount(payload);
   }
 
   @Post('login-with-google')
@@ -44,14 +51,34 @@ export class AuthController {
   async loginWithFacebook() {}
 
   @Post('change-password')
-  async changePassword() {}
+  @Protected()
+  @HttpCode(200)
+
+  // TODO: If password is changed -> Clear all session
+  async changePassword(
+    @Req() req: Request,
+    @Body() payload: ChangePasswordDto,
+  ): Promise<void> {
+    // @ts-ignore
+    return await this.authService.changePassword(req.userId, payload);
+  }
 
   @Post('logout')
   async logout() {}
 
-  @Post('refresh-token')
-  async refreshToken() {}
+  @Get('refresh-token')
+  @Protected()
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
+  // TODO: If token is changed -> Clear all session
+  async refreshToken(@Req() req: Request): Promise<RefreshTokenResponse> {
+    // @ts-ignore
+    return await this.authService.refreshToken(req.userId);
+  }
 
   @Post('forgot-password')
-  async forgotPassword() {}
+  async forgotPassword(@Body() payload: ForgotPasswordDto) {
+    await this.authService.forgotPassword(payload);
+  }
 }
