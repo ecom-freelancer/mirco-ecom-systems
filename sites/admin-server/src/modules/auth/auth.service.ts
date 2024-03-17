@@ -22,6 +22,7 @@ import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { VerifyOtpActions } from './constants/otp.constant';
 import { generateOtp, mapActionsToSubject } from './helpers/otp.helper';
 import { SendOtpRequestPayload } from './interfaces/otp.interface';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @Injectable()
 export class AuthService {
@@ -94,7 +95,6 @@ export class AuthService {
     }
 
     const hashedPassword = await this.hashPassword(newPassword);
-
     await this.userService.updateAccount({ ...user, password: hashedPassword });
   }
 
@@ -108,6 +108,7 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
+  // send OTP to user
   async forgotPassword(payload: ForgotPasswordDto) {
     const { username, email } = payload;
     if (!payload.username && !payload.email) {
@@ -147,6 +148,31 @@ export class AuthService {
       action: VerifyOtpActions.RESET_PASSWORD,
       content,
     });
+  }
+
+  async resetPassword(payload: ResetPasswordDto) {
+    const { otp, newPassword } = payload;
+    const resetPasswordKeyInRedis = await this.redisService.redis.keys(
+      `${VerifyOtpActions.RESET_PASSWORD}:*:${otp}`,
+    );
+
+    if (resetPasswordKeyInRedis.length === 0) {
+      throw new BadRequestException('OTP is invalid');
+    }
+
+    const key = resetPasswordKeyInRedis[0];
+
+    // key format: RESET_PASSWORD:[email]:[otp]
+    const email = key.split(':')[1];
+    const user = await this.userService.getUserByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const hashedPassword = await this.hashPassword(newPassword);
+    await this.userService.updateAccount({ ...user, password: hashedPassword });
+    await this.redisService.redis.del(key);
   }
 
   //---------------------------- Helpers function ----------------------------
@@ -201,11 +227,9 @@ export class AuthService {
       html: content, // HTML body content
     });
 
-    const key = `${action}:${destination}`;
+    const key = `${action}:${destination}:${otp}`;
     const createdAt = new Date().getTime();
     await this.redisService.redis.hset(key, {
-      destination,
-      otp,
       createdAt,
       ...(!!orderId ? { orderId } : {}),
     });

@@ -10,6 +10,7 @@ import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { Request } from 'express';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -78,7 +79,18 @@ export class AuthController {
   }
 
   @Post('forgot-password')
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: String, status: 200 })
   async forgotPassword(@Body() payload: ForgotPasswordDto) {
     await this.authService.forgotPassword(payload);
+    return 'An email with OTP code has been sent to your email.';
+  }
+
+  @Post('reset-password')
+  @HttpCode(200)
+  @HttpCode(401)
+  async resetPassword(@Body() payload: ResetPasswordDto) {
+    await this.authService.resetPassword(payload);
   }
 }
