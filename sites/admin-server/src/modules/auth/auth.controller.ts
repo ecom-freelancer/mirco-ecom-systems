@@ -9,6 +9,7 @@ import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { Request } from 'express';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -77,7 +78,7 @@ export class AuthController {
   }
 
   @Post('forgot-password')
-  async forgotPassword() {
-    await this.authService.testRedis();
+  async forgotPassword(@Body() payload: ForgotPasswordDto) {
+    await this.authService.forgotPassword(payload);
   }
 }

@@ -16,8 +16,11 @@ import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-import { RedisService } from '@packages/nest-redis';
+// import { RedisService } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { VerifyOtpActions } from './constants/otp.constant';
+import { generateOtp, mapActionsToSubject } from './helpers/otp.helper';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +28,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    private readonly redisService: RedisService,
+    // private readonly redisService: RedisService,
     private readonly mailerService: MailerService,
   ) {}
 
@@ -104,18 +107,46 @@ export class AuthService {
     return this.generateTokens(user);
   }
 
-  async testRedis() {
-    await this.redisService.redis.keys('*');
-    await this.mailerService
-      .sendMail({
-        to: 'quanganhpham31101998@gmail.com', // list of receivers
-        from: 'quanganhpham31101998@gmail.com', // sender address
-        subject: 'Meow meow', // Subject line
-        text: 'Xin trào', // plaintext body
-        html: '<b>Xin trào</b>', // HTML body content
-      })
-      .then((res) => console.log(res))
-      .catch((error) => console.log(error));
+  async forgotPassword(payload: ForgotPasswordDto) {
+    const { username, email } = payload;
+    if (!payload.username && !payload.email) {
+      throw new BadRequestException('Username or email is missing');
+    }
+
+    let destination = null;
+
+    if (!!username) {
+      const user = await this.userService.getUserByUsername(username);
+      if (!user) {
+        throw new NotFoundException('User not found');
+      }
+
+      if (!user.email) {
+        throw new NotFoundException(
+          'Email has not been set up in this account, please contact admin',
+        );
+      }
+
+      destination = user.email;
+    } else if (!!email) {
+      const user = await this.userService.getUserByEmail(email);
+      if (!user) {
+        throw new NotFoundException(
+          'This email does not belong to any account.',
+        );
+      }
+
+      destination = email;
+    }
+
+    const otp = generateOtp();
+    const content = `Your OTP code to reset password is <b>${otp}</b>`;
+
+    await this.sendOtpRequest(
+      destination,
+      VerifyOtpActions.RESET_PASSWORD,
+      content,
+    );
   }
 
   //---------------------------- Helpers function ----------------------------
@@ -158,5 +189,18 @@ export class AuthService {
 
   async comparePassword(password: string, hash: string): Promise<boolean> {
     return await bcrypt.compare(password, hash);
+  }
+
+  // send OTP to mail and store it into Redis
+  async sendOtpRequest(
+    destination: string,
+    action: VerifyOtpActions,
+    htmlContent: string,
+  ): Promise<void> {
+    await this.mailerService.sendMail({
+      to: destination, // list of receivers
+      subject: mapActionsToSubject(action), // Subject line
+      html: htmlContent, // HTML body content
+    });
   }
 }
