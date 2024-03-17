@@ -16,11 +16,12 @@ import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-// import { RedisService } from '@packages/nest-redis';
+import { RedisService } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { VerifyOtpActions } from './constants/otp.constant';
 import { generateOtp, mapActionsToSubject } from './helpers/otp.helper';
+import { SendOtpRequestPayload } from './interfaces/otp.interface';
 
 @Injectable()
 export class AuthService {
@@ -28,7 +29,7 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
-    // private readonly redisService: RedisService,
+    private readonly redisService: RedisService,
     private readonly mailerService: MailerService,
   ) {}
 
@@ -120,7 +121,6 @@ export class AuthService {
       if (!user) {
         throw new NotFoundException('User not found');
       }
-
       if (!user.email) {
         throw new NotFoundException(
           'Email has not been set up in this account, please contact admin',
@@ -135,18 +135,18 @@ export class AuthService {
           'This email does not belong to any account.',
         );
       }
-
       destination = email;
     }
 
     const otp = generateOtp();
     const content = `Your OTP code to reset password is <b>${otp}</b>`;
 
-    await this.sendOtpRequest(
+    await this.sendOtpRequest({
+      otp,
       destination,
-      VerifyOtpActions.RESET_PASSWORD,
+      action: VerifyOtpActions.RESET_PASSWORD,
       content,
-    );
+    });
   }
 
   //---------------------------- Helpers function ----------------------------
@@ -173,7 +173,7 @@ export class AuthService {
     }
   }
 
-  async generateJWT(payload, expiresIn = '1d') {
+  async generateJWT(payload: any, expiresIn = '1d') {
     return await this.jwtService.signAsync(payload, {
       expiresIn,
       secret: this.configService.get('JWT_SECRET'),
@@ -192,15 +192,22 @@ export class AuthService {
   }
 
   // send OTP to mail and store it into Redis
-  async sendOtpRequest(
-    destination: string,
-    action: VerifyOtpActions,
-    htmlContent: string,
-  ): Promise<void> {
+  async sendOtpRequest(payload: SendOtpRequestPayload): Promise<void> {
+    const { otp, destination, action, content, orderId } = payload;
+
     await this.mailerService.sendMail({
       to: destination, // list of receivers
       subject: mapActionsToSubject(action), // Subject line
-      html: htmlContent, // HTML body content
+      html: content, // HTML body content
+    });
+
+    const key = `${action}:${destination}`;
+    const createdAt = new Date().getTime();
+    await this.redisService.redis.hset(key, {
+      destination,
+      otp,
+      createdAt,
+      ...(!!orderId ? { orderId } : {}),
     });
   }
 }
