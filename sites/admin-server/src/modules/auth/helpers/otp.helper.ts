@@ -16,3 +16,7 @@ export const actionsToSubjectMapping = new Map([
 export const mapActionsToSubject = (action: VerifyOtpActions) => {
   return actionsToSubjectMapping.get(action);
 };
+
+export const getResetPasswordRedisKey = (account: string) => {
+  return `${VerifyOtpActions.RESET_PASSWORD}:${account}`;
+};

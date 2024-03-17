@@ -84,7 +84,7 @@ export class AuthController {
   @ApiSuccessResponse({ type: String, status: 200 })
   async forgotPassword(@Body() payload: ForgotPasswordDto) {
     await this.authService.forgotPassword(payload);
-    return 'An email with OTP code has been sent to your email.';
+    return 'An email with OTP code has been sent';
   }
 
   @Post('reset-password')

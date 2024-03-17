@@ -71,3 +71,11 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+
+## Verify OTP rules when forgot password
+- The OTP are valid for 10 minutes
+- Users are allowed 3 times to verify OTP.
+- Users are allowed to send maximum 3 request per 10 minutes.
+- If there are 4 requests in 10 minutes, users are restricted to send any request, they must wait for 30 minutes
+- (You can change these settings in env)

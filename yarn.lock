@@ -5173,6 +5173,7 @@ __metadata:
     bcrypt: "npm:^5.1.1"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
+    dayjs: "npm:^1.11.10"
     dotenv: "npm:^16.4.5"
     eslint: "npm:^8.42.0"
     eslint-config-prettier: "npm:^9.0.0"
