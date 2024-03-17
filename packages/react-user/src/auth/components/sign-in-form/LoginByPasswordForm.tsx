@@ -3,6 +3,7 @@ import { Button, Checkbox, Form, Input } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import React from 'react';
 import { useForm } from 'antd/es/form/Form';
+import { formInputCss } from '../../../styles/form-input';
 
 export interface PasswordLessAuthConfig {
   usernameType?: 'email' | 'text';
@@ -47,11 +48,11 @@ export const LoginByPasswordForm: React.FC<LoginByPasswordFormProps> = ({
             : {},
         ]}
       >
-        <StyledInput placeholder="email or username" />
+        <Input placeholder="email or username" className={formInputCss} />
       </StyledFormItem>
 
       <StyledFormItem name="password" label="Password">
-        <StyledInputPassword placeholder="password" />
+        <Input.Password placeholder="password" className={formInputCss} />
       </StyledFormItem>
 
       <Flex justify="space-between">
@@ -101,24 +102,4 @@ const StyledFormItem = styled(FormItem)`
 const LoginButton = styled(Button)`
   border-radius: 999rem;
   padding: 0 2rem;
-`;
-
-const StyledInput = styled(Input)`
-  background-color: rgb(232, 240, 254) !important;
-  border: none;
-  padding: 0.45rem 0.45rem;
-  :focus-within {
-    border: none;
-    box-shadow: none;
-  }
-`;
-
-const StyledInputPassword = styled(Input.Password)`
-  background-color: rgb(232, 240, 254) !important;
-  border: none;
-  padding: 0.45rem 0.45rem;
-  :focus-within {
-    border: none;
-    box-shadow: none;
-  }
 `;

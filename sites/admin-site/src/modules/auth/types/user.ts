@@ -2,7 +2,8 @@ import { IBase } from 'modules/_shared/types';
 
 export interface IUser extends IBase {
   id: string;
-  displayName?: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   avatarUrl?: string;
   isVerified?: boolean;

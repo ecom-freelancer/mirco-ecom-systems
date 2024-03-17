@@ -1,5 +1,6 @@
 import { DownOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import styled from '@emotion/styled';
+import { Text } from '@packages/ds-core';
 import { Avatar, Dropdown, MenuProps, Space } from 'antd';
 import { AccountModal } from 'modules/auth/components';
 import { ChangePasswordModal } from 'modules/auth/containers/ChangePasswordModal';
@@ -38,8 +39,14 @@ export const AccountDropDown: React.FC = () => {
     <React.Fragment>
       <Wrapper trigger={['click']} menu={{ items }}>
         <Space wrap={false}>
-          <Avatar size={30} src={user?.avatarUrl} icon={<UserOutlined />} />
-          {user?.displayName}
+          <Avatar size={30} src={user?.avatarUrl} icon={<UserOutlined />}>
+            {user?.firstName?.toUpperCase()}
+          </Avatar>
+          <Text>
+            {user?.firstName}&nbsp;
+            {user?.lastName}
+          </Text>
+
           <DownOutlined style={{ fontSize: 10 }} />
         </Space>
       </Wrapper>

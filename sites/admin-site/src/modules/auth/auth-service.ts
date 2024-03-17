@@ -66,7 +66,8 @@ export const authService = {
 
 const mockUser: IUser = {
   id: '16e7c2c8-fefd-41b4-9710-099699a7aab0',
-  displayName: 'Quản trị viên',
+  firstName: 'Quan',
+  lastName: 'Tri vien',
   email: 'admin@daiphat.vn',
   phonenumber: '0819200620',
   avatarUrl:
