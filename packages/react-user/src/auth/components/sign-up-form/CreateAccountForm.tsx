@@ -3,6 +3,7 @@ import { Button, Checkbox, Col, Form, Input, Row } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import Link from 'antd/es/typography/Link';
 import React from 'react';
+import { formInputCss } from '../../../styles/form-input';
 
 export const CreateAccountForm = () => {
   return (
@@ -10,33 +11,36 @@ export const CreateAccountForm = () => {
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <StyledFormItem label={<Label>Full name</Label>}>
-            <StyledInput placeholder="Full name" />
+            <Input placeholder="Full name" className={formInputCss} />
           </StyledFormItem>
         </Col>
         <Col span={12}>
           <StyledFormItem label="Username">
-            <StyledInput placeholder="Full name" />
+            <Input placeholder="Username" className={formInputCss} />
           </StyledFormItem>
         </Col>
       </Row>
 
       <StyledFormItem label="Email">
-        <StyledInput placeholder="Email" />
+        <Input placeholder="Email" className={formInputCss} />
       </StyledFormItem>
 
       <StyledFormItem label="Phone number">
-        <StyledInput placeholder="Phonenumber" />
+        <Input placeholder="phonenumber" className={formInputCss} />
       </StyledFormItem>
 
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <StyledFormItem label="Password">
-            <StyledInputPassword placeholder="Password" />
+            <Input.Password placeholder="Password" className={formInputCss} />
           </StyledFormItem>
         </Col>
         <Col span={12}>
           <StyledFormItem label="Confirm password">
-            <StyledInputPassword placeholder="Confirm password" />
+            <Input.Password
+              placeholder="Confirm password"
+              className={formInputCss}
+            />
           </StyledFormItem>
         </Col>
       </Row>
@@ -70,7 +74,6 @@ export const CreateAccountForm = () => {
 
 const StyledFormItem = styled(FormItem)`
   margin-bottom: 1rem;
-
   .ant-form-item-explain-error {
     font-size: ${({ theme }) => theme.fontSizes.xs};
     margin-bottom: 0.5rem;
@@ -91,39 +94,4 @@ const StyledCheckBox = styled(Checkbox)`
 
 const Label = styled(Text)`
   font-weight: ${({ theme }) => theme.fontWeights.bold};
-`;
-
-const StyledInput = styled(Input)`
-  background-color: rgb(245, 248, 253) !important;
-  border: none;
-  padding: 0.45rem 0.45rem;
-
-  :-webkit-autofill,
-  :-webkit-autofill:hover,
-  :-webkit-autofill:focus,
-  :-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px rgb(245, 248, 253) inset !important;
-  }
-  :focus-within {
-    border: none;
-    box-shadow: none;
-  }
-`;
-
-const StyledInputPassword = styled(Input.Password)`
-  background-color: rgb(245, 248, 253) !important;
-  border: none;
-  padding: 0.45rem 0.45rem;
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus,
-  input:-webkit-autofill:active {
-    -webkit-box-shadow: 0 0 0 30px rgb(245, 248, 253) inset !important;
-  }
-
-  :focus-within {
-    border: none;
-    box-shadow: none;
-  }
 `;

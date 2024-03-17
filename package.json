@@ -12,7 +12,8 @@
   },
   "scripts": {
     "lint": "eslint --ext .ts,.tsx --ignore-path .eslintignore --quiet .",
-    "build:packages": "yarn nx run-many --target=build --exclude '@sites/*' '@services/*' --parallel=5"
+    "build:packages": "yarn nx run-many --target=build --exclude '@sites/*' '@services/*' --parallel=5",
+    "storybook": "yarn workspace @sites/storybook storybook"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.39.0",
