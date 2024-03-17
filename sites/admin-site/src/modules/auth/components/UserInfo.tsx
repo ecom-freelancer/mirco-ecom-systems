@@ -26,7 +26,7 @@ export const UserInfo: React.FC<UserInfoInfoProps> = ({ user }) => {
                   backgroundColor: '#fafafa',
                 }}
               >
-                {user.displayName?.[0].toUpperCase()}
+                {user.firstName?.[0].toUpperCase()}
               </Avatar>
               <Box className="upload-avatar">
                 <CameraOutlined className="upload-avatar-button" />
@@ -34,7 +34,7 @@ export const UserInfo: React.FC<UserInfoInfoProps> = ({ user }) => {
             </AvataWrapper>
             <Box>
               <Heading type="h4" style={{ marginBottom: 0 }}>
-                {user.displayName}
+                {user.firstName} {user.lastName}
               </Heading>
               <Typography.Text type="secondary">Admin</Typography.Text>
             </Box>
