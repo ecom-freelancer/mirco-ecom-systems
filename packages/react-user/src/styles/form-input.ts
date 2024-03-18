@@ -16,4 +16,9 @@ export const formInputCss = css`
     border: none;
     box-shadow: none;
   }
+
+  input::placeholder,
+  ::placeholder {
+    font-size: 13px;
+  }
 `;

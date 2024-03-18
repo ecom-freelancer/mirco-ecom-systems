@@ -9,8 +9,8 @@ const allNavItems = [
     activeSegment: null,
   },
   {
-    label: 'Blogs',
-    href: '/blogs',
+    label: 'Promotions',
+    href: '/promotions',
     activeSegment: 'promotions',
   },
   {

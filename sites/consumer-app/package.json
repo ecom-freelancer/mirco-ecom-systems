@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
-    "@packages/ds-core": "workspace:^",
+    "@packages/ds-core": "^1.0.0",
+    "@packages/react-user": "^1.0.0",
     "antd": "^5.15.1",
     "next": "14.1.0",
     "react": "^18",

@@ -8,12 +8,14 @@ import { Button } from 'antd';
 import { AppNavigatorBar } from './AppNavigator';
 import React from 'react';
 import { AppBanner } from './AppBanner';
+import { useAuthContext } from '@/modules/auth/auth-context';
 
 export interface AppHeaderProps {
   categories: IProductCategory[];
 }
 
 export const AppHeader: React.FC<AppHeaderProps> = ({ categories }) => {
+  const { openLoginModal } = useAuthContext();
   return (
     <React.Fragment>
       <AppBanner />
@@ -25,7 +27,9 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ categories }) => {
           </MainHeader>
           <AppNavigatorBar />
           <Flex align="center">
-            <Button type="primary">Login</Button>
+            <Button type="primary" onClick={openLoginModal}>
+              Login
+            </Button>
           </Flex>
         </Flex>
       </StyldAppHeader>

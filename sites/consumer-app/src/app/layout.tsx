@@ -2,11 +2,10 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './global.css';
 import React from 'react';
-import EmotionProvider from '@/providers/EmotionProvider';
-import AntdProvider from '@/providers/AntdProvider';
 import Header from '@/modules/layout/containers/AppHeader';
-import { AuthProvider } from '@/providers/AuthProvider';
+import { AuthProvider } from '@/modules/auth/AuthProvider';
 import { Footer } from '@/modules/layout/components/footer/Footer';
+import { AppLayoutProvider } from '@/modules/layout/providers';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -23,15 +22,13 @@ export default function RootLayout({
   return (
     <html className={inter.className} suppressHydrationWarning>
       <body>
-        <EmotionProvider>
-          <AntdProvider>
-            <AuthProvider>
-              <Header />
-              {children}
-              <Footer />
-            </AuthProvider>
-          </AntdProvider>
-        </EmotionProvider>
+        <AppLayoutProvider>
+          <AuthProvider>
+            <Header />
+            {children}
+            <Footer />
+          </AuthProvider>
+        </AppLayoutProvider>
       </body>
     </html>
   );

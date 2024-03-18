@@ -1,3 +1,4 @@
+import { FeatureCommingSoon } from '@/modules/layout/components/FeatureCommingSoon';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -7,8 +8,7 @@ export const metadata: Metadata = {
 export default function Home() {
   return (
     <main>
-      This is main home page content , you are seeing this because you are not
-      logged in
+      <FeatureCommingSoon />
     </main>
   );
 }
