@@ -1,11 +1,11 @@
 import { styled } from '@packages/ds-core';
 
 export const IconLogin = styled.div`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   border-radius: ${({ theme }) => theme.radius.round};
   border: 1px solid #ebeaea;
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.25rem;
+  height: 2.25rem;
   text-align: center;
   display: flex;
   align-items: center;

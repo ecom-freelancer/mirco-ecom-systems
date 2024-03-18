@@ -10,13 +10,16 @@ export const CreateAccountForm = () => {
     <Form layout="vertical">
       <Row gutter={[16, 16]}>
         <Col span={12}>
-          <StyledFormItem label={<Label>Full name</Label>}>
-            <Input placeholder="Full name" className={formInputCss} />
+          <StyledFormItem label="Firt Name">
+            <Input
+              className={formInputCss}
+              placeholder="Enter your first name"
+            />
           </StyledFormItem>
         </Col>
         <Col span={12}>
-          <StyledFormItem label="Username">
-            <Input placeholder="Username" className={formInputCss} />
+          <StyledFormItem label="Last name">
+            <Input placeholder="Enter your lastname" className={formInputCss} />
           </StyledFormItem>
         </Col>
       </Row>
@@ -25,22 +28,19 @@ export const CreateAccountForm = () => {
         <Input placeholder="Email" className={formInputCss} />
       </StyledFormItem>
 
-      <StyledFormItem label="Phone number">
-        <Input placeholder="phonenumber" className={formInputCss} />
+      <StyledFormItem label="Contact number">
+        <Input placeholder="Ex: 0123456789" className={formInputCss} />
       </StyledFormItem>
 
       <Row gutter={[16, 16]}>
         <Col span={12}>
           <StyledFormItem label="Password">
-            <Input.Password placeholder="Password" className={formInputCss} />
+            <Input.Password className={formInputCss} />
           </StyledFormItem>
         </Col>
         <Col span={12}>
           <StyledFormItem label="Confirm password">
-            <Input.Password
-              placeholder="Confirm password"
-              className={formInputCss}
-            />
+            <Input.Password className={formInputCss} />
           </StyledFormItem>
         </Col>
       </Row>
@@ -49,22 +49,29 @@ export const CreateAccountForm = () => {
         <StyledFormItem>
           <StyledCheckBox />
         </StyledFormItem>
-        <Text fontSize="s">
-          Create an account means you're okey with our{' '}
-          <Link>Terms of Service</Link> <Link> Privacy Policy</Link> and our
-          default <Link>Notification Settings</Link>
+        <Text fontSize="xs">
+          Create an account means you're okey with our
+          <Link>
+            <Text fontSize="xs">Terms of Service</Text>
+          </Link>
+          <Link>
+            <Link>
+              <Text fontSize="xs"> Privacy Policy</Text>
+            </Link>
+          </Link>
+          &nbsp;and our default
+          <Link>
+            <Link>
+              <Text fontSize="xs"> Notification Settings</Text>
+            </Link>
+          </Link>
         </Text>
       </Flex>
 
       <Box marginTop="s16">
         <Flex justify="center">
-          <LoginButton
-            color="primary"
-            type="primary"
-            htmlType="submit"
-            size="large"
-          >
-            <Text fontWeight="bold">Sign up</Text>
+          <LoginButton color="primary" type="primary" htmlType="submit">
+            <Text>Sign up</Text>
           </LoginButton>
         </Flex>
       </Box>
@@ -90,8 +97,4 @@ const StyledCheckBox = styled(Checkbox)`
   label {
     align-items: flex-start;
   }
-`;
-
-const Label = styled(Text)`
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
 `;

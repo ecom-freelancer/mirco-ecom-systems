@@ -6,7 +6,15 @@ import { ConfigProvider } from 'antd';
 export default function AntdProvider({ children }: { children: ReactNode }) {
   return (
     <AntdRegistry>
-      <ConfigProvider>{children}</ConfigProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: '#FF6C44',
+          },
+        }}
+      >
+        {children}
+      </ConfigProvider>
     </AntdRegistry>
   );
 }

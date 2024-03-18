@@ -21,7 +21,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ configs }) => {
     <Flex direction="column" align="center">
       <Box marginBottom="s16">
         <Flex justify="center" direction="column" align="center">
-          <Heading type="h2" color="primary">
+          <Heading type="h3" color="primary">
             Create an Account
           </Heading>
         </Flex>
@@ -38,7 +38,7 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ configs }) => {
           {configs.google && <GoogleLoginButtonIcon config={configs.google} />}
         </Flex>
 
-        <Box marginTop="s16">
+        <Box marginTop="s8">
           <Text fontSize="s" color="textSecondary">
             or create an account with your email
           </Text>

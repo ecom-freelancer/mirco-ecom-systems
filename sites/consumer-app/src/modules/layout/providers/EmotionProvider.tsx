@@ -25,7 +25,16 @@ export default function EmotionProvider({ children }: { children: ReactNode }) {
 
   return (
     <CacheProvider value={cache}>
-      <ThemeProvider>{children}</ThemeProvider>
+      <ThemeProvider
+        theme={{
+          colors: {
+            secondary: '##425A8B',
+            primary: '#FF6C44',
+          },
+        }}
+      >
+        {children}
+      </ThemeProvider>
     </CacheProvider>
   );
 }
