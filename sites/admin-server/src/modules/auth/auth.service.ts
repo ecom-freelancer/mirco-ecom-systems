@@ -25,7 +25,10 @@ import {
   getResetPasswordRedisKey,
   mapActionsToSubject,
 } from './helpers/otp.helper';
-import { SendEmailPayload } from './interfaces/otp.interface';
+import {
+  CurrentVerifyInfo,
+  SendEmailPayload,
+} from './interfaces/otp.interface';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import dayjs from 'dayjs';
 
@@ -163,11 +166,69 @@ export class AuthService {
         verifyAttemptCount: 0,
       });
     } else {
-      // Todo: If users has sent a request before -> Check
+      const restrictedDuration = parseInt(
+        this.configService.get('OTP_RESTRICT_REQUEST_DURATION'),
+      );
+
+      const currentVerifyInfo = (await this.redisService.redis.hgetall(
+        key,
+      )) as unknown as CurrentVerifyInfo;
+
+      // If users are being restricted -> Throw error
+      if (
+        !!currentVerifyInfo.restrictedEndedAt &&
+        now.isBefore(dayjs(parseInt(currentVerifyInfo.restrictedEndedAt)))
+      ) {
+        throw new BadRequestException(
+          `You have sent too many requests, please wait for ${restrictedDuration} minutes to send a new OTP request`,
+        );
+      }
+
+      // If users send too many request in a duration -> Restricted
+      // Calculate from now subtract 10 minutes ago
+      const requestAttemptTimestampList = JSON.parse(
+        currentVerifyInfo.requestAttemptTimestamp,
+      );
+
+      const maxRequestDuration = now.subtract(
+        this.configService.get('OTP_MAX_REQUEST_ATTEMPT_DURATION'),
+        'minutes',
+      );
+
+      let countRecentRequest = 1;
+      requestAttemptTimestampList.forEach((attempt) => {
+        if (dayjs(attempt).isAfter(maxRequestDuration)) {
+          countRecentRequest++;
+        }
+      });
+
+      if (
+        countRecentRequest >
+        parseInt(this.configService.get('OTP_MAX_REQUEST_ATTEMPT_COUNT'))
+      ) {
+        await this.redisService.redis.hset(key, {
+          otp: '',
+          requestAttemptTimestamp: JSON.stringify([]),
+          verifyAttemptCount: 0,
+          restrictedEndedAt: now.add(restrictedDuration, 'minutes').valueOf(),
+        });
+        throw new BadRequestException(
+          `You have sent too many requests, please wait for ${restrictedDuration} to send a new OTP request`,
+        );
+      }
+
+      // If okay => store to Redis with new timestamp added to list
+      await this.redisService.redis.hset(key, {
+        otp,
+        requestAttemptTimestamp: JSON.stringify([
+          ...JSON.parse(currentVerifyInfo.requestAttemptTimestamp),
+          now.valueOf(),
+        ]),
+        verifyAttemptCount: 0,
+      });
     }
 
     // Step 3: send email to users
-
     const content = `Your OTP code to reset password is <b>${otp}</b>`;
     await this.sendEmail({
       destination,
@@ -186,19 +247,22 @@ export class AuthService {
       throw new BadRequestException('OTP is invalid');
     }
 
-    const verifyOtpCurrentInfo = await this.redisService.redis.hgetall(key);
+    const currentVerifyInfo = (await this.redisService.redis.hgetall(
+      key,
+    )) as unknown as CurrentVerifyInfo;
     const now = dayjs();
 
-    const requestAttemptTimestamp = JSON.parse(
-      verifyOtpCurrentInfo.requestAttemptTimestamp,
+    const requestAttemptTimestampList = JSON.parse(
+      currentVerifyInfo.requestAttemptTimestamp,
     );
+
     const lastRequestTimestamp = dayjs(
-      requestAttemptTimestamp[requestAttemptTimestamp.length - 1],
+      requestAttemptTimestampList[requestAttemptTimestampList.length - 1],
     );
 
     const validTime = lastRequestTimestamp.add(
       parseInt(this.configService.get('OTP_VALID_DURATION')),
-      'minute',
+      'minutes',
     );
 
     // Check all verification failed cases
@@ -208,16 +272,19 @@ export class AuthService {
       );
     }
 
-    if (parseInt(verifyOtpCurrentInfo.verifyAttemptCount) === 3) {
+    if (
+      parseInt(currentVerifyInfo.verifyAttemptCount) ===
+      parseInt(this.configService.get('OTP_MAX_VERIFY_ATTEMPT_COUNT'))
+    ) {
       throw new BadRequestException(
         'You have exceeded the number of OTP verification. Please send a new Reset password OTP request.',
       );
     }
 
-    if (verifyOtpCurrentInfo.otp !== otp) {
+    if (currentVerifyInfo.otp !== otp) {
       await this.redisService.redis.hset(key, [
         'verifyAttemptCount',
-        parseInt(verifyOtpCurrentInfo.verifyAttemptCount) + 1,
+        parseInt(currentVerifyInfo.verifyAttemptCount) + 1,
       ]);
       throw new BadRequestException('OTP is incorrect.');
     }

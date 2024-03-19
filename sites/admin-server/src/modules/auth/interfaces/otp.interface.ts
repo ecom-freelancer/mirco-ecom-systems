@@ -5,3 +5,10 @@ export interface SendEmailPayload {
   action: VerifyOtpActions;
   content: string;
 }
+
+export interface CurrentVerifyInfo {
+  otp: string;
+  verifyAttemptCount: string; // number
+  requestAttemptTimestamp: string; // JSON format
+  restrictedEndedAt: string;
+}
