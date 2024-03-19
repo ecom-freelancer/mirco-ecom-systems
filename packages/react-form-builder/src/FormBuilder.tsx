@@ -2,6 +2,8 @@ import React from 'react';
 import { FormBuilderProps, IFormType } from './types';
 import { Form, Row } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { FormBuilderContext } from './FormBuilderProvider';
+import { FormBuilderItem } from './FormBuilderItem';
 
 export const FormBuilder = <T extends IFormType>(
   props: FormBuilderProps<T>,
@@ -15,6 +17,8 @@ export const FormBuilder = <T extends IFormType>(
     validateTrigger,
     hideColon,
   } = props;
+
+  const layouts = props.layouts;
   const [form] = useForm(control);
   return (
     <Form
@@ -25,8 +29,20 @@ export const FormBuilder = <T extends IFormType>(
       validateTrigger={validateTrigger}
       layout={formLayout}
       colon={!hideColon}
+      autoComplete="off"
     >
-      <Row></Row>
+      <FormBuilderContext.Provider
+        value={{
+          itemConfigs: props.configs,
+          form,
+        }}
+      >
+        <Row gutter={[8, 8]}>
+          {layouts.map((layout, index) => {
+            return <FormBuilderItem key={index} layout={layout} />;
+          })}
+        </Row>
+      </FormBuilderContext.Provider>
     </Form>
   );
 };
