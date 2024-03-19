@@ -9,8 +9,9 @@ export class RegisterDto {
 
   @ApiProperty()
   @IsString()
+  @IsOptional()
   @Length(0, 255)
-  username: string;
+  username?: string;
 
   @ApiProperty()
   @IsString()
@@ -19,7 +20,6 @@ export class RegisterDto {
 
   @ApiProperty()
   @IsEmail()
-  @IsOptional()
   @Length(0, 255)
-  email?: string;
+  email: string;
 }

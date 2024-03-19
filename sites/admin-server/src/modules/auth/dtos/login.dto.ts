@@ -5,7 +5,7 @@ import { RegisterDto } from './register.dto';
 export class LoginWithPasswordDto {
   @ApiProperty()
   @IsString()
-  username: string;
+  email: string;
 
   @IsString()
   @ApiProperty()

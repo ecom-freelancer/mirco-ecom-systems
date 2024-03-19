@@ -54,32 +54,29 @@ export class AuthService {
   }
 
   async loginWithPassword(
-    username: string,
+    email: string,
     password: string,
   ): Promise<LoginResponse> {
-    const user = await this.userService.getUserByUsername(username);
+    const user = await this.userService.getUserByEmail(email);
 
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
     if (!(await this.comparePassword(password, user.password))) {
-      throw new BadRequestException('Username or password is incorrect.');
+      throw new BadRequestException('Email or password is incorrect.');
     }
 
     return this.generateTokens(user);
   }
 
   async registerWithAccount(registerDto: RegisterDto) {
-    const { username, password, email } = registerDto;
+    const { password, email } = registerDto;
 
-    const duplicatedUser = await this.userService.checkDuplicatedUser({
-      username,
-      email,
-    });
+    const isExisted = await this.userService.getUserByEmail(email);
 
-    if (duplicatedUser) {
-      throw new BadRequestException('User is duplicated');
+    if (!!isExisted) {
+      throw new BadRequestException('Email is duplicated');
     }
 
     const hashedPassword = await this.hashPassword(password);
@@ -118,42 +115,19 @@ export class AuthService {
 
   async forgotPassword(payload: ForgotPasswordDto) {
     // STEP 1: gather user's info
-    const { username, email } = payload;
-    if (!payload.username && !payload.email) {
+    const { email } = payload;
+    if (!email) {
       throw new BadRequestException('Username or email is missing');
     }
 
-    let destination = null;
-    let account = '';
-
-    if (!!username) {
-      const user = await this.userService.getUserByUsername(username);
-      if (!user) {
-        throw new NotFoundException('User not found');
-      }
-      if (!user.email) {
-        throw new NotFoundException(
-          'Email has not been set up in this account, please contact admin',
-        );
-      }
-
-      account = user.username;
-      destination = user.email;
-    } else if (!!email) {
-      const user = await this.userService.getUserByEmail(email);
-      if (!user) {
-        throw new NotFoundException(
-          'This email does not belong to any account.',
-        );
-      }
-
-      account = email;
-      destination = email;
+    const user = await this.userService.getUserByEmail(email);
+    if (!user) {
+      throw new NotFoundException('This email does not belong to any account.');
     }
 
     // Step 2: store OTP into Redis
     const otp = generateOtp();
-    const key = getResetPasswordRedisKey(account);
+    const key = getResetPasswordRedisKey(email);
     const isExisted = await this.redisService.redis.exists(key);
 
     const now = dayjs();
@@ -228,10 +202,12 @@ export class AuthService {
       });
     }
 
+    return;
+
     // Step 3: send email to users
     const content = `Your OTP code to reset password is <b>${otp}</b>`;
     await this.sendEmail({
-      destination,
+      destination: email,
       content,
       action: VerifyOtpActions.RESET_PASSWORD,
     });
@@ -239,12 +215,18 @@ export class AuthService {
 
   // verify OTP and reset password
   async resetPassword(payload: ResetPasswordDto) {
-    const { otp, newPassword, account } = payload;
-    const key = getResetPasswordRedisKey(account);
+    const { otp, newPassword, email } = payload;
+
+    const user = await this.userService.getUserByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const key = getResetPasswordRedisKey(email);
 
     const isExisted = await this.redisService.redis.exists(key);
     if (!isExisted) {
-      throw new BadRequestException('OTP is invalid');
+      throw new BadRequestException('Please send an OTP request first');
     }
 
     const currentVerifyInfo = (await this.redisService.redis.hgetall(
@@ -287,14 +269,6 @@ export class AuthService {
         parseInt(currentVerifyInfo.verifyAttemptCount) + 1,
       ]);
       throw new BadRequestException('OTP is incorrect.');
-    }
-
-    const user =
-      (await this.userService.getUserByEmail(account)) ||
-      (await this.userService.getUserByUsername(account));
-
-    if (!user) {
-      throw new NotFoundException('User not found');
     }
 
     const hashedPassword = await this.hashPassword(newPassword);

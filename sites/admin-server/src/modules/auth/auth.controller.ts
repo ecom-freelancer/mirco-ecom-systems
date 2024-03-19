@@ -34,7 +34,7 @@ export class AuthController {
   @ApiSuccessResponse({ type: LoginResponse, status: 200 })
   async login(@Body() payload: LoginWithPasswordDto): Promise<LoginResponse> {
     return await this.authService.loginWithPassword(
-      payload.username,
+      payload.email,
       payload.password,
     );
   }
