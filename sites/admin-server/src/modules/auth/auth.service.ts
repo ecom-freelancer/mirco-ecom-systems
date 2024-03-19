@@ -64,7 +64,7 @@ export class AuthService {
     }
 
     if (!(await this.comparePassword(password, user.password))) {
-      throw new UnauthorizedException('Username or password is incorrect.');
+      throw new BadRequestException('Username or password is incorrect.');
     }
 
     return this.generateTokens(user);
@@ -300,6 +300,20 @@ export class AuthService {
     const hashedPassword = await this.hashPassword(newPassword);
     await this.userService.updateAccount({ ...user, password: hashedPassword });
     await this.redisService.redis.del(key);
+  }
+
+  async checkPassword(id: string, password: string) {
+    const user = await this.userService.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!(await this.comparePassword(password, user.password))) {
+      throw new BadRequestException('Password is incorrect.');
+    }
+
+    return 'Correct password';
   }
 
   //---------------------------- Helpers function ----------------------------
