@@ -11,6 +11,7 @@ import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { Request } from 'express';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { CheckPasswordDto } from './dtos/check-password.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -92,5 +93,15 @@ export class AuthController {
   @HttpCode(401)
   async resetPassword(@Body() payload: ResetPasswordDto) {
     await this.authService.resetPassword(payload);
+  }
+
+  @Post('check-password')
+  @Protected()
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: String, status: 200 })
+  async checkPassword(@Req() req: Request, @Body() payload: CheckPasswordDto) {
+    // @ts-ignore
+    return await this.authService.checkPassword(req.userId, payload.password);
   }
 }
