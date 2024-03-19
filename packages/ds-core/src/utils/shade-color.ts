@@ -14,11 +14,11 @@ const colorShades = {
 };
 
 export const alphaShades = {
-  A100: 0.2,
-  A200: 0.4,
-  A300: 0.6,
-  A400: 0.8,
-  A500: 0.9,
+  A100: 0.1,
+  A200: 0.2,
+  A300: 0.4,
+  A400: 0.6,
+  A500: 0.8,
 };
 
 type ColorShade = typeof colorShades;

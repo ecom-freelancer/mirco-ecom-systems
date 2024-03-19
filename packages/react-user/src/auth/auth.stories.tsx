@@ -5,6 +5,7 @@ import { Meta } from '@storybook/react';
 import { SiginInForm } from './components/sign-in-form';
 import { SignUpForm } from './components/sign-up-form/SignUpForm';
 import { ChangePasswordForm } from './components/ChangePasswordForm';
+import { VerifyOTPForm } from './components/OTPForm';
 
 export default {
   title: 'React-User/Authrization',
@@ -52,9 +53,29 @@ export const ChangePassword = () => {
   );
 };
 
+export const VerifyOTP = () => {
+  return (
+    <Wrapper
+      padding={['s24', 's16']}
+      style={{
+        width: 350,
+      }}
+    >
+      <VerifyOTPForm
+        type="text"
+        target="0819 200 620"
+        onVerify={(otp) => {}}
+        digits={6}
+        onResendOtp={() => {}}
+      />
+    </Wrapper>
+  );
+};
+
 SignUp.storyName = 'Sign Up Form';
 Default.storyName = 'Sign In Form';
 ChangePassword.storyName = 'Change password Form';
+VerifyOTP.storyName = 'Verify OTP Form';
 
 const Wrapper = styled(Box)`
   background-color: ${({ theme }) => theme.colors?.background};

@@ -2,7 +2,7 @@ import { shadeAlphaColors, shadeColors } from '../../utils';
 
 export const themeColors = {
   primary: '#007bff',
-  secondary: '#6c757d',
+  secondary: '#9a9a9a',
 
   success: '#28a745',
   error: '#dc3545',
