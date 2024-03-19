@@ -12,5 +12,5 @@ export class ResetPasswordDto {
 
   @ApiProperty()
   @IsString()
-  account: string; // should be either username or email
+  email: string;
 }

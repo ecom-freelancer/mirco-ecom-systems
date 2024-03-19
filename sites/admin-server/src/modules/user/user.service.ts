@@ -58,7 +58,7 @@ export class UserService {
   }
 
   async updateAccount(payload: UserEntity) {
-    const { id, ...newData } = payload;
+    const { id, email, ...newData } = payload;
     return await this.userRepository.update({ id }, newData);
   }
 }
