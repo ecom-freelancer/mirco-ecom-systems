@@ -1,10 +1,7 @@
-import * as dotenv from 'dotenv';
 import { RedisOptions } from 'ioredis';
+import { envLoader } from './env.loader';
 
-dotenv.config({
-  path: '.env.local',
-});
-
+envLoader();
 export const getRedisOptions = (): RedisOptions => {
   return {
     host: process.env.REDIS_HOST || 'localhost',

@@ -3984,12 +3984,14 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@packages/nest-file@workspace:packages/nest-file":
+"@packages/nest-file@workspace:^, @packages/nest-file@workspace:packages/nest-file":
   version: 0.0.0-use.local
   resolution: "@packages/nest-file@workspace:packages/nest-file"
   dependencies:
     "@nestjs/common": "npm:^10.0.0"
+    "@nestjs/core": "npm:^10.0.0"
     "@packages/kit": "npm:^1.0.0"
+    cloudinary: "npm:^2.0.3"
   peerDependencies:
     "@nestjs/common": ^10.0.0
     tslib: ^2.6.2
@@ -5182,12 +5184,14 @@ __metadata:
     "@nestjs/schematics": "npm:^10.0.0"
     "@nestjs/swagger": "npm:^7.3.0"
     "@nestjs/testing": "npm:^10.0.0"
+    "@packages/nest-file": "workspace:^"
     "@packages/nest-helper": "npm:^1.0.0"
     "@packages/nest-mail": "npm:^1.0.0"
     "@packages/nest-mysql": "npm:^1.0.0"
     "@packages/nest-redis": "npm:^1.0.0"
     "@types/express": "npm:^4.17.17"
     "@types/jest": "npm:^29.5.2"
+    "@types/multer": "npm:^1.4.11"
     "@types/node": "npm:^20.3.1"
     "@types/supertest": "npm:^6.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
@@ -6841,6 +6845,15 @@ __metadata:
   version: 5.1.2
   resolution: "@types/minimatch@npm:5.1.2"
   checksum: 10/94db5060d20df2b80d77b74dd384df3115f01889b5b6c40fa2dfa27cfc03a68fb0ff7c1f2a0366070263eb2e9d6bfd8c87111d4bc3ae93c3f291297c1bf56c85
+  languageName: node
+  linkType: hard
+
+"@types/multer@npm:^1.4.11":
+  version: 1.4.11
+  resolution: "@types/multer@npm:1.4.11"
+  dependencies:
+    "@types/express": "npm:*"
+  checksum: 10/5abbc9a8b0d7bb817a52429c52f052152ebe2fb212e7138359c0c0b9207486ef7b1e54f65915c968300a0874cee546dbfc850415584fc9d14eff2b27bb926e7f
   languageName: node
   linkType: hard
 
@@ -9604,6 +9617,16 @@ __metadata:
   version: 1.0.4
   resolution: "clone@npm:1.0.4"
   checksum: 10/d06418b7335897209e77bdd430d04f882189582e67bd1f75a04565f3f07f5b3f119a9d670c943b6697d0afb100f03b866b3b8a1f91d4d02d72c4ecf2bb64b5dd
+  languageName: node
+  linkType: hard
+
+"cloudinary@npm:^2.0.3":
+  version: 2.0.3
+  resolution: "cloudinary@npm:2.0.3"
+  dependencies:
+    lodash: "npm:^4.17.21"
+    q: "npm:^1.5.1"
+  checksum: 10/41c05deb51b0b90035165d726f792cf8efb614bfb2156e5d04bf42b54546344ba68d72b01cdb4d927d36b346f537f288b70a3898907caa348364889536f9736d
   languageName: node
   linkType: hard
 
@@ -20231,7 +20254,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"q@npm:^1.1.2":
+"q@npm:^1.1.2, q@npm:^1.5.1":
   version: 1.5.1
   resolution: "q@npm:1.5.1"
   checksum: 10/70c4a30b300277165cd855889cd3aa681929840a5940413297645c5691e00a3549a2a4153131efdf43fe8277ee8cf5a34c9636dcb649d83ad47f311a015fd380

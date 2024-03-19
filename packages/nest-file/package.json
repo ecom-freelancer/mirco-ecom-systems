@@ -12,7 +12,9 @@
     "dev": "kit watch-package ."
   },
   "dependencies": {
-    "@nestjs/common": "^10.0.0"
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/core": "^10.0.0",
+    "cloudinary": "^2.0.3"
   },
   "devDependencies": {
     "@packages/kit": "^1.0.0"

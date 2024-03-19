@@ -1,10 +1,8 @@
 import { MysqlModuleOptions, getDataSourceOption } from '@packages/nest-mysql';
 import { DataSource } from 'typeorm';
-import * as dotenv from 'dotenv';
+import { envLoader } from './env.loader';
 
-dotenv.config({
-  path: '.env.local',
-});
+envLoader();
 
 export const getMysqlOptions = (): MysqlModuleOptions => {
   return {
