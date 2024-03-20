@@ -3,6 +3,7 @@ import { authService } from '../auth-service';
 import { useAuthContext } from './useAuthContext';
 import { useNavigate } from 'react-router';
 import { routeKeys } from 'configs/constants';
+import toast from 'react-hot-toast';
 
 export const useLogin = () => {
   const { setUserLoggedIn } = useAuthContext();
@@ -16,6 +17,11 @@ export const useLogin = () => {
       setUserLoggedIn?.(response);
 
       navigate(routeKeys.home);
+    } catch (e) {
+      console.error(e);
+      toast.error('Login failed', {
+        position: 'top-center',
+      });
     } finally {
       setLoading(false);
     }

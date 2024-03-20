@@ -26,12 +26,14 @@ export const createNestApp = async (
 ): Promise<INestApplication> => {
   const app = await NestFactory.create(module);
 
+  app.setGlobalPrefix('/api');
+
+  app.enableCors();
+
   if (options.swagger?.enabled) {
     const documentBuilder = new DocumentBuilder()
       .setTitle(options.swagger.title)
       .setDescription(options.swagger.description)
-      .setVersion(options.swagger.version ?? '1.0')
-      .setVersion('1.0')
       .addBearerAuth(
         {
           type: 'http',
@@ -43,7 +45,9 @@ export const createNestApp = async (
 
     const config = documentBuilder.build();
 
-    const document = SwaggerModule.createDocument(app, config);
+    const document = SwaggerModule.createDocument(app, config, {
+      ignoreGlobalPrefix: false,
+    });
 
     SwaggerModule.setup(options.swagger.path ?? 'api_docs', app, document);
   }

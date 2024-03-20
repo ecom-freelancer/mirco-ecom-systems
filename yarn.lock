@@ -5076,32 +5076,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@services/catalog-service@workspace:services/catalog-service":
-  version: 0.0.0-use.local
-  resolution: "@services/catalog-service@workspace:services/catalog-service"
-  dependencies:
-    "@nestjs/cli": "npm:^10.0.0"
-    "@nestjs/common": "npm:^10.0.0"
-    "@nestjs/core": "npm:^10.0.0"
-    "@nestjs/platform-express": "npm:^10.0.0"
-    "@nestjs/schematics": "npm:^10.0.0"
-    "@nestjs/testing": "npm:^10.0.0"
-    "@types/express": "npm:^4.17.17"
-    "@types/jest": "npm:^29.5.2"
-    "@types/node": "npm:^20.3.1"
-    "@types/supertest": "npm:^6.0.0"
-    jest: "npm:^29.5.0"
-    reflect-metadata: "npm:^0.2.0"
-    rxjs: "npm:^7.8.1"
-    source-map-support: "npm:^0.5.21"
-    supertest: "npm:^6.3.3"
-    ts-jest: "npm:^29.1.0"
-    ts-loader: "npm:^9.4.3"
-    ts-node: "npm:^10.9.1"
-    tsconfig-paths: "npm:^4.2.0"
-  languageName: unknown
-  linkType: soft
-
 "@sinclair/typebox@npm:^0.24.1":
   version: 0.24.51
   resolution: "@sinclair/typebox@npm:0.24.51"
@@ -5223,6 +5197,7 @@ __metadata:
     i18next-http-backend: "npm:^2.5.0"
     react: "npm:^18.2.0"
     react-dom: "npm:^18.2.0"
+    react-hot-toast: "npm:^2.4.1"
     react-i18next: "npm:^14.1.0"
     react-icons: "npm:^5.0.1"
     react-router: "npm:^6.22.3"
@@ -13482,6 +13457,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"goober@npm:^2.1.10":
+  version: 2.1.14
+  resolution: "goober@npm:2.1.14"
+  peerDependencies:
+    csstype: ^3.0.10
+  checksum: 10/372f18333ef64c403d29be7c1175cc9cd74cb947ec52cd42fbb1cf3f9870ac1dfec9c7671192cbf47ebc0ec17d8b05b6ef9a2b92952397d5b555a692381d5eaa
+  languageName: node
+  linkType: hard
+
 "gopd@npm:^1.0.1":
   version: 1.0.1
   resolution: "gopd@npm:1.0.1"
@@ -20906,6 +20890,18 @@ __metadata:
   version: 6.0.11
   resolution: "react-error-overlay@npm:6.0.11"
   checksum: 10/b4ac746fc4fb50da733768aadbc638d34dd56d4e46ed4b2f2d1ac54dced0c5fa5fe47ebbbf90810ada44056ed0713bba5b9b930b69f4e45466e7f59fc806c44e
+  languageName: node
+  linkType: hard
+
+"react-hot-toast@npm:^2.4.1":
+  version: 2.4.1
+  resolution: "react-hot-toast@npm:2.4.1"
+  dependencies:
+    goober: "npm:^2.1.10"
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: 10/9af91efdb98837e39a126aff084b54db0336c5f88a7dad7c42daf7ee873d06a79d6e59f398412cc250a35ddf1a73c25700fe90b3c3a2a0c394fd17d99b2bcf8b
   languageName: node
   linkType: hard
 

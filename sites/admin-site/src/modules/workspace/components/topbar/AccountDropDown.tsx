@@ -40,12 +40,9 @@ export const AccountDropDown: React.FC = () => {
       <Wrapper trigger={['click']} menu={{ items }}>
         <Space wrap={false}>
           <Avatar size={30} src={user?.avatarUrl} icon={<UserOutlined />}>
-            {user?.firstName?.toUpperCase()}
+            {user?.name?.toUpperCase()}
           </Avatar>
-          <Text>
-            {user?.firstName}&nbsp;
-            {user?.lastName}
-          </Text>
+          <Text>{user?.name}</Text>
 
           <DownOutlined style={{ fontSize: 10 }} />
         </Space>

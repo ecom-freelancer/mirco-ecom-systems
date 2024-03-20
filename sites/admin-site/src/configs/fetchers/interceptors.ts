@@ -1,4 +1,5 @@
 import { AxiosError, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { IApiError } from 'modules/_shared/types';
 
 export const accessTokenInterceptor = (request: InternalAxiosRequestConfig) => {
   const accessToken = localStorage.getItem('accessToken');
@@ -22,5 +23,5 @@ export const responseInterceptor = (response: AxiosResponse) => {
 export const errorInterceptor = (error: AxiosError) => {
   throw {
     ...(error.response?.data || {}),
-  };
+  } as IApiError;
 };
