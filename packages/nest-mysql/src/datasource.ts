@@ -13,6 +13,7 @@ export const getDataSourceOption = (
   password: options.password,
   database: options.database,
   synchronize: false,
+  logging: options.logging || false,
   entities: [...entities],
   migrations: [...options.migrations],
   namingStrategy: new SnakeNamingStrategy(),

@@ -6,4 +6,5 @@ export interface MysqlModuleOptions {
   database?: string;
   migrations: string[];
   synchronize?: boolean;
+  logging?: boolean;
 }

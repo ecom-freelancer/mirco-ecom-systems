@@ -12,6 +12,8 @@ export const getMysqlOptions = (): MysqlModuleOptions => {
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DATABASE,
     synchronize: false,
+    logging: process.env.MIGRATION_LOGGING === 'true',
+
     migrations: ['dist/migrations/*.js'],
   };
 };

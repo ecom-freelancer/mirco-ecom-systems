@@ -9,6 +9,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileService } from '@packages/nest-file';
 import { ApiFile } from 'src/configs/file.decorator';
+import { Express } from 'express';
 
 @Controller('profile')
 @ApiTags('Profile')

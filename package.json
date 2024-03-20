@@ -13,7 +13,11 @@
   "scripts": {
     "lint": "eslint --ext .ts,.tsx --ignore-path .eslintignore --quiet .",
     "build:packages": "yarn nx run-many --target=build --exclude '@sites/*' '@services/*' --parallel=5",
-    "storybook": "yarn workspace @sites/storybook storybook"
+    "storybook": "yarn workspace @sites/storybook storybook",
+    "start:admin-server": "yarn workspace @sites/admin-server start:prod",
+    "start:consumer-app": "yarn workspace @sites/consumer-app start",
+    "migration": "yarn workspace @sites/admin-server migration",
+    "build:all": "yarn nx run-many --target=build --parallel= "
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.39.0",

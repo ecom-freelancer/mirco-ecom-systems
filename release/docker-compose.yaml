@@ -1,0 +1,86 @@
+version: '3'
+services: 
+  redis: 
+    image: redis
+    ports: 
+      - 6379:6379
+    volumes: 
+      - ./.data/redis:/data
+    networks:
+      - app-network
+  mysql: 
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+    env_file:
+      - ./env/mysql.env
+    restart: on-failure
+    networks:
+      - app-network
+
+  nginx: 
+    image: nginx:1.13.9-alpine
+    volumes:
+      - ./etc/admin_nginx.conf:/etc/nginx/conf.d/admin.conf
+      - ./etc/consumer_nginx.conf:/etc/nginx/conf.d/consumer.conf
+      - ./ssl:/etc/nginx/ssl
+    ports:
+      - 8000:80
+      - 443:443
+    depends_on:
+      - admin-server
+      - admin-site
+
+    networks:
+      - app-network
+  db-migration: 
+    image: tiepnt/ecom-80-admin-server:v1.0.1
+    depends_on: 
+        - mysql
+    env_file: 
+        - ./env/admin_server.env
+    environment:
+      - MIGRATION_LOGGING=true
+    command: ['yarn', 'migration']
+    restart: on-failure
+    networks:
+        - app-network
+
+   
+  admin-server: 
+    image: tiepnt/ecom-80-admin-server:v1.0.1
+    env_file: 
+      - ./env/admin_server.env
+    ports:
+      - 3000
+    depends_on:
+      - mysql
+      - redis
+    restart: on-failure
+    command: ['yarn', 'start:admin-server']
+    networks:
+      - app-network
+  admin-site:
+    image: tiepnt/ecom-80-admin-site:v1.0.1
+    expose:
+      - 8000
+    networks:
+      - app-network
+
+  consumer-app:
+    image: tiepnt/ecom-80-consumer-app:v1.0.1
+    expose:
+      - 3000
+    command: ['yarn', 'start:consumer-app']
+    networks:
+      - app-network
+    
+
+networks:
+  app-network:
+    driver: bridge

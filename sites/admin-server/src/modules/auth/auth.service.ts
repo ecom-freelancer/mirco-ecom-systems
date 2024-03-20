@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { plainToInstance } from 'class-transformer';
 import { LoginResponse } from './dtos/login.dto';
 import { JwtPayload } from './interfaces/jwt.interface';
