@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "../nest-file/src",
+    "outDir": "../nest-file/dist",
+    "declarationDir": "../nest-file/dist",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "experimentalDecorators": true
+  },
+  "include": ["../nest-file/src"]
+}

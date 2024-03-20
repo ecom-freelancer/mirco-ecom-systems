@@ -1,9 +1,7 @@
-import * as dotenv from 'dotenv';
 import { TransporterConfigOptions } from '@packages/nest-mail';
+import { envLoader } from './env.loader';
 
-dotenv.config({
-  path: '.env.local',
-});
+envLoader();
 
 export const getEmailConfigOptions = (): TransporterConfigOptions => {
   return {
