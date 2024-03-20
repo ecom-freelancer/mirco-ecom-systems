@@ -1,4 +1,4 @@
-import useSWR from 'swr';
+import useSWR, { mutate as globalMutation } from 'swr';
 import { ILoginResponse, IUser } from '../types';
 import { authService } from '../auth-service';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'configs/constants';
@@ -49,7 +49,11 @@ export const useUserInfo = () => {
   const logout = () => {
     localStorage.removeItem(ACCESS_TOKEN_KEY);
     localStorage.removeItem(REFRESH_TOKEN_KEY);
-    mutate();
+
+    authService.logout();
+    globalMutation(() => true, undefined, {
+      revalidate: false,
+    });
   };
 
   return {
