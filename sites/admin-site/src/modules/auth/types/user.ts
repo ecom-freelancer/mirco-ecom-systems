@@ -8,6 +8,7 @@ export interface IUser extends IBase {
   avatarUrl?: string;
   isVerified?: boolean;
   phonenumber?: string;
+  name?: string;
 }
 
 export interface ILoginPayload {

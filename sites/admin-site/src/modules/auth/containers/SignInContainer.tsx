@@ -19,7 +19,7 @@ export const SignInContainer: React.FC = () => {
             configs={{
               passwordLess: {
                 onSubmit: loginWithPassword,
-                usernameType: 'text',
+                usernameType: 'email',
               },
             }}
           />

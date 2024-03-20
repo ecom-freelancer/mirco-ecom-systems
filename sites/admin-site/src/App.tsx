@@ -1,6 +1,8 @@
 import { ThemeProvider } from '@packages/ds-core';
 import { ConfigProvider } from 'antd';
+import { notification } from 'antd';
 import { allRoutes } from 'configs/router';
+import { GlobalProvider } from 'modules/_shared';
 import { AuthProvider } from 'modules/auth/provider/AuthProvider';
 import React, { Suspense } from 'react';
 import {
@@ -11,6 +13,7 @@ import {
 
 function App() {
   const router = createBrowserRouter(allRoutes as RouteObject[]);
+
   return (
     <React.Fragment>
       <ThemeProvider>
@@ -30,9 +33,11 @@ function App() {
           }}
         >
           <Suspense>
-            <AuthProvider>
-              <RouterProvider router={router} />
-            </AuthProvider>
+            <GlobalProvider>
+              <AuthProvider>
+                <RouterProvider router={router} />
+              </AuthProvider>
+            </GlobalProvider>
           </Suspense>
         </ConfigProvider>
       </ThemeProvider>
