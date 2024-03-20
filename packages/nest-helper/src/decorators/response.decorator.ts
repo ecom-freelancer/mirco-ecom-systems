@@ -8,12 +8,14 @@ import {
 import { ApiResponseDto } from '../interfaces';
 
 export const ApiSuccessResponse = <DataDto extends Type<unknown>>(options: {
-  type: DataDto;
+  type?: DataDto;
   status: number;
   message?: string;
 }) =>
   applyDecorators(
-    ApiExtraModels(ApiResponseDto, options.type),
+    options.type
+      ? ApiExtraModels(ApiResponseDto, options.type)
+      : ApiExtraModels(ApiResponseDto),
     ApiOkResponse({
       status: options.status,
       schema: {
@@ -23,18 +25,24 @@ export const ApiSuccessResponse = <DataDto extends Type<unknown>>(options: {
           },
           {
             properties: {
-              data: {
-                $ref: getSchemaPath(options.type),
-              },
-              status: {
-                type: 'number',
-                description: 'Status code',
-                default: options.status,
-              },
-              message: {
-                type: 'string',
-                description: 'Status message',
-                default: options?.message,
+              ...(options.type
+                ? {
+                    data: {
+                      $ref: getSchemaPath(options.type),
+                    },
+                  }
+                : {}),
+              ...{
+                status: {
+                  type: 'number',
+                  description: 'Status code',
+                  default: options.status,
+                },
+                message: {
+                  type: 'string',
+                  description: 'Status message',
+                  default: options?.message,
+                },
               },
             },
           },

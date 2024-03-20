@@ -39,14 +39,14 @@ export const authService = {
 
   checkPassword: async (password: string): Promise<boolean> => {
     return appApi
-      .post<IApiResponse<boolean>>(
+      .post(
         '/check-password',
         { password },
         {
           timeout: 1000,
         },
       )
-      .then((res) => res.data.data)
+      .then((res) => !!res.data)
       .catch(() => {
         return false;
       });

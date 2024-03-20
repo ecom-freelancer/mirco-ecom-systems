@@ -82,7 +82,7 @@ export class AuthController {
   @Post('forgot-password')
   @HttpCode(200)
   @HttpCode(401)
-  @ApiSuccessResponse({ type: String, status: 200 })
+  @ApiSuccessResponse({ status: 200 })
   async forgotPassword(@Body() payload: ForgotPasswordDto) {
     await this.authService.forgotPassword(payload);
     return 'An email with OTP code has been sent';
@@ -99,7 +99,7 @@ export class AuthController {
   @Protected()
   @HttpCode(200)
   @HttpCode(401)
-  @ApiSuccessResponse({ type: String, status: 200 })
+  @ApiSuccessResponse({ status: 200, message: 'Success' })
   async checkPassword(@Req() req: Request, @Body() payload: CheckPasswordDto) {
     // @ts-ignore
     return await this.authService.checkPassword(req.userId, payload.password);
