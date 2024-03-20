@@ -68,6 +68,7 @@ export const authService = {
         return false;
       });
   },
+  logout: async () => appApi.post('/logout'),
 };
 
 const mockUser: IUser = {
