@@ -26,7 +26,7 @@ export const UserInfo: React.FC<UserInfoInfoProps> = ({ user }) => {
                   backgroundColor: '#fafafa',
                 }}
               >
-                {user.firstName?.[0].toUpperCase()}
+                {user.name?.[0].toUpperCase()}
               </Avatar>
               <Box className="upload-avatar">
                 <CameraOutlined className="upload-avatar-button" />
@@ -34,7 +34,7 @@ export const UserInfo: React.FC<UserInfoInfoProps> = ({ user }) => {
             </AvataWrapper>
             <Box>
               <Heading type="h4" style={{ marginBottom: 0 }}>
-                {user.firstName} {user.lastName}
+                {user.name}
               </Heading>
               <Typography.Text type="secondary">Admin</Typography.Text>
             </Box>
@@ -53,21 +53,20 @@ export const UserInfo: React.FC<UserInfoInfoProps> = ({ user }) => {
             <Flex>
               <Typography.Text className="label">Số điện thoại</Typography.Text>
               <Typography.Text className="value">
-                {user.phonenumber?.replace(/([^]{3})(\d+)(\d{3})/g, '$1 $2 $3')}
+                {user.phonenumber?.replace(
+                  /([^]{3})(\d+)(\d{3})/g,
+                  '$1 $2 $3',
+                ) || 'N/A'}
               </Typography.Text>
             </Flex>
             <Flex>
               <Typography.Text className="label">Ngày tham gia</Typography.Text>
-              <Typography.Text className="value">22/01/2020</Typography.Text>
+              <Typography.Text className="value">22/01/2023</Typography.Text>
             </Flex>
             <Flex>
               <Typography.Text className="label">Trạng thái</Typography.Text>
               <Typography.Text className="value">
-                {user.isVerified ? (
-                  <Tag color="success">Đã xác thực</Tag>
-                ) : (
-                  <Tag>Chưa xác thực</Tag>
-                )}
+                <Tag color="success">Đã xác thực</Tag>
               </Typography.Text>
             </Flex>
           </Flex>
