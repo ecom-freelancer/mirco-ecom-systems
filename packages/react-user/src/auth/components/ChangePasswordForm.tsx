@@ -45,6 +45,7 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
             required={false}
             hasFeedback
             validateFirst
+            validateDebounce={1000}
             rules={[
               {
                 required: true,
@@ -86,6 +87,10 @@ export const ChangePasswordForm: React.FC<ChangePasswordFormProps> = ({
               {
                 required: true,
                 message: 'Please input your new password!',
+              },
+              {
+                min: 6,
+                message: 'Password must be at least 6 characters!',
               },
             ]}
             help={

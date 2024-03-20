@@ -4,9 +4,10 @@ import { useAuthContext } from './useAuthContext';
 import { useNavigate } from 'react-router';
 import { routeKeys } from 'configs/constants';
 import toast from 'react-hot-toast';
+import { IApiError } from 'modules/_shared/types';
 
 export const useLogin = () => {
-  const { setUserLoggedIn } = useAuthContext();
+  const { setUserLoggedIn, logout } = useAuthContext();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
@@ -31,6 +32,12 @@ export const useLogin = () => {
     try {
       setLoading(true);
       await authService.changePassword(oldPassword, newPassword);
+      toast.success('Password changed', {
+        position: 'top-center',
+      });
+      logout?.();
+    } catch (error) {
+      toast.error((error as IApiError)?.message, {});
     } finally {
       setLoading(false);
     }
