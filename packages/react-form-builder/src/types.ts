@@ -9,7 +9,6 @@ import {
   SwitchProps,
   TimePickerProps,
 } from 'antd';
-import { PickerPropsWithMultiple } from 'antd/es/date-picker/generatePicker/interface';
 import { FormInstance, Rule } from 'antd/es/form';
 import { ValidateStatus } from 'antd/es/form/FormItem';
 import { FormLabelAlign } from 'antd/es/form/interface';
