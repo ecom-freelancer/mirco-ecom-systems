@@ -30,7 +30,7 @@ services:
       - ./etc/consumer_nginx.conf:/etc/nginx/conf.d/consumer.conf
       - ./ssl:/etc/nginx/ssl
     ports:
-      - 8000:80
+      - 80:80
       - 443:443
     depends_on:
       - admin-server
