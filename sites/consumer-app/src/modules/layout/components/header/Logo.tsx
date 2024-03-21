@@ -1,5 +1,14 @@
 import Image from 'next/image';
 
 export const Logo = () => {
-  return <Image src="/logo.svg" alt="logo" width={120} height={50} priority />;
+  return (
+    <Image
+      src="/logo.png"
+      alt="logo"
+      width={276}
+      height={46}
+      priority
+      className="logo"
+    />
+  );
 };
