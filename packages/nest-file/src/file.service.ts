@@ -10,7 +10,7 @@ export class FileService {
 
   async uploadImageWithBase64(base64: string, params: { folder: string }) {
     if (!this.validateBase64(base64)) {
-      throw new Error('Invalid base64 fomart');
+      throw new Error('Invalid base64 format');
     }
 
     const cloudinary = this.cloudinaryService.instance();
