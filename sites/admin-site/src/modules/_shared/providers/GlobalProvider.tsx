@@ -11,6 +11,7 @@ export const GlobalContext = React.createContext<IGlobalContext>({
   noti: {} as NotificationInstance,
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useGlobal = () => React.useContext(GlobalContext);
 
 export const GlobalProvider: React.FC<{ children: ReactNode }> = ({

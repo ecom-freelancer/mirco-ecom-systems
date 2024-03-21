@@ -38,9 +38,9 @@ ADMIN_SERVER_DIR="sites/admin-server/Dockerfile"
 ADMIN_APP_DIR="sites/admin-site/Dockerfile"
 
 # Build and pull
-docker build -t "$DOCKER_REPO/$REPO-admin-server:$NEXT_TAG" $CONTEXT  -f $ADMIN_SERVER_DIR 
-docker build -t "$DOCKER_REPO/$REPO-admin-site:$NEXT_TAG" $CONTEXT -f $ADMIN_APP_DIR 
-docker build -t "$DOCKER_REPO/$REPO-consumer-app:$NEXT_TAG" $CONTEXT -f $CONSUMER_APP_DIR 
+docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-admin-server:$NEXT_TAG" $CONTEXT  -f $ADMIN_SERVER_DIR 
+docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-admin-site:$NEXT_TAG" $CONTEXT -f $ADMIN_APP_DIR 
+docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-consumer-app:$NEXT_TAG" $CONTEXT -f $CONSUMER_APP_DIR 
 
 
 
