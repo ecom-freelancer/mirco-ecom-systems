@@ -1,5 +1,5 @@
 import { RedisOptions } from 'ioredis';
-import { envLoader } from './env.loader';
+import { envLoader } from '@packages/nest-helper';
 
 envLoader();
 export const getRedisOptions = (): RedisOptions => {

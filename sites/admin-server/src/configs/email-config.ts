@@ -1,5 +1,5 @@
 import { TransporterConfigOptions } from '@packages/nest-mail';
-import { envLoader } from './env.loader';
+import { envLoader } from '@packages/nest-helper';
 
 envLoader();
 

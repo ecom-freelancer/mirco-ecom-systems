@@ -1,6 +1,6 @@
 import { MysqlModuleOptions, getDataSourceOption } from '@packages/nest-mysql';
 import { DataSource } from 'typeorm';
-import { envLoader } from './env.loader';
+import { envLoader } from '@packages/nest-helper';
 
 envLoader();
 

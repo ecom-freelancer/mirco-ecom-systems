@@ -1,5 +1,5 @@
 import { CloudinaryOptions } from '@packages/nest-file';
-import { envLoader } from './env.loader';
+import { envLoader } from '@packages/nest-helper';
 
 envLoader();
 export const getCloudinaryConfig = (): CloudinaryOptions => ({
