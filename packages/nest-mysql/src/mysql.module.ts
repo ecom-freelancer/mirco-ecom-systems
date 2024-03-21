@@ -15,7 +15,7 @@ export class MysqlModule {
           useFactory: async (value: MysqlModuleOptions) => {
             return {
               ...getDataSourceOption(options),
-              logging: false,
+              logging: true,
               cache: true,
               synchronize: false,
             };
