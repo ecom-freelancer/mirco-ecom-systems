@@ -1,4 +1,4 @@
-ßservices: 
+services: 
   redis: 
     image: redis
     ports: 
@@ -38,7 +38,7 @@
     networks:
       - app-network
   db-migration: 
-    image: tiepnt/ecom-80-admin-server:v1.0.3
+    image: tiepnt/ecom-80-admin-server:v1.0.5
     depends_on: 
         - mysql
     env_file: 
@@ -52,7 +52,7 @@
 
    
   admin-server: 
-    image: tiepnt/ecom-80-admin-server:v1.0.3
+    image: tiepnt/ecom-80-admin-server:v1.0.5
     env_file: 
       - ./env/admin_server.env
     ports:
@@ -65,14 +65,14 @@
     networks:
       - app-network
   admin-site:
-    image: tiepnt/ecom-80-admin-site:v1.0.3
+    image: tiepnt/ecom-80-admin-site:v1.0.5
     expose:
       - 8000
     networks:
       - app-network
 
   consumer-app:
-    image: tiepnt/ecom-80-consumer-app:v1.0.3
+    image: tiepnt/ecom-80-consumer-app:v1.0.5
     expose:
       - 3000
     command: ['yarn', 'start:consumer-app']
