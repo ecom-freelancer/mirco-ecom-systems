@@ -4,9 +4,7 @@ import { RedisModule } from '@packages/nest-redis';
 import { EmailModule } from '@packages/nest-mail';
 import { CloudinaryModule } from '@packages/nest-file';
 import { MysqlModule } from '@packages/nest-mysql';
-
 import { AuthModule } from './modules/auth/auth.module';
-
 import { getCloudinaryConfig } from './configs/cloudinary.config';
 import { getMysqlOptions } from './configs/mysql.datasource';
 import { getEmailConfigOptions } from './configs/email-config';
