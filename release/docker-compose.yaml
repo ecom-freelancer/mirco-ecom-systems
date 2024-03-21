@@ -1,5 +1,4 @@
-version: '3'
-services: 
+ßservices: 
   redis: 
     image: redis
     ports: 
