@@ -61,7 +61,7 @@ yarn workspace @sites/<app> dev
 ```
 
 
-### Deploy
+### Deployment
 To dockerize 
  ```bash
  sh scrips/dockerize.sh <version>
