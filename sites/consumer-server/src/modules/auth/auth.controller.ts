@@ -1,9 +1,15 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { ApiErrorResponse, ApiSuccessResponse } from '@packages/nest-helper';
+import {
+  ApiErrorResponse,
+  ApiSuccessResponse,
+  UserId,
+} from '@packages/nest-helper';
 import { RegisterDto } from './dtos/register.dto';
 import { LoginResponse, LoginWithPasswordDto } from './dtos/login.dto';
+import { Protected } from './auth.guard';
+import { GetProfileResponse } from './dtos/get-profile.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -27,5 +33,13 @@ export class AuthController {
       payload.email,
       payload.password,
     );
+  }
+
+  @Get('me')
+  @Protected()
+  @HttpCode(200)
+  @ApiSuccessResponse({ type: GetProfileResponse, status: 200 })
+  async getProfile(@UserId() userId: string): Promise<GetProfileResponse> {
+    return await this.authService.getProfileById(userId);
   }
 }

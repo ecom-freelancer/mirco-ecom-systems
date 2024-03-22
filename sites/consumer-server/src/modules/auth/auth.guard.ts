@@ -7,8 +7,9 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { APP_GUARD, Reflector } from '@nestjs/core';
-import { AuthService } from './auth.service';
-import { extractTokenFromHeader } from '@packages/nest-helper';
+import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
+import { ConfigService } from '@nestjs/config';
 
 export const ROUTE_IS_PROTECTED = 'ROUTE_IS_PROTECTED';
 
@@ -17,7 +18,8 @@ export const Protected = () => SetMetadata(ROUTE_IS_PROTECTED, true);
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private authService: AuthService,
+    private jwtService: JwtService,
+    private configService: ConfigService,
     private reflector: Reflector,
   ) {}
 
@@ -32,15 +34,28 @@ export class AuthGuard implements CanActivate {
     }
 
     const request = context.switchToHttp().getRequest();
-    const token = extractTokenFromHeader(request);
+    const token = this.extractTokenFromHeader(request);
 
     if (!token) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Missing token');
     }
 
-    const payload = await this.authService.verifyAsync(token);
+    let payload = { sub: '' };
+    try {
+      payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+    } catch (_) {
+      throw new UnauthorizedException('Token is invalid');
+    }
+
     request['userId'] = payload.sub;
     return true;
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
 
