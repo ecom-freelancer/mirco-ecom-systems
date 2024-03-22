@@ -6,13 +6,7 @@ import { AuthService } from './auth.service';
 import { AuthGuardProvider } from './auth.guard';
 
 @Module({
-  imports: [
-    JwtModule.register({
-      global: true,
-      signOptions: { expiresIn: '60m' },
-    }),
-    UserModule,
-  ],
+  imports: [JwtModule, UserModule],
   controllers: [AuthController],
   providers: [AuthService, AuthGuardProvider],
   exports: [AuthService],

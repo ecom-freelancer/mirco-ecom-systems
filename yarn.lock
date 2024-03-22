@@ -11021,6 +11021,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ecom-management-system@workspace:."
   dependencies:
+    "@nestjs/jwt": "npm:^10.2.0"
     "@types/node": "npm:^20.11.25"
     "@typescript-eslint/eslint-plugin": "npm:^5.39.0"
     "@typescript-eslint/parser": "npm:^5.39.0"

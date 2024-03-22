@@ -40,4 +40,9 @@ export class CustomerService {
 
     return await this.customerRepository.save(customer);
   }
+
+  async findCustomerByEmail(email: string) {
+    const condition = { email };
+    return await this.customerRepository.findOne({ where: condition });
+  }
 }

@@ -303,8 +303,14 @@ export class AuthService {
   async generateTokens(user: UserEntity) {
     const payload: JwtPayload = { sub: user.id };
 
-    const accessToken = await this.generateJWT(payload);
-    const refreshToken = await this.generateJWT(payload, '7d');
+    const accessToken = await this.generateJWT(
+      payload,
+      this.configService.get('JWT_ACCESS_TOKEN_VALID_DURATION'),
+    );
+    const refreshToken = await this.generateJWT(
+      payload,
+      this.configService.get('JWT_REFRESH_TOKEN_VALID_DURATION'),
+    );
 
     return plainToInstance(LoginResponse, {
       accessToken,
