@@ -39,6 +39,7 @@
     ]
   },
   "dependencies": {
+    "@nestjs/jwt": "^10.2.0",
     "@types/node": "^20.11.25"
   }
 }
