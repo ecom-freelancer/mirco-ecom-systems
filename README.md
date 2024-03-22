@@ -71,6 +71,8 @@ run update version in `release/docker-compose.yaml`
  sh scripts/release.sh <version>
 ```
 
+aaa
+
 
 
 
