@@ -44,7 +44,7 @@ export class TypeOrmModule implements OnApplicationShutdown {
             dataSource.initialize().then((d) => {
               console.log(
                 '\x1b[33m%s\x1b[0m',
-                'Connection databasesuccessfully.',
+                'Connect to database successfully!',
               );
               return d;
             }),

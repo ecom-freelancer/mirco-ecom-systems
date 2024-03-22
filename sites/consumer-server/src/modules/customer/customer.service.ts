@@ -41,8 +41,11 @@ export class CustomerService {
     return await this.customerRepository.save(customer);
   }
 
-  async findCustomerByEmail(email: string) {
-    const condition = { email };
-    return await this.customerRepository.findOne({ where: condition });
+  async getCustomerByEmail(email: string) {
+    return await this.customerRepository.findOne({ where: { email } });
+  }
+
+  async getCustomerById(id: string) {
+    return await this.customerRepository.findOne({ where: { id } });
   }
 }

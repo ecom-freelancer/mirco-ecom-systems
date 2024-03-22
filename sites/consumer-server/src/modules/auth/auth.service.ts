@@ -11,6 +11,7 @@ import { LoginResponse } from './dtos/login.dto';
 import { CustomerEntity } from '@packages/nest-mysql';
 import { plainToInstance } from 'class-transformer';
 import { JwtService } from '@nestjs/jwt';
+import { GetProfileResponse } from './dtos/get-profile.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,17 +47,40 @@ export class AuthService {
     email: string,
     password: string,
   ): Promise<LoginResponse> {
-    const user = await this.customerService.findCustomerByEmail(email);
+    const customer = await this.customerService.getCustomerByEmail(email);
 
-    if (!user) {
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
-    if (!(await comparePassword(password, user.password))) {
+    if (!customer.isActive) {
+      throw new NotFoundException(
+        'This account is not active. Please contact admin',
+      );
+    }
+
+    if (!(await comparePassword(password, customer.password))) {
       throw new BadRequestException('Email or password is incorrect.');
     }
 
-    return this.generateTokens(user);
+    return this.generateTokens(customer);
+  }
+
+  async getProfileById(id: string): Promise<GetProfileResponse> {
+    const customer = await this.customerService.getCustomerById(id);
+    if (!customer) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!customer.isActive) {
+      throw new NotFoundException(
+        'This account is not active. Please contact admin',
+      );
+    }
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, createdAt, updatedAt, ...response } = customer;
+    return response;
   }
 
   //---------------------------- Helpers function ----------------------------

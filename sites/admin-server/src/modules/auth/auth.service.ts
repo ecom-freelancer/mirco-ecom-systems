@@ -71,12 +71,15 @@ export class AuthService {
   }
 
   async registerWithAccount(registerDto: RegisterDto) {
-    const { password, email } = registerDto;
+    const { password, username, email } = registerDto;
 
-    const isExisted = await this.userService.getUserByEmail(email);
+    const isExisted = await this.userService.checkDuplicatedUser({
+      username,
+      email,
+    });
 
     if (!!isExisted) {
-      throw new BadRequestException('Email is duplicated');
+      throw new BadRequestException('Username or email is duplicated');
     }
 
     const hashedPassword = await hashPassword(
