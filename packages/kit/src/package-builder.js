@@ -120,6 +120,7 @@ class PackageBuilder {
       resolve({ extensions }),
       esbuild.default({
         exclude: 'node_modules/*',
+        keepNames: true /** Required. Cause NestJs to name of Provider is classname if the parameters is class/function  */,
       }),
       inject({
         include: /\.tsx$/,
@@ -149,7 +150,7 @@ class PackageBuilder {
     }
 
     // eslint-disable-next-line prettier/prettier
-    options.onwarn = () => { };
+    options.onwarn = () => {};
 
     options.watch = {
       buildDelay: 300,
