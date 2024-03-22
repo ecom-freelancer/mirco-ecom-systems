@@ -19,7 +19,8 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:generate": "typeorm migration:generate --dataSource dist/configs/mysql.datasource.js src/migrations/migration",
-    "migration": "typeorm migration:run -d dist/configs/mysql.datasource.js"
+    "migration:up": "typeorm migration:run -d dist/configs/mysql.datasource.js",
+    "migration:down": "typeorm migration:revert -d dist/configs/mysql.datasource.js"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

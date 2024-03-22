@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
-import bcrypt from 'bcryptjs';
 import { plainToInstance } from 'class-transformer';
 import { LoginResponse } from './dtos/login.dto';
 import { JwtPayload } from './interfaces/jwt.interface';
@@ -31,6 +30,7 @@ import {
 } from './interfaces/otp.interface';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import dayjs from 'dayjs';
+import { hashPassword, comparePassword } from '@packages/nest-helper';
 
 @Injectable()
 export class AuthService {
@@ -63,7 +63,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    if (!(await this.comparePassword(password, user.password))) {
+    if (!(await comparePassword(password, user.password))) {
       throw new BadRequestException('Email or password is incorrect.');
     }
 
@@ -79,7 +79,11 @@ export class AuthService {
       throw new BadRequestException('Email is duplicated');
     }
 
-    const hashedPassword = await this.hashPassword(password);
+    const hashedPassword = await hashPassword(
+      password,
+      parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+    );
+
     await this.userService.createAccount({
       ...registerDto,
       password: hashedPassword,
@@ -95,11 +99,14 @@ export class AuthService {
 
     const { oldPassword, newPassword } = payload;
 
-    if (!(await this.comparePassword(oldPassword, user.password))) {
+    if (!(await comparePassword(oldPassword, user.password))) {
       throw new UnauthorizedException('Current password is incorrect.');
     }
 
-    const hashedPassword = await this.hashPassword(newPassword);
+    const hashedPassword = await hashPassword(
+      newPassword,
+      parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+    );
     await this.userService.updateAccount({ ...user, password: hashedPassword });
   }
 
@@ -202,8 +209,6 @@ export class AuthService {
       });
     }
 
-    return;
-
     // Step 3: send email to users
     const content = `Your OTP code to reset password is <b>${otp}</b>`;
     await this.sendEmail({
@@ -271,7 +276,10 @@ export class AuthService {
       throw new BadRequestException('OTP is incorrect.');
     }
 
-    const hashedPassword = await this.hashPassword(newPassword);
+    const hashedPassword = await hashPassword(
+      newPassword,
+      parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+    );
     await this.userService.updateAccount({ ...user, password: hashedPassword });
     await this.redisService.redis.del(key);
   }
@@ -283,7 +291,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    if (!(await this.comparePassword(password, user.password))) {
+    if (!(await comparePassword(password, user.password))) {
       throw new BadRequestException('Password is incorrect.');
     }
 
@@ -319,17 +327,6 @@ export class AuthService {
       expiresIn,
       secret: this.configService.get('JWT_SECRET'),
     });
-  }
-
-  async hashPassword(password: string): Promise<string> {
-    const saltOrRounds = parseInt(
-      this.configService.get('BCRYPT_SALT_OR_ROUNDS'),
-    );
-    return await bcrypt.hash(password, saltOrRounds);
-  }
-
-  async comparePassword(password: string, hash: string): Promise<boolean> {
-    return await bcrypt.compare(password, hash);
   }
 
   async sendEmail(payload: SendEmailPayload): Promise<void> {
