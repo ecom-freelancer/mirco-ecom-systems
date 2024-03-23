@@ -34,6 +34,7 @@ import {
   comparePassword,
   generateSessionId,
 } from '@packages/nest-helper';
+import { SessionService } from '../session/session.service';
 
 @Injectable()
 export class AuthService {
@@ -43,6 +44,7 @@ export class AuthService {
     private readonly configService: ConfigService,
     private readonly redisService: RedisService,
     private readonly mailerService: MailerService,
+    private readonly sessionService: SessionService,
   ) {}
 
   async getProfileById(id: string): Promise<GetProfileResponse> {
@@ -71,11 +73,7 @@ export class AuthService {
     }
 
     const sessionId = generateSessionId();
-    await this.redisService._setex(
-      `${RedisKeyPrefix.SESSION}:${user.id}:${sessionId}`,
-      this.configService.get('ACCESS_TOKEN_VALID_DURATION') * 24 * 60 * 60,
-      '',
-    );
+    await this.sessionService.storeSession(user.id, sessionId);
 
     return this.generateTokens(user.id, sessionId);
   }
@@ -120,7 +118,11 @@ export class AuthService {
       newPassword,
       parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
     );
+
     await this.userService.updateAccount({ ...user, password: hashedPassword });
+
+    // Clear all session if password is changed
+    await this.sessionService.clearAllSession(user.id);
   }
 
   async refreshToken(id: string): Promise<RefreshTokenResponse> {
@@ -295,6 +297,14 @@ export class AuthService {
     );
     await this.userService.updateAccount({ ...user, password: hashedPassword });
     await this.redisService._del(key);
+
+    // Clear all session if users login at other devices
+    await this.sessionService.clearAllSession(user.id);
+  }
+
+  // Clear all session
+  async logout(userId: string) {
+    await this.sessionService.clearAllSession(userId);
   }
 
   async checkPassword(id: string, password: string) {
