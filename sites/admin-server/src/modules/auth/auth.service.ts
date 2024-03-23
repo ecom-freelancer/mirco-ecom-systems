@@ -73,11 +73,7 @@ export class AuthService {
     }
 
     const sessionId = generateSessionId();
-    await this.redisService._setex(
-      `${RedisKeyPrefix.SESSION}:${user.id}:${sessionId}`,
-      this.configService.get('ACCESS_TOKEN_VALID_DURATION') * 24 * 60 * 60,
-      '',
-    );
+    await this.sessionService.storeSession(user.id, sessionId);
 
     return this.generateTokens(user.id, sessionId);
   }
