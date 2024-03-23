@@ -14,7 +14,7 @@ import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-import { RedisKeyPrefix, RedisService } from '@packages/nest-redis';
+import { RedisService } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { VerifyOtpActions } from './constants/otp.constant';
