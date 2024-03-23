@@ -68,6 +68,7 @@ export class AuthController {
   }
 
   @Post('logout')
+  // TODO: Clear all session
   async logout() {}
 
   @Get('refresh-token')
@@ -75,7 +76,7 @@ export class AuthController {
   @HttpCode(200)
   @HttpCode(401)
   @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
-  // TODO: If token is changed -> Clear all session
+  // TODO: If token is changed -> Clear its current session
   async refreshToken(@UserId() userId: string): Promise<RefreshTokenResponse> {
     return await this.authService.refreshToken(userId);
   }
