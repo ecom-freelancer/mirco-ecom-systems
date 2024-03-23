@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { RedisKeyPrefix, RedisService } from '@packages/nest-redis';
-import { generateSessionId } from '@packages/nest-helper';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()
@@ -25,6 +24,12 @@ export class SessionService {
       `${RedisKeyPrefix.SESSION}:${userId}:${sessionId}`,
       this.configService.get('ACCESS_TOKEN_VALID_DURATION') * 24 * 60 * 60,
       '',
+    );
+  }
+
+  async checkSessionExists(userId: string, sessionId: string): Promise<number> {
+    return await this.redisService._exists(
+      `${RedisKeyPrefix.SESSION}:${userId}:${sessionId}`,
     );
   }
 }

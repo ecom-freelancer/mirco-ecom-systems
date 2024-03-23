@@ -7,8 +7,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { APP_GUARD, Reflector } from '@nestjs/core';
-import { AuthService } from './auth.service';
 import { extractTokenFromHeader } from '@packages/nest-helper';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import { SessionService } from '../session/session.service';
 
 export const ROUTE_IS_PROTECTED = 'ROUTE_IS_PROTECTED';
 
@@ -17,7 +19,9 @@ export const Protected = () => SetMetadata(ROUTE_IS_PROTECTED, true);
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(
-    private authService: AuthService,
+    private configService: ConfigService,
+    private jwtService: JwtService,
+    private sessionService: SessionService,
     private reflector: Reflector,
   ) {}
 
@@ -38,8 +42,25 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const payload = await this.authService.verifyAsync(token);
-    request['userId'] = payload.sub;
+    let payload = { sub: '', sessionId: '' };
+
+    // If cannot verify -> throw Unauthorized
+    try {
+      payload = await this.jwtService.verifyAsync(token, {
+        secret: this.configService.get('JWT_SECRET'),
+      });
+    } catch (_) {
+      throw new UnauthorizedException();
+    }
+
+    const { sub, sessionId } = payload;
+
+    if (!(await this.sessionService.checkSessionExists(sub, sessionId))) {
+      throw new UnauthorizedException();
+    }
+
+    request['userId'] = sub;
+    request['sessionId'] = sessionId;
     return true;
   }
 }
