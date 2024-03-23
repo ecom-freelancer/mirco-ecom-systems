@@ -3,15 +3,19 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { comparePassword, hashPassword } from '@packages/nest-helper';
+import {
+  comparePassword,
+  generateSessionId,
+  hashPassword,
+} from '@packages/nest-helper';
 import { CustomerService } from '../customer/customer.service';
 import { RegisterDto } from './dtos/register.dto';
 import { ConfigService } from '@nestjs/config';
 import { LoginResponse } from './dtos/login.dto';
-import { CustomerEntity } from '@packages/nest-mysql';
 import { plainToInstance } from 'class-transformer';
 import { JwtService } from '@nestjs/jwt';
 import { GetProfileResponse } from './dtos/get-profile.dto';
+import { SessionService } from '../session/session.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +23,7 @@ export class AuthService {
     private readonly customerService: CustomerService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private readonly sessionService: SessionService,
   ) {}
 
   async registerWithAccount(registerDto: RegisterDto) {
@@ -63,7 +68,10 @@ export class AuthService {
       throw new BadRequestException('Email or password is incorrect.');
     }
 
-    return this.generateTokens(customer);
+    const sessionId = generateSessionId();
+    await this.sessionService.storeSession(customer.id, sessionId);
+
+    return this.generateTokens(customer.id, sessionId);
   }
 
   async getProfileById(id: string): Promise<GetProfileResponse> {
@@ -83,9 +91,23 @@ export class AuthService {
     return response;
   }
 
+  async checkPassword(id: string, password: string) {
+    const user = await this.customerService.getCustomerById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    if (!(await comparePassword(password, user.password))) {
+      throw new BadRequestException('Password is incorrect.');
+    }
+
+    return 'Correct password';
+  }
+
   //---------------------------- Helpers function ----------------------------
-  async generateTokens(user: CustomerEntity) {
-    const payload = { sub: user.id };
+  async generateTokens(customerId: string, sesssionId: string) {
+    const payload = { sub: customerId, sesssionId };
 
     const accessToken = await this.generateJWT(
       payload,
