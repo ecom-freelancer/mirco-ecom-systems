@@ -96,8 +96,10 @@ export class AuthController {
   @Post('reset-password')
   @HttpCode(200)
   @HttpCode(401)
-  async resetPassword(@Body() payload: ResetPasswordDto) {
+  @ApiSuccessResponse({ status: 200 })
+  async resetPassword(@Body() payload: ResetPasswordDto): Promise<string> {
     await this.authService.resetPassword(payload);
+    return 'Reset password success. Please login again.';
   }
 
   @Post('check-password')
