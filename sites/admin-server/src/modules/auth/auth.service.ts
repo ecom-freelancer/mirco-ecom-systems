@@ -125,14 +125,20 @@ export class AuthService {
     await this.sessionService.clearAllSession(user.id);
   }
 
-  async refreshToken(id: string): Promise<RefreshTokenResponse> {
+  async refreshToken(
+    id: string,
+    currentSessionId: string,
+  ): Promise<RefreshTokenResponse> {
     const user = await this.userService.getUserById(id);
-
     if (!user) {
       throw new NotFoundException('User not found');
     }
 
-    return this.generateTokens(user.id, '');
+    await this.sessionService.deleteSession(user.id, currentSessionId);
+
+    const newSessionId = generateSessionId();
+    await this.sessionService.storeSession(user.id, newSessionId);
+    return this.generateTokens(user.id, newSessionId);
   }
 
   async forgotPassword(payload: ForgotPasswordDto) {
