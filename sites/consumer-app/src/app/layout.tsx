@@ -1,13 +1,19 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 import './global.css';
 import React from 'react';
-import Header from '@/modules/layout/containers/AppHeader';
 import { AuthProvider } from '@/modules/auth/AuthProvider';
-import { Footer } from '@/modules/layout/components/footer/Footer';
 import { AppLayoutProvider } from '@/modules/layout/providers';
+import { AppFooter, AppHeader } from '@/modules/layout/containers';
+import { MainContent } from '@/modules/layout/components';
 
-const inter = Inter({ subsets: ['latin'] });
+import { Poppins } from 'next/font/google';
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-poppins',
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+});
 
 export const metadata: Metadata = {
   title: 'Hello App',
@@ -20,13 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html className={inter.className} suppressHydrationWarning>
+    <html className={`${poppins.variable}`} suppressHydrationWarning>
       <body>
         <AppLayoutProvider>
           <AuthProvider>
-            <Header />
-            {children}
-            <Footer />
+            <AppHeader />
+            <MainContent>{children}</MainContent>
+            <AppFooter />
           </AuthProvider>
         </AppLayoutProvider>
       </body>

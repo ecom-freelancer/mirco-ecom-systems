@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { AuthContext } from './auth-context';
 import dynamic from 'next/dynamic';
 
@@ -34,10 +34,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       value={{ userId: userId, openLoginModal: () => setShowLoginModal(true) }}
     >
       {children}
-      <AuthModal
-        showLoginModal={showLoginModal}
-        setShowLoginModal={setShowLoginModal}
-      />
+      <Suspense>
+        <AuthModal
+          showLoginModal={showLoginModal}
+          setShowLoginModal={setShowLoginModal}
+        />
+      </Suspense>
     </AuthContext.Provider>
   );
 };

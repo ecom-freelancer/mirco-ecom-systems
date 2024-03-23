@@ -5,7 +5,7 @@ import { CiBoxList } from 'react-icons/ci';
 ``;
 
 import React from 'react';
-import { Logo } from './Logo';
+import { Logo } from '../Logo';
 import { BiSearchAlt } from 'react-icons/bi';
 import { VscAccount } from 'react-icons/vsc';
 import { Container } from '../Contatiner';
@@ -13,68 +13,58 @@ import { PiShoppingCartSimpleBold } from 'react-icons/pi';
 
 export interface AppHeaderProps {}
 
-export const AppHeader: React.FC<AppHeaderProps> = ({}) => {
+export const MainHeader: React.FC<AppHeaderProps> = ({}) => {
   return (
-    <React.Fragment>
-      <StyldAppHeader>
-        <Container padding={['s20', 0]}>
-          <Wrapper>
-            {/* left header - category list, contact info*/}
-            {/* center header: logo */}
-            {/* right header: search, auth icon, cart */}
-            <LeftHeader gap="s12" className="left-header" justify="start">
-              <AllCategories>
-                <Flex gapX="s12" align="start">
-                  <CiBoxList className="icon-header" />
+    <StyldAppHeader>
+      <Container padding={['s20', 0]}>
+        <Wrapper>
+          <LeftHeader gap="s12" className="left-header" justify="start">
+            <AllCategories>
+              <Flex gapX="s12" align="start">
+                <CiBoxList className="icon-header" />
 
-                  <Flex direction="column" gap="s4" className="hide-md">
-                    <Text block transform="uppercase" fontSize="xs">
-                      All
-                    </Text>
-                    <Text
-                      block
-                      transform="uppercase"
-                      fontSize="xs"
-                      color="primary"
-                    >
-                      Categories
-                    </Text>
-                  </Flex>
-                </Flex>
-              </AllCategories>
-              <Box></Box>
-            </LeftHeader>
-            <CenterHeader className="center-header">
-              <Logo />
-            </CenterHeader>
-            <RightHeader gap="s32" className="right-header" justify="end">
-              <BiSearchAlt className="icon-header" />
-              <VscAccount className="icon-header" />
-              <Flex gapX="s16">
-                <PiShoppingCartSimpleBold className="icon-header" />
                 <Flex direction="column" gap="s4" className="hide-md">
-                  <Text block fontSize="xs" transform="uppercase">
-                    My cart
+                  <Text block transform="uppercase" fontSize="xs">
+                    All
                   </Text>
                   <Text
                     block
-                    fontSize="xs"
                     transform="uppercase"
+                    fontSize="xs"
                     color="primary"
                   >
-                    0 item(s) - $0.00
+                    Categories
                   </Text>
                 </Flex>
               </Flex>
-            </RightHeader>
-          </Wrapper>
-        </Container>
-      </StyldAppHeader>
-    </React.Fragment>
+            </AllCategories>
+            <Box></Box>
+          </LeftHeader>
+          <CenterHeader className="center-header">
+            <Logo />
+          </CenterHeader>
+          <RightHeader gap="s32" className="right-header" justify="end">
+            <BiSearchAlt className="icon-header" />
+            <VscAccount className="icon-header" />
+            <Flex gapX="s16">
+              <PiShoppingCartSimpleBold className="icon-header" />
+              <Flex direction="column" gap="s4" className="hide-md">
+                <Text block fontSize="xs" transform="uppercase">
+                  My cart
+                </Text>
+                <Text block fontSize="xs" transform="uppercase" color="primary">
+                  0 item(s) - $0.00
+                </Text>
+              </Flex>
+            </Flex>
+          </RightHeader>
+        </Wrapper>
+      </Container>
+    </StyldAppHeader>
   );
 };
 
-const StyldAppHeader = styled.header`
+const StyldAppHeader = styled.div`
   border-bottom: 1px solid ${({ theme }) => theme.colors.greyA100};
   background-color: ${({ theme }) => theme.colors.secondary};
   color: ${({ theme }) => theme.colors.lightA500};

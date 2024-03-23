@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
  * @param options
  * @returns
  */
-export const useCountDown = (
+export const useCountdown = (
   timer: number,
   options?: {
     onEnd?: () => void;

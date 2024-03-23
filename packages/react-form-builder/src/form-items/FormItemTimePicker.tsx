@@ -16,6 +16,7 @@ export const FormItemTimePicker = <T,>({
   ...props
 }: FormItemDatePickerProps<T>) => {
   const { formType, timeFormat, ...rest } = config;
+
   return (
     <TimePicker
       style={{

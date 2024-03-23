@@ -1,5 +1,5 @@
-import { useCountDown } from './useCountDown';
 import { useEffect } from 'react';
+import { useCountdown } from './useCountdown';
 
 export const useInterval = (
   callback: () => void,
@@ -19,7 +19,7 @@ export const useInterval = (
     }
   }, [condition, activeOnStart, callback]);
 
-  const [, setTime] = useCountDown(delay, {
+  const [, setTime] = useCountdown(delay, {
     onEnd: onTimeEnd,
   });
 };

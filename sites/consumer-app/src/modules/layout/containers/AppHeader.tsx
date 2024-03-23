@@ -1,11 +1,11 @@
 import React from 'react';
-import { AppHeader } from '../components';
+import { MainHeader, NavigatorBar } from '../components';
 
-const Header = async () => {
-  /**
-   * console log here will not be display on browser console
-   */
-  return <AppHeader />;
+export const AppHeader = async () => {
+  return (
+    <header>
+      <MainHeader />
+      <NavigatorBar />
+    </header>
+  );
 };
-
-export default Header;

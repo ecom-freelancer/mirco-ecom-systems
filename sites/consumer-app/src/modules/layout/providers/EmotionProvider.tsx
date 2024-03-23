@@ -30,6 +30,7 @@ export default function EmotionProvider({ children }: { children: ReactNode }) {
           colors: {
             secondary: '#266cde',
             primary: '#fcd116',
+            textPrimary: '#010101',
           },
         }}
       >

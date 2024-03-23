@@ -11,6 +11,7 @@ export default function AntdProvider({ children }: { children: ReactNode }) {
           token: {
             colorPrimary: '#fcd116',
             fontFamily: 'Poppins, sans-serif',
+            colorText: '#010101',
           },
         }}
       >
