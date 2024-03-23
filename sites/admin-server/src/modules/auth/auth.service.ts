@@ -9,13 +9,12 @@ import { JwtService } from '@nestjs/jwt';
 import { plainToInstance } from 'class-transformer';
 import { LoginResponse } from './dtos/login.dto';
 import { JwtPayload } from './interfaces/jwt.interface';
-import { UserEntity } from '@packages/nest-mysql';
 import { ConfigService } from '@nestjs/config';
 import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-import { RedisService } from '@packages/nest-redis';
+import { RedisKeyPrefix, RedisService } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { VerifyOtpActions } from './constants/otp.constant';
@@ -30,7 +29,11 @@ import {
 } from './interfaces/otp.interface';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import dayjs from 'dayjs';
-import { hashPassword, comparePassword } from '@packages/nest-helper';
+import {
+  hashPassword,
+  comparePassword,
+  generateSessionId,
+} from '@packages/nest-helper';
 
 @Injectable()
 export class AuthService {
@@ -67,7 +70,14 @@ export class AuthService {
       throw new BadRequestException('Email or password is incorrect.');
     }
 
-    return this.generateTokens(user);
+    const sessionId = generateSessionId();
+    await this.redisService._setex(
+      `${RedisKeyPrefix.SESSION}:${user.id}:${sessionId}`,
+      this.configService.get('ACCESS_TOKEN_VALID_DURATION') * 24 * 60 * 60,
+      '',
+    );
+
+    return this.generateTokens(user.id, sessionId);
   }
 
   async registerWithAccount(registerDto: RegisterDto) {
@@ -120,7 +130,7 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    return this.generateTokens(user);
+    return this.generateTokens(user.id, '');
   }
 
   async forgotPassword(payload: ForgotPasswordDto) {
@@ -138,13 +148,13 @@ export class AuthService {
     // Step 2: store OTP into Redis
     const otp = generateOtp();
     const key = getResetPasswordRedisKey(email);
-    const isExisted = await this.redisService.redis.exists(key);
+    const isExisted = await this.redisService._exists(key);
 
     const now = dayjs();
 
     if (!isExisted) {
       // If users have not sent any request before -> Just store it
-      await this.redisService.redis.hset(key, {
+      await this.redisService._hset(key, {
         otp,
         requestAttemptTimestamp: JSON.stringify([now.valueOf()]),
         verifyAttemptCount: 0,
@@ -154,7 +164,7 @@ export class AuthService {
         this.configService.get('OTP_RESTRICT_REQUEST_DURATION'),
       );
 
-      const currentVerifyInfo = (await this.redisService.redis.hgetall(
+      const currentVerifyInfo = (await this.redisService._hgetall(
         key,
       )) as unknown as CurrentVerifyInfo;
 
@@ -190,7 +200,7 @@ export class AuthService {
         countRecentRequest >
         parseInt(this.configService.get('OTP_MAX_REQUEST_ATTEMPT_COUNT'))
       ) {
-        await this.redisService.redis.hset(key, {
+        await this.redisService._hset(key, {
           otp: '',
           requestAttemptTimestamp: JSON.stringify([]),
           verifyAttemptCount: 0,
@@ -202,7 +212,7 @@ export class AuthService {
       }
 
       // If okay => store to Redis with new timestamp added to list
-      await this.redisService.redis.hset(key, {
+      await this.redisService._hset(key, {
         otp,
         requestAttemptTimestamp: JSON.stringify([
           ...JSON.parse(currentVerifyInfo.requestAttemptTimestamp),
@@ -232,12 +242,12 @@ export class AuthService {
 
     const key = getResetPasswordRedisKey(email);
 
-    const isExisted = await this.redisService.redis.exists(key);
+    const isExisted = await this.redisService._exists(key);
     if (!isExisted) {
       throw new BadRequestException('Please send an OTP request first');
     }
 
-    const currentVerifyInfo = (await this.redisService.redis.hgetall(
+    const currentVerifyInfo = (await this.redisService._hgetall(
       key,
     )) as unknown as CurrentVerifyInfo;
     const now = dayjs();
@@ -272,7 +282,7 @@ export class AuthService {
     }
 
     if (currentVerifyInfo.otp !== otp) {
-      await this.redisService.redis.hset(key, [
+      await this.redisService._hset(key, [
         'verifyAttemptCount',
         parseInt(currentVerifyInfo.verifyAttemptCount) + 1,
       ]);
@@ -284,7 +294,7 @@ export class AuthService {
       parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
     );
     await this.userService.updateAccount({ ...user, password: hashedPassword });
-    await this.redisService.redis.del(key);
+    await this.redisService._del(key);
   }
 
   async checkPassword(id: string, password: string) {
@@ -303,16 +313,16 @@ export class AuthService {
 
   //---------------------------- Helpers function ----------------------------
 
-  async generateTokens(user: UserEntity) {
-    const payload: JwtPayload = { sub: user.id };
+  async generateTokens(id: string, sessionId: string) {
+    const payload: JwtPayload = { sub: id, sessionId };
 
     const accessToken = await this.generateJWT(
       payload,
-      this.configService.get('JWT_ACCESS_TOKEN_VALID_DURATION'),
+      this.configService.get('ACCESS_TOKEN_VALID_DURATION') + 'd',
     );
     const refreshToken = await this.generateJWT(
       payload,
-      this.configService.get('JWT_REFRESH_TOKEN_VALID_DURATION'),
+      this.configService.get('REFRESH_TOKEN_VALID_DURATION') + 'd',
     );
 
     return plainToInstance(LoginResponse, {
