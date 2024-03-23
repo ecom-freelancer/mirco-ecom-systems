@@ -58,4 +58,8 @@ export class CustomerService {
     const { id, email, ...newData } = payload;
     return await this.customerRepository.update({ id }, newData);
   }
+
+  async checkDuplicatedPhoneWithOther(id: string, phone: string) {
+    return (await this.customerRepository.count({ where: { id, phone } })) > 0;
+  }
 }

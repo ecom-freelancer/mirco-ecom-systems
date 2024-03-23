@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpCode, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, Post, Put } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import {
@@ -16,6 +16,7 @@ import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { UpdateAccountDto } from './dtos/update-account.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -115,5 +116,17 @@ export class AuthController {
     @Body() payload: CheckPasswordDto,
   ) {
     return await this.authService.checkPassword(userId, payload.password);
+  }
+
+  @Put('update-account')
+  @Protected()
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ status: 200, message: 'Success' })
+  async updateAccount(
+    @UserId() userId: string,
+    @Body() payload: UpdateAccountDto,
+  ) {
+    return await this.authService.updateAccount(userId, payload);
   }
 }

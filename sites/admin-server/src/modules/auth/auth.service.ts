@@ -17,10 +17,6 @@ import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { RedisService, getResetPasswordRedisKey } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
-import {
-  CurrentVerifyInfo,
-  SendEmailPayload,
-} from './interfaces/otp.interface';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import dayjs from 'dayjs';
 import {
@@ -30,8 +26,11 @@ import {
   generateOtp,
   mapActionsToSubject,
   VerifyOtpActions,
+  CurrentVerifyInfo,
+  SendEmailPayload,
 } from '@packages/nest-helper';
 import { SessionService } from '../session/session.service';
+import { UpdateAccountDto } from './dtos/update-account.dto';
 
 @Injectable()
 export class AuthService {
@@ -322,6 +321,16 @@ export class AuthService {
     }
 
     return 'Correct password';
+  }
+
+  async updateAccount(id: string, payload: UpdateAccountDto) {
+    const user = await this.userService.getUserById(id);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.userService.updateAccount({ ...user, ...payload });
   }
 
   //---------------------------- Helpers function ----------------------------
