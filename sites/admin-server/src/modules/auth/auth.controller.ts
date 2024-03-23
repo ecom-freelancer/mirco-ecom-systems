@@ -4,6 +4,7 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
   ApiErrorResponse,
   ApiSuccessResponse,
+  SessionId,
   UserId,
 } from '@packages/nest-helper';
 import { AuthService } from './auth.service';
@@ -79,9 +80,11 @@ export class AuthController {
   @HttpCode(200)
   @HttpCode(401)
   @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
-  // TODO: If token is changed -> Clear its current session
-  async refreshToken(@UserId() userId: string): Promise<RefreshTokenResponse> {
-    return await this.authService.refreshToken(userId);
+  async refreshToken(
+    @UserId() userId: string,
+    @SessionId() sessionId: string,
+  ): Promise<RefreshTokenResponse> {
+    return await this.authService.refreshToken(userId, sessionId);
   }
 
   @Post('forgot-password')

@@ -44,7 +44,7 @@ export class AuthGuard implements CanActivate {
 
     let payload = { sub: '', sessionId: '' };
 
-    // If cannot verify -> throw Unauthorized
+    // If we cannot verify -> throw Unauthorized
     try {
       payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),

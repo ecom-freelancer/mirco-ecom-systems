@@ -32,4 +32,10 @@ export class SessionService {
       `${RedisKeyPrefix.SESSION}:${userId}:${sessionId}`,
     );
   }
+
+  async deleteSession(userId: string, sessionId: string) {
+    await this.redisService._del(
+      `${RedisKeyPrefix.SESSION}:${userId}:${sessionId}`,
+    );
+  }
 }
