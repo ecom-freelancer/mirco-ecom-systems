@@ -35,6 +35,8 @@ This repository is mono-repo based on yarn workspace v4. The structure include o
 |---yarnrc.yaml
 
 ```
+### Database design 
+https://dbdocs.io/tiep.nt/tiep?schema=public&view=relationships 
 
 
 
