@@ -57,19 +57,22 @@ export class AuthController {
   @Post('change-password')
   @Protected()
   @HttpCode(200)
-
-  // TODO: If password is changed -> Clear all session
+  @ApiSuccessResponse({ status: 200 })
   async changePassword(
     @UserId() userId: string,
     @Body() payload: ChangePasswordDto,
-  ): Promise<void> {
-    // @ts-ignore
-    return await this.authService.changePassword(userId, payload);
+  ): Promise<string> {
+    await this.authService.changePassword(userId, payload);
+    return 'Change password success. Please login again.';
   }
 
   @Post('logout')
-  // TODO: Clear all session
-  async logout() {}
+  @Protected()
+  @HttpCode(200)
+  @ApiSuccessResponse({ status: 200 })
+  async logout(@UserId() userId: string): Promise<void> {
+    await this.authService.logout(userId);
+  }
 
   @Get('refresh-token')
   @Protected()
