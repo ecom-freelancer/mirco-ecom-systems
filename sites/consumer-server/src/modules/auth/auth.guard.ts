@@ -10,6 +10,7 @@ import { APP_GUARD, Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { SessionService } from '../session/session.service';
 
 export const ROUTE_IS_PROTECTED = 'ROUTE_IS_PROTECTED';
 
@@ -20,6 +21,7 @@ export class AuthGuard implements CanActivate {
   constructor(
     private jwtService: JwtService,
     private configService: ConfigService,
+    private sessionService: SessionService,
     private reflector: Reflector,
   ) {}
 
@@ -40,7 +42,9 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Missing token');
     }
 
-    let payload = { sub: '' };
+    let payload = { sub: '', sessionId: '' };
+
+    // If we cannot verify -> throw Unauthorized
     try {
       payload = await this.jwtService.verifyAsync(token, {
         secret: this.configService.get('JWT_SECRET'),
@@ -49,7 +53,14 @@ export class AuthGuard implements CanActivate {
       throw new UnauthorizedException('Token is invalid');
     }
 
-    request['userId'] = payload.sub;
+    const { sub, sessionId } = payload;
+
+    if (!(await this.sessionService.checkSessionExists(sub, sessionId))) {
+      throw new UnauthorizedException();
+    }
+
+    request['userId'] = sub;
+    request['sessionId'] = sessionId;
     return true;
   }
 

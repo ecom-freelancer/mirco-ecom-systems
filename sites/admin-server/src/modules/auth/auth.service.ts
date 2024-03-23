@@ -14,15 +14,9 @@ import { GetProfileResponse } from './dtos/profile.dto';
 import { RegisterDto } from './dtos/register.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-import { RedisService } from '@packages/nest-redis';
+import { RedisService, getResetPasswordRedisKey } from '@packages/nest-redis';
 import { MailerService } from '@packages/nest-mail';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
-import { VerifyOtpActions } from './constants/otp.constant';
-import {
-  generateOtp,
-  getResetPasswordRedisKey,
-  mapActionsToSubject,
-} from './helpers/otp.helper';
 import {
   CurrentVerifyInfo,
   SendEmailPayload,
@@ -33,6 +27,9 @@ import {
   hashPassword,
   comparePassword,
   generateSessionId,
+  generateOtp,
+  mapActionsToSubject,
+  VerifyOtpActions,
 } from '@packages/nest-helper';
 import { SessionService } from '../session/session.service';
 
