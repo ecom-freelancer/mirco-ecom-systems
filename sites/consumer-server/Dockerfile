@@ -21,4 +21,6 @@ RUN yarn workspaces focus --production  @sites/consumer-server
 
 ENV NODE_ENV=production
 
+CMD [ "yarn", "start:consumer-server" ]
+
 

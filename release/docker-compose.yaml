@@ -34,11 +34,13 @@ services:
     depends_on:
       - admin-server
       - admin-site
+      - consumer-server
+      - consumer-app
 
     networks:
       - app-network
   db-migration: 
-    image: tiepnt/ecom-80-admin-server:v1.0.6
+    image: tiepnt/ecom-80-admin-server:v1.0.8
     depends_on: 
         - mysql
     env_file: 
@@ -52,7 +54,7 @@ services:
 
    
   admin-server: 
-    image: tiepnt/ecom-80-admin-server:v1.0.6
+    image: tiepnt/ecom-80-admin-server:v1.0.8
     env_file: 
       - ./env/admin_server.env
     ports:
@@ -65,14 +67,14 @@ services:
     networks:
       - app-network
   admin-site:
-    image: tiepnt/ecom-80-admin-site:v1.0.6
+    image: tiepnt/ecom-80-admin-site:v1.0.8
     expose:
       - 8000
     networks:
       - app-network
 
   consumer-server: 
-    image: tiepnt/ecom-80-consumer-server:v1.0.6
+    image: tiepnt/ecom-80-consumer-server:v1.0.8
     env_file: 
       - ./env/consumer_server.env
     ports:
@@ -80,13 +82,14 @@ services:
     depends_on:
       - mysql
       - redis
+      
     restart: on-failure
     command: ['yarn', 'start:consumer-server']
     networks:
       - app-network
 
   consumer-app:
-    image: tiepnt/ecom-80-consumer-app:v1.0.6
+    image: tiepnt/ecom-80-consumer-app:v1.0.8
     expose:
       - 3000
     command: ['yarn', 'start:consumer-app']
