@@ -32,6 +32,7 @@ yarn && yarn build:all
 
 # Thư mục của consumer
 CONSUMER_APP_DIR="sites/consumer-app/Dockerfile"
+CONSUMER_SERVER_DIR="sites/consumer-server/Dockerfile"
 
 # Thư mục của admin
 ADMIN_SERVER_DIR="sites/admin-server/Dockerfile"
@@ -41,10 +42,12 @@ ADMIN_APP_DIR="sites/admin-site/Dockerfile"
 docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-admin-server:$NEXT_TAG" $CONTEXT  -f $ADMIN_SERVER_DIR 
 docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-admin-site:$NEXT_TAG" $CONTEXT -f $ADMIN_APP_DIR 
 docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-consumer-app:$NEXT_TAG" $CONTEXT -f $CONSUMER_APP_DIR 
+docker build  --platform=linux/amd64 -t "$DOCKER_REPO/$REPO-consumer-server:$NEXT_TAG" $CONTEXT -f $CONSUMER_SERVER_DIR 
 
 
 
 docker push "$DOCKER_REPO/$REPO-admin-server:$NEXT_TAG"
 docker push "$DOCKER_REPO/$REPO-admin-site:$NEXT_TAG"
 docker push "$DOCKER_REPO/$REPO-consumer-app:$NEXT_TAG"
+docker push "$DOCKER_REPO/$REPO-consumer-server:$NEXT_TAG"
 
