@@ -14,6 +14,8 @@ import { GetProfileResponse } from './dtos/get-profile.dto';
 import { CheckPasswordDto } from './dtos/check-password.dto';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -85,14 +87,23 @@ export class AuthController {
     return await this.authService.refreshToken(userId, sessionId);
   }
 
-  // @Post('reset-password')
-  // @HttpCode(200)
-  // @HttpCode(401)
-  // @ApiSuccessResponse({ status: 200 })
-  // async resetPassword(@Body() payload: ResetPasswordDto): Promise<string> {
-  //   await this.authService.resetPassword(payload);
-  //   return 'Reset password success. Please login again.';
-  // }
+  @Post('forgot-password')
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ status: 200 })
+  async forgotPassword(@Body() payload: ForgotPasswordDto) {
+    await this.authService.forgotPassword(payload);
+    return 'An email with OTP code has been sent';
+  }
+
+  @Post('reset-password')
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ status: 200 })
+  async resetPassword(@Body() payload: ResetPasswordDto): Promise<string> {
+    await this.authService.resetPassword(payload);
+    return 'Reset password success. Please login again.';
+  }
 
   @Post('check-password')
   @Protected()

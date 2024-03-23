@@ -6,8 +6,13 @@ import {
 } from '@nestjs/common';
 import {
   comparePassword,
+  CurrentVerifyInfo,
+  generateOtp,
   generateSessionId,
   hashPassword,
+  mapActionsToSubject,
+  SendEmailPayload,
+  VerifyOtpActions,
 } from '@packages/nest-helper';
 import { CustomerService } from '../customer/customer.service';
 import { RegisterDto } from './dtos/register.dto';
@@ -19,6 +24,11 @@ import { GetProfileResponse } from './dtos/get-profile.dto';
 import { SessionService } from '../session/session.service';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import dayjs from 'dayjs';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { getResetPasswordRedisKey, RedisService } from '@packages/nest-redis';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { MailerService } from '@packages/nest-mail';
 
 @Injectable()
 export class AuthService {
@@ -26,7 +36,9 @@ export class AuthService {
     private readonly customerService: CustomerService,
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    private readonly redisService: RedisService,
     private readonly sessionService: SessionService,
+    private readonly mailerService: MailerService,
   ) {}
 
   async registerWithAccount(registerDto: RegisterDto) {
@@ -149,6 +161,176 @@ export class AuthService {
     return this.generateTokens(user.id, newSessionId);
   }
 
+  async forgotPassword(payload: ForgotPasswordDto) {
+    // STEP 1: gather user's info
+    const { email } = payload;
+    if (!email) {
+      throw new BadRequestException('Email is missing');
+    }
+
+    const user = await this.customerService.getCustomerByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Step 2: store OTP into Redis
+    const otp = generateOtp();
+    const key = getResetPasswordRedisKey(email);
+    const isExisted = await this.redisService._exists(key);
+
+    const now = dayjs();
+
+    if (!isExisted) {
+      // If users have not sent any request before -> Just store it
+      await this.redisService._hset(key, {
+        otp,
+        requestAttemptTimestamp: JSON.stringify([now.valueOf()]),
+        verifyAttemptCount: 0,
+      });
+    } else {
+      const restrictedDuration = parseInt(
+        this.configService.get('OTP_RESTRICT_REQUEST_DURATION'),
+      );
+
+      const currentVerifyInfo = (await this.redisService._hgetall(
+        key,
+      )) as unknown as CurrentVerifyInfo;
+
+      // If users are being restricted -> Throw error
+      if (
+        !!currentVerifyInfo.restrictedEndedAt &&
+        now.isBefore(dayjs(parseInt(currentVerifyInfo.restrictedEndedAt)))
+      ) {
+        throw new BadRequestException(
+          `You have sent too many requests, please wait for ${restrictedDuration} minutes to send a new OTP request`,
+        );
+      }
+
+      // If users send too many request in a duration -> Restricted
+      // Calculate from now subtract 10 minutes ago
+      const requestAttemptTimestampList = JSON.parse(
+        currentVerifyInfo.requestAttemptTimestamp,
+      );
+
+      const maxRequestDuration = now.subtract(
+        this.configService.get('OTP_MAX_REQUEST_ATTEMPT_DURATION'),
+        'minutes',
+      );
+
+      let countRecentRequest = 1;
+      requestAttemptTimestampList.forEach((attempt) => {
+        if (dayjs(attempt).isAfter(maxRequestDuration)) {
+          countRecentRequest++;
+        }
+      });
+
+      if (
+        countRecentRequest >
+        parseInt(this.configService.get('OTP_MAX_REQUEST_ATTEMPT_COUNT'))
+      ) {
+        await this.redisService._hset(key, {
+          otp: '',
+          requestAttemptTimestamp: JSON.stringify([]),
+          verifyAttemptCount: 0,
+          restrictedEndedAt: now.add(restrictedDuration, 'minutes').valueOf(),
+        });
+        throw new BadRequestException(
+          `You have sent too many requests, please wait for ${restrictedDuration} to send a new OTP request`,
+        );
+      }
+
+      // If okay => store to Redis with new timestamp added to list
+      await this.redisService._hset(key, {
+        otp,
+        requestAttemptTimestamp: JSON.stringify([
+          ...JSON.parse(currentVerifyInfo.requestAttemptTimestamp),
+          now.valueOf(),
+        ]),
+        verifyAttemptCount: 0,
+      });
+    }
+
+    // Step 3: send email to users
+    const content = `Your OTP code to reset password is <b>${otp}</b>`;
+    await this.sendEmail({
+      destination: email,
+      content,
+      action: VerifyOtpActions.RESET_PASSWORD,
+    });
+  }
+
+  // verify OTP and reset password
+  async resetPassword(payload: ResetPasswordDto) {
+    const { otp, newPassword, email } = payload;
+
+    const user = await this.customerService.getCustomerByEmail(email);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const key = getResetPasswordRedisKey(email);
+
+    const isExisted = await this.redisService._exists(key);
+    if (!isExisted) {
+      throw new BadRequestException('Please send an OTP request first');
+    }
+
+    const currentVerifyInfo = (await this.redisService._hgetall(
+      key,
+    )) as unknown as CurrentVerifyInfo;
+    const now = dayjs();
+
+    const requestAttemptTimestampList = JSON.parse(
+      currentVerifyInfo.requestAttemptTimestamp,
+    );
+
+    const lastRequestTimestamp = dayjs(
+      requestAttemptTimestampList[requestAttemptTimestampList.length - 1],
+    );
+
+    const validTime = lastRequestTimestamp.add(
+      parseInt(this.configService.get('OTP_VALID_DURATION')),
+      'minutes',
+    );
+
+    // Check all verification failed cases
+    if (now.isAfter(validTime)) {
+      throw new BadRequestException(
+        'OTP is expired. Please send a new Reset password OTP request.',
+      );
+    }
+
+    if (
+      parseInt(currentVerifyInfo.verifyAttemptCount) ===
+      parseInt(this.configService.get('OTP_MAX_VERIFY_ATTEMPT_COUNT'))
+    ) {
+      throw new BadRequestException(
+        'You have exceeded the number of OTP verification. Please send a new Reset password OTP request.',
+      );
+    }
+
+    if (currentVerifyInfo.otp !== otp) {
+      await this.redisService._hset(key, [
+        'verifyAttemptCount',
+        parseInt(currentVerifyInfo.verifyAttemptCount) + 1,
+      ]);
+      throw new BadRequestException('OTP is incorrect.');
+    }
+
+    const hashedPassword = await hashPassword(
+      newPassword,
+      parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+    );
+    await this.customerService.updateAccount({
+      ...user,
+      password: hashedPassword,
+    });
+    await this.redisService._del(key);
+
+    // Clear all session if users login at other devices
+    await this.sessionService.clearAllSession(user.id);
+  }
+
   //---------------------------- Helpers function ----------------------------
   async generateTokens(customerId: string, sessionId: string) {
     const payload = { sub: customerId, sessionId };
@@ -172,6 +354,16 @@ export class AuthService {
     return await this.jwtService.signAsync(payload, {
       expiresIn,
       secret: this.configService.get('JWT_SECRET'),
+    });
+  }
+
+  async sendEmail(payload: SendEmailPayload): Promise<void> {
+    const { destination, action, content } = payload;
+
+    await this.mailerService.sendMail({
+      to: destination, // list of receivers
+      subject: mapActionsToSubject(action), // Subject line
+      html: content, // HTML body content
     });
   }
 }

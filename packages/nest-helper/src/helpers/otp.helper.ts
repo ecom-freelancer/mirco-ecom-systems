@@ -1,5 +1,4 @@
-import { VerifyOtpActions } from '../constants/otp.constant';
-import { RedisKeyPrefix } from '@packages/nest-redis';
+import { VerifyOtpActions } from '../constants';
 
 export const generateOtp = (): string => {
   // Generate a random number between 0 and 999999
@@ -16,8 +15,4 @@ export const actionsToSubjectMapping = new Map([
 
 export const mapActionsToSubject = (action: VerifyOtpActions) => {
   return actionsToSubjectMapping.get(action);
-};
-
-export const getResetPasswordRedisKey = (account: string) => {
-  return `${RedisKeyPrefix.RESET_PASSWORD}:${account}`;
 };
