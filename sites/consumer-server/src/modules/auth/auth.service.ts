@@ -29,6 +29,7 @@ import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { getResetPasswordRedisKey, RedisService } from '@packages/nest-redis';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { MailerService } from '@packages/nest-mail';
+import { UpdateAccountDto } from './dtos/update-account.dto';
 
 @Injectable()
 export class AuthService {
@@ -64,14 +65,14 @@ export class AuthService {
   }
 
   async changePassword(id: string, payload: ChangePasswordDto) {
-    const user = await this.customerService.getCustomerById(id);
-    if (!user) {
+    const customer = await this.customerService.getCustomerById(id);
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
     const { oldPassword, newPassword } = payload;
 
-    if (!(await comparePassword(oldPassword, user.password))) {
+    if (!(await comparePassword(oldPassword, customer.password))) {
       throw new UnauthorizedException('Current password is incorrect.');
     }
 
@@ -81,12 +82,12 @@ export class AuthService {
     );
 
     await this.customerService.updateAccount({
-      ...user,
+      ...customer,
       password: hashedPassword,
     });
 
     // Clear all session if password is changed
-    await this.sessionService.clearAllSession(user.id);
+    await this.sessionService.clearAllSession(customer.id);
   }
 
   async loginWithPassword(
@@ -127,13 +128,13 @@ export class AuthService {
   }
 
   async checkPassword(id: string, password: string) {
-    const user = await this.customerService.getCustomerById(id);
+    const customer = await this.customerService.getCustomerById(id);
 
-    if (!user) {
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
-    if (!(await comparePassword(password, user.password))) {
+    if (!(await comparePassword(password, customer.password))) {
       throw new BadRequestException('Password is incorrect.');
     }
 
@@ -149,27 +150,27 @@ export class AuthService {
     id: string,
     currentSessionId: string,
   ): Promise<RefreshTokenResponse> {
-    const user = await this.customerService.getCustomerById(id);
-    if (!user) {
+    const customer = await this.customerService.getCustomerById(id);
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
-    await this.sessionService.deleteSession(user.id, currentSessionId);
+    await this.sessionService.deleteSession(customer.id, currentSessionId);
 
     const newSessionId = generateSessionId();
-    await this.sessionService.storeSession(user.id, newSessionId);
-    return this.generateTokens(user.id, newSessionId);
+    await this.sessionService.storeSession(customer.id, newSessionId);
+    return this.generateTokens(customer.id, newSessionId);
   }
 
   async forgotPassword(payload: ForgotPasswordDto) {
-    // STEP 1: gather user's info
+    // STEP 1: gather customer's info
     const { email } = payload;
     if (!email) {
       throw new BadRequestException('Email is missing');
     }
 
-    const user = await this.customerService.getCustomerByEmail(email);
-    if (!user) {
+    const customer = await this.customerService.getCustomerByEmail(email);
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
@@ -263,8 +264,8 @@ export class AuthService {
   async resetPassword(payload: ResetPasswordDto) {
     const { otp, newPassword, email } = payload;
 
-    const user = await this.customerService.getCustomerByEmail(email);
-    if (!user) {
+    const customer = await this.customerService.getCustomerByEmail(email);
+    if (!customer) {
       throw new NotFoundException('User not found');
     }
 
@@ -322,13 +323,35 @@ export class AuthService {
       parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
     );
     await this.customerService.updateAccount({
-      ...user,
+      ...customer,
       password: hashedPassword,
     });
     await this.redisService._del(key);
 
     // Clear all session if users login at other devices
-    await this.sessionService.clearAllSession(user.id);
+    await this.sessionService.clearAllSession(customer.id);
+  }
+
+  async updateAccount(id: string, payload: UpdateAccountDto) {
+    const customer = await this.customerService.getCustomerById(id);
+    if (!customer) {
+      throw new NotFoundException('User not found');
+    }
+
+    // Check if phone is duplicated with another account
+    const isExisted = await this.customerService.checkDuplicatedPhoneWithOther(
+      customer.id,
+      payload.phone,
+    );
+
+    if (!isExisted) {
+      throw new BadRequestException('Phone is duplicated');
+    }
+
+    await this.customerService.updateAccount({
+      ...customer,
+      ...payload,
+    });
   }
 
   //---------------------------- Helpers function ----------------------------
