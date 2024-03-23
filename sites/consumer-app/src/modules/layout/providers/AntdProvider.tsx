@@ -9,7 +9,9 @@ export default function AntdProvider({ children }: { children: ReactNode }) {
       <ConfigProvider
         theme={{
           token: {
-            colorPrimary: '#FF6C44',
+            colorPrimary: '#fcd116',
+            fontFamily: 'Poppins, sans-serif',
+            colorText: '#010101',
           },
         }}
       >

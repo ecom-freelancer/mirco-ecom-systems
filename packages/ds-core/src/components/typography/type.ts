@@ -7,4 +7,6 @@ export interface TypographyProps {
   underline?: boolean;
   italic?: boolean;
   lineHeight?: string;
+  block?: boolean;
+  transform?: 'capitalize' | 'uppercase' | 'lowercase' | 'none';
 }

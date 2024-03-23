@@ -28,8 +28,9 @@ export default function EmotionProvider({ children }: { children: ReactNode }) {
       <ThemeProvider
         theme={{
           colors: {
-            secondary: '##425A8B',
-            primary: '#FF6C44',
+            secondary: '#266cde',
+            primary: '#fcd116',
+            textPrimary: '#010101',
           },
         }}
       >

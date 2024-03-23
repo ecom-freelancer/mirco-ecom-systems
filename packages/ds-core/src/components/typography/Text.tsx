@@ -19,4 +19,7 @@ export const Text = styled.span<TextProps>`
     fontSize && `font-size: ${getFontSize(fontSize, theme)};`}
   ${({ fontWeight, theme }) =>
     fontWeight && `font-weight: ${getFontWeight(fontWeight, theme)};`}
+  ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight};`}
+  ${({ block }) => block && `display: block;`}
+  ${({ transform }) => transform && `text-transform: ${transform};`}
 `;

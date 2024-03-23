@@ -1,6 +1,6 @@
 'use client';
 
-import { Logo } from '@/modules/layout/components/header/Logo';
+import { Logo } from '@/modules/layout/components/Logo';
 import { Box, Flex, Heading, styled, Text } from '@packages/ds-core';
 import React, { useState } from 'react';
 import { SiginInForm, SignUpForm } from '@packages/react-user';
