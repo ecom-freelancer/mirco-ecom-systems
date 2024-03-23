@@ -4,7 +4,7 @@ import { AuthService } from './auth.service';
 import {
   ApiErrorResponse,
   ApiSuccessResponse,
-  // SessionId,
+  SessionId,
   UserId,
 } from '@packages/nest-helper';
 import { RegisterDto } from './dtos/register.dto';
@@ -12,6 +12,8 @@ import { LoginResponse, LoginWithPasswordDto } from './dtos/login.dto';
 import { Protected } from './auth.guard';
 import { GetProfileResponse } from './dtos/get-profile.dto';
 import { CheckPasswordDto } from './dtos/check-password.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -51,38 +53,38 @@ export class AuthController {
   @Post('login-with-facebook')
   async loginWithFacebook() {}
 
-  // @Post('change-password')
-  // @Protected()
-  // @HttpCode(200)
-  // @ApiSuccessResponse({ status: 200 })
-  // async changePassword(
-  //   @UserId() userId: string,
-  //   @Body() payload: ChangePasswordDto,
-  // ): Promise<string> {
-  //   await this.authService.changePassword(userId, payload);
-  //   return 'Change password success. Please login again.';
-  // }
-  //
-  // @Post('logout')
-  // @Protected()
-  // @HttpCode(200)
-  // @ApiSuccessResponse({ status: 200 })
-  // async logout(@UserId() userId: string): Promise<void> {
-  //   await this.authService.logout(userId);
-  // }
-  //
-  // @Get('refresh-token')
-  // @Protected()
-  // @HttpCode(200)
-  // @HttpCode(401)
-  // @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
-  // async refreshToken(
-  //   @UserId() userId: string,
-  //   @SessionId() sessionId: string,
-  // ): Promise<RefreshTokenResponse> {
-  //   return await this.authService.refreshToken(userId, sessionId);
-  // }
-  //
+  @Post('change-password')
+  @Protected()
+  @HttpCode(200)
+  @ApiSuccessResponse({ status: 200 })
+  async changePassword(
+    @UserId() userId: string,
+    @Body() payload: ChangePasswordDto,
+  ): Promise<string> {
+    await this.authService.changePassword(userId, payload);
+    return 'Change password success. Please login again.';
+  }
+
+  @Post('logout')
+  @Protected()
+  @HttpCode(200)
+  @ApiSuccessResponse({ status: 200 })
+  async logout(@UserId() userId: string): Promise<void> {
+    await this.authService.logout(userId);
+  }
+
+  @Get('refresh-token')
+  @Protected()
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: RefreshTokenResponse, status: 200 })
+  async refreshToken(
+    @UserId() userId: string,
+    @SessionId() sessionId: string,
+  ): Promise<RefreshTokenResponse> {
+    return await this.authService.refreshToken(userId, sessionId);
+  }
+
   // @Post('reset-password')
   // @HttpCode(200)
   // @HttpCode(401)

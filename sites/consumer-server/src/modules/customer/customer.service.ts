@@ -42,10 +42,20 @@ export class CustomerService {
   }
 
   async getCustomerByEmail(email: string) {
-    return await this.customerRepository.findOne({ where: { email } });
+    return await this.customerRepository.findOne({
+      where: { email, isActive: true },
+    });
   }
 
   async getCustomerById(id: string) {
-    return await this.customerRepository.findOne({ where: { id } });
+    return await this.customerRepository.findOne({
+      where: { id, isActive: true },
+    });
+  }
+
+  async updateAccount(payload: CustomerEntity) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { id, email, ...newData } = payload;
+    return await this.customerRepository.update({ id }, newData);
   }
 }

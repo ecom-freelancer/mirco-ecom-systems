@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import {
   comparePassword,
@@ -16,6 +17,8 @@ import { plainToInstance } from 'class-transformer';
 import { JwtService } from '@nestjs/jwt';
 import { GetProfileResponse } from './dtos/get-profile.dto';
 import { SessionService } from '../session/session.service';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 
 @Injectable()
 export class AuthService {
@@ -46,6 +49,32 @@ export class AuthService {
       ...registerDto,
       password: hashedPassword,
     });
+  }
+
+  async changePassword(id: string, payload: ChangePasswordDto) {
+    const user = await this.customerService.getCustomerById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const { oldPassword, newPassword } = payload;
+
+    if (!(await comparePassword(oldPassword, user.password))) {
+      throw new UnauthorizedException('Current password is incorrect.');
+    }
+
+    const hashedPassword = await hashPassword(
+      newPassword,
+      parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+    );
+
+    await this.customerService.updateAccount({
+      ...user,
+      password: hashedPassword,
+    });
+
+    // Clear all session if password is changed
+    await this.sessionService.clearAllSession(user.id);
   }
 
   async loginWithPassword(
@@ -80,12 +109,6 @@ export class AuthService {
       throw new NotFoundException('User not found');
     }
 
-    if (!customer.isActive) {
-      throw new NotFoundException(
-        'This account is not active. Please contact admin',
-      );
-    }
-
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, createdAt, updatedAt, ...response } = customer;
     return response;
@@ -105,9 +128,30 @@ export class AuthService {
     return 'Correct password';
   }
 
+  // Clear all session
+  async logout(userId: string) {
+    await this.sessionService.clearAllSession(userId);
+  }
+
+  async refreshToken(
+    id: string,
+    currentSessionId: string,
+  ): Promise<RefreshTokenResponse> {
+    const user = await this.customerService.getCustomerById(id);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    await this.sessionService.deleteSession(user.id, currentSessionId);
+
+    const newSessionId = generateSessionId();
+    await this.sessionService.storeSession(user.id, newSessionId);
+    return this.generateTokens(user.id, newSessionId);
+  }
+
   //---------------------------- Helpers function ----------------------------
-  async generateTokens(customerId: string, sesssionId: string) {
-    const payload = { sub: customerId, sesssionId };
+  async generateTokens(customerId: string, sessionId: string) {
+    const payload = { sub: customerId, sessionId };
 
     const accessToken = await this.generateJWT(
       payload,
