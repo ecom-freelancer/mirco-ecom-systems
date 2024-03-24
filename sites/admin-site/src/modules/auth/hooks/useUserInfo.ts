@@ -27,19 +27,24 @@ export const useUserInfo = () => {
     },
   );
 
-  useInterval(
-    () => {
-      authService.refreshToken().then((response) => {
-        localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
-        localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
-      });
-    },
+  const refreshToken = async () => {
+    authService.refreshToken().then((response) => {
+      localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+      localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
+    });
+  };
 
+  useInterval(
+    async () => {
+      if (typeof window === 'undefined') return;
+      await refreshToken();
+    },
     {
-      delay: 10 * 60,
+      delay: 20 * 60,
       condition: !!user,
     },
   );
+
   const setUserLoged = (loginResponse: ILoginResponse) => {
     localStorage.setItem(ACCESS_TOKEN_KEY, loginResponse.accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, loginResponse.refreshToken);

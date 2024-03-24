@@ -4101,7 +4101,6 @@ __metadata:
     "@types/facebook-js-sdk": "npm:^3.3.10"
     antd: "npm:^5.15.1"
     dayjs: "npm:^1.11.10"
-    lodash: "npm:^4.17.21"
     prop-types: "npm:^15.8.1"
     react: "npm:^18.2.0"
     react-icons: "npm:^5.0.1"
