@@ -7,9 +7,11 @@ import { MysqlModule } from '@packages/nest-mysql';
 import { AuthModule } from './modules/auth/auth.module';
 import { getCloudinaryConfig } from './configs/cloudinary.config';
 import { getMysqlOptions } from './configs/mysql.datasource';
-import { getEmailConfigOptions } from './configs/email-config';
-import { getRedisOptions } from './configs/redis.datasource';
+import { getEmailConfigOptions } from './configs/email.config';
+import { getRedisOptions } from './configs/redis.config';
 import { UserModule } from './modules/user/user.module';
+import { GoogleModule } from '@packages/nest-google';
+import { getGoogleConfigOptions } from './configs/google.config';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { UserModule } from './modules/user/user.module';
     CloudinaryModule.forRootAsync(getCloudinaryConfig()),
     AuthModule,
     UserModule,
+    GoogleModule.forRootAsync(getGoogleConfigOptions()),
   ],
   controllers: [],
 })
