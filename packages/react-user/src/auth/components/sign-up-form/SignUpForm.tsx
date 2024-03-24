@@ -11,12 +11,16 @@ import { Box, Heading, Flex, Text, styled } from '@packages/ds-core';
 import { CreateAccountForm } from './CreateAccountForm';
 
 export interface SignUpFormProps {
+  loading?: boolean;
   configs: {
     facebook?: FacebookAuthConfig;
     google?: GoogleAuthConfig;
+    passwordLess?: {
+      onSubmit: (values) => void;
+    };
   };
 }
-export const SignUpForm: React.FC<SignUpFormProps> = ({ configs }) => {
+export const SignUpForm: React.FC<SignUpFormProps> = ({ configs, loading }) => {
   return (
     <Flex direction="column" align="center">
       <Box marginBottom="s16">
@@ -45,7 +49,10 @@ export const SignUpForm: React.FC<SignUpFormProps> = ({ configs }) => {
         </Box>
       </Box>
       <Box style={{ minWidth: 300 }}>
-        <CreateAccountForm />
+        <CreateAccountForm
+          onSubmit={configs?.passwordLess?.onSubmit}
+          loading={loading}
+        />
       </Box>
     </Flex>
   );

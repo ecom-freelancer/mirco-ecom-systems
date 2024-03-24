@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@packages/ds-core": "^1.0.0",
+    "@packages/react-form-builder": "workspace:^",
     "@packages/react-helper": "^1.0.0",
     "@types/facebook-js-sdk": "^3.3.10",
     "antd": "^5.15.1",

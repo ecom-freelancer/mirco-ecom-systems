@@ -13,7 +13,8 @@ export interface FormBuilderItemProps<T> {
 export const FormBuilderItem = <T,>(props: FormBuilderItemProps<T>) => {
   const { span, breakpoints } = props.layout;
   const [itemConfig] = useFormItem(props.layout.name);
-  const { label, rules, dependencies, formType } = itemConfig || {};
+  const { label, rules, dependencies, formType, validateFirst } =
+    itemConfig || {};
 
   const Input = useMemo(() => {
     if (!formType) return null;
@@ -28,6 +29,7 @@ export const FormBuilderItem = <T,>(props: FormBuilderItemProps<T>) => {
         dependencies={dependencies}
         name={props.layout.name}
         labelCol={props.layout.labelCol}
+        validateFirst={validateFirst}
         labelAlign={props.layout.labelAlign || 'left'}
       >
         {Input && <Input config={itemConfig as any} />}
