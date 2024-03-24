@@ -1,4 +1,14 @@
-import { Body, Controller, Get, HttpCode, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+  Put,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { LoginResponse, LoginWithPasswordDto } from './dtos/login.dto';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import {
@@ -18,6 +28,7 @@ import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { CheckPasswordDto } from './dtos/check-password.dto';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
+import { FacebookAuthGuard } from '@packages/nest-facebook';
 
 @Controller()
 @ApiTags('auth')
@@ -59,8 +70,18 @@ export class AuthController {
     return await this.authService.loginWithGoogle(payload);
   }
 
-  @Post('login-with-facebook')
-  async loginWithFacebook() {}
+  @Get('/facebook')
+  @UseGuards(FacebookAuthGuard('facebook'))
+  async facebookLogin(): Promise<any> {
+    return HttpStatus.OK;
+  }
+
+  @Get('login-with-facebook')
+  @UseGuards(FacebookAuthGuard('facebook'))
+  async loginWithFacebook(@Req() req: Request) {
+    // @ts-ignore
+    return { statusCode: HttpStatus.OK, data: req.user };
+  }
 
   @Post('change-password')
   @Protected()

@@ -3960,6 +3960,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@packages/nest-facebook@workspace:^, @packages/nest-facebook@workspace:packages/nest-facebook":
+  version: 0.0.0-use.local
+  resolution: "@packages/nest-facebook@workspace:packages/nest-facebook"
+  dependencies:
+    "@nestjs/common": "npm:^10.0.0"
+    "@nestjs/core": "npm:^10.0.0"
+    "@nestjs/passport": "npm:^10.0.3"
+    "@packages/kit": "npm:^1.0.0"
+    passport: "npm:^0.7.0"
+    passport-facebook: "npm:^3.0.0"
+  peerDependencies:
+    "@nestjs/common": ^10.0.0
+    tslib: ^2.6.2
+  languageName: unknown
+  linkType: soft
+
 "@packages/nest-file@workspace:^, @packages/nest-file@workspace:packages/nest-file":
   version: 0.0.0-use.local
   resolution: "@packages/nest-file@workspace:packages/nest-file"
@@ -3974,7 +3990,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@packages/nest-google@workspace:packages/nest-google":
+"@packages/nest-google@workspace:^, @packages/nest-google@workspace:packages/nest-google":
   version: 0.0.0-use.local
   resolution: "@packages/nest-google@workspace:packages/nest-google"
   dependencies:
@@ -5147,12 +5163,13 @@ __metadata:
     "@nestjs/config": "npm:^3.2.0"
     "@nestjs/core": "npm:^10.0.0"
     "@nestjs/jwt": "npm:^10.2.0"
-    "@nestjs/passport": "npm:^10.0.3"
     "@nestjs/platform-express": "npm:^10.0.0"
     "@nestjs/schematics": "npm:^10.0.0"
     "@nestjs/swagger": "npm:^7.3.0"
     "@nestjs/testing": "npm:^10.0.0"
+    "@packages/nest-facebook": "workspace:^"
     "@packages/nest-file": "workspace:^"
+    "@packages/nest-google": "workspace:^"
     "@packages/nest-helper": "npm:^1.0.0"
     "@packages/nest-mail": "npm:^1.0.0"
     "@packages/nest-mysql": "npm:^1.0.0"
@@ -5176,8 +5193,6 @@ __metadata:
     eslint-plugin-prettier: "npm:^5.0.0"
     jest: "npm:^29.5.0"
     mysql2: "npm:^3.9.2"
-    passport: "npm:^0.7.0"
-    passport-facebook: "npm:^3.0.0"
     prettier: "npm:^3.0.0"
     reflect-metadata: "npm:^0.2.0"
     rxjs: "npm:^7.8.1"

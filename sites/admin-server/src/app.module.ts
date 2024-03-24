@@ -11,7 +11,9 @@ import { getEmailConfigOptions } from './configs/email.config';
 import { getRedisOptions } from './configs/redis.config';
 import { UserModule } from './modules/user/user.module';
 import { GoogleModule } from '@packages/nest-google';
+import { FacebookModule } from '@packages/nest-facebook';
 import { getGoogleConfigOptions } from './configs/google.config';
+import { getFacebookConfigOptions } from './configs/facebook.config';
 
 @Module({
   imports: [
@@ -26,6 +28,7 @@ import { getGoogleConfigOptions } from './configs/google.config';
     AuthModule,
     UserModule,
     GoogleModule.forRootAsync(getGoogleConfigOptions()),
+    FacebookModule.forRootAsync(getFacebookConfigOptions()),
   ],
   controllers: [],
 })
