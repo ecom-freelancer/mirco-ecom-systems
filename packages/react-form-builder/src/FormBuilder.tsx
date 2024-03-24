@@ -16,6 +16,7 @@ export const FormBuilder = <T extends IFormType>(
     formLayout,
     validateTrigger,
     hideColon,
+    disabled,
   } = props;
 
   const layouts = props.layouts;
@@ -30,6 +31,7 @@ export const FormBuilder = <T extends IFormType>(
       layout={formLayout}
       colon={!hideColon}
       autoComplete="off"
+      disabled={disabled}
     >
       <FormBuilderContext.Provider
         value={{

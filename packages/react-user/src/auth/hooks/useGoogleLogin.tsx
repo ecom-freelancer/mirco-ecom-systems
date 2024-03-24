@@ -18,7 +18,7 @@ export const useGoogleLogin = (config: GoogleAuthConfig) => {
           'https://www.googleapis.com/auth/userinfo.email \
           https://www.googleapis.com/auth/userinfo.profile',
         callback: (tokenRes: GoogleLoginResponse) => {
-          onSuccess(tokenRes);
+          onSuccess?.(tokenRes);
         },
       });
       client.current = googleClient;

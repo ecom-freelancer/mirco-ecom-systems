@@ -59,6 +59,7 @@ export type BaseFormItem<
   label?: React.ReactNode;
   labelAlign?: FormLabelAlign;
   labelCol?: ColProps;
+  validateFirst?: boolean;
 };
 
 export type ValueKey<K, T> = K extends keyof T ? T[K] : never;
@@ -79,7 +80,8 @@ export interface InputNumberFormItemConfig<T, K extends keyof T>
 }
 
 export interface InputPasswordFormItemConfig<T, K extends keyof T>
-  extends BaseFormItem<T, K, 'password'> {}
+  extends BaseFormItem<T, K, 'password'>,
+    InputProps {}
 
 export interface CheckBoxFormConfig<T, K extends keyof T>
   extends BaseFormItem<T, K, 'checkbox'>,
@@ -219,6 +221,7 @@ export interface FormBuilderProps<T extends IFormType> {
   validateTrigger?: 'onChange' | 'onBlur' | 'onSubmit';
   initialValues?: Partial<T>;
   onValuesChange?: (changedValues: Partial<T>, allValues: T) => void;
+  disabled?: boolean;
 }
 
 export interface BaseFormItemProps<T extends AllowConfig<any, any>> {

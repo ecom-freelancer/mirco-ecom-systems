@@ -1,17 +1,26 @@
 'use client';
 
-import { Logo } from '@/modules/layout/components/Logo';
 import { Box, Flex, Heading, styled, Text } from '@packages/ds-core';
 import React, { useState } from 'react';
 import { SiginInForm, SignUpForm } from '@packages/react-user';
 import { Button } from 'antd';
+import { useLogin } from '../hooks/useLogin';
 
-export interface AuthFormProps {}
+export interface AuthFormProps {
+  mode?: 'login' | 'register' | 'forgot-password';
+  onFinished?: () => void;
+}
 
-export const AuthForm: React.FC<AuthFormProps> = () => {
+export const AuthForm: React.FC<AuthFormProps> = ({
+  mode: defaultMode = 'login',
+  onFinished,
+}) => {
   const [mode, setMode] = useState<'login' | 'register' | 'forgot-password'>(
-    'login',
+    defaultMode,
   );
+
+  const { register, loading, loginWithPassword, loginWithGoole } = useLogin();
+
   return (
     <SignInWrapper>
       <Flex align="stretch">
@@ -47,22 +56,32 @@ export const AuthForm: React.FC<AuthFormProps> = () => {
           </Box>
         </LeftSide>
         <RightSide>
-          <Logo />
-
           {mode == 'login' && (
             <SiginInForm
               configs={{
                 passwordLess: {
+                  usernameType: 'email', // 'text' | 'email
                   onForgotPassword: () => setMode('forgot-password'),
+                  onSubmit: async (username, password) => {
+                    loginWithPassword({
+                      email: username,
+                      password,
+                    }).then(() => {
+                      onFinished?.();
+                    });
+                  },
                 },
                 facebook: {
                   appId: '1234567890',
                   onSuccess: async () => {},
                 },
                 google: {
-                  clientId: '1234567890',
+                  clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
                   scopes: [],
-                  onSuccess: async () => {},
+                  onSuccess: async (v) =>
+                    loginWithGoole(v).then(() => {
+                      onFinished?.();
+                    }),
                 },
               }}
             />
@@ -70,6 +89,7 @@ export const AuthForm: React.FC<AuthFormProps> = () => {
           {mode == 'register' && (
             <Box padding={['s2', 's16', 's16', 's16']}>
               <SignUpForm
+                loading={loading}
                 configs={{
                   facebook: {
                     appId: '1234567890',
@@ -79,6 +99,9 @@ export const AuthForm: React.FC<AuthFormProps> = () => {
                     clientId: '1234567890',
                     scopes: [],
                     onSuccess: async () => {},
+                  },
+                  passwordLess: {
+                    onSubmit: (v) => register(v).then(() => setMode('login')),
                   },
                 }}
               />
@@ -115,12 +138,12 @@ const LeftSide = styled.div`
   background: url('./right_login_background.png');
   background-repeat: no-repeat;
   background-size: contain;
-  background-color: ${({ theme }) => theme.colors.primary};
+  background-color: ${({ theme }) => theme.colors.secondary};
   text-align: center;
   color: white;
   align-items: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 425px) {
     width: 0;
   }
 `;

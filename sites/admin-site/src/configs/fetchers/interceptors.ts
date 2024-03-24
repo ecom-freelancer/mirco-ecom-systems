@@ -3,7 +3,7 @@ import { IApiError } from 'modules/_shared/types';
 
 export const accessTokenInterceptor = (request: InternalAxiosRequestConfig) => {
   const accessToken = localStorage.getItem('accessToken');
-  if (accessToken) {
+  if (accessToken && request.headers['Authorization'] === undefined) {
     request.headers['Authorization'] = `Bearer ${accessToken}`;
   }
   return request;

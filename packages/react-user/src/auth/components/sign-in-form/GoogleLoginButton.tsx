@@ -1,12 +1,15 @@
 import { FaGooglePlusG } from 'react-icons/fa';
 import { IconLogin } from './IconLogin';
 import React from 'react';
-import { useGoogleLogin } from '../../hooks/useGoogleLogin';
+import {
+  GoogleLoginResponse,
+  useGoogleLogin,
+} from '../../hooks/useGoogleLogin';
 
 export interface GoogleAuthConfig {
   clientId: string;
   scopes: string[];
-  onSuccess?: (response: any) => Promise<void>;
+  onSuccess?: (response: GoogleLoginResponse) => Promise<void>;
 }
 export interface GoogleLoginButtonProps {
   config: GoogleAuthConfig;

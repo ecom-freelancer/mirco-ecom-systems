@@ -7,9 +7,9 @@ import { CiBoxList } from 'react-icons/ci';
 import React from 'react';
 import { Logo } from '../Logo';
 import { BiSearchAlt } from 'react-icons/bi';
-import { VscAccount } from 'react-icons/vsc';
 import { Container } from '../Contatiner';
 import { PiShoppingCartSimpleBold } from 'react-icons/pi';
+import { AppAuthIcon } from '@/modules/auth/containers';
 
 export interface AppHeaderProps {}
 
@@ -38,14 +38,16 @@ export const MainHeader: React.FC<AppHeaderProps> = ({}) => {
                 </Flex>
               </Flex>
             </AllCategories>
-            <Box></Box>
           </LeftHeader>
           <CenterHeader className="center-header">
             <Logo />
           </CenterHeader>
-          <RightHeader gap="s32" className="right-header" justify="end">
+          <RightHeader gap="s20" className="right-header" justify="end">
             <BiSearchAlt className="icon-header" />
-            <VscAccount className="icon-header" />
+
+            <Line />
+            <AppAuthIcon className="icon-header" />
+            <Line />
             <Flex gapX="s16">
               <PiShoppingCartSimpleBold className="icon-header" />
               <Flex direction="column" gap="s4" className="hide-md">
@@ -78,7 +80,7 @@ const Wrapper = styled(Box)`
   grid-row-gap: 1rem;
 
   .icon-header {
-    font-size: 2rem;
+    font-size: 2rem !important;
     transition: all 0.5 ease-in-out;
   }
 
@@ -115,6 +117,22 @@ const LeftHeader = styled(Flex)`
 const AllCategories = styled.div`
   position: relative;
   padding-right: 1rem;
+  ::after {
+    position: absolute;
+    content: '';
+    width: 1px;
+    height: 100%;
+    transform: translate(50%, 0);
+    border-left: 1px solid ${({ theme }) => theme.colors.greyA200};
+    top: 0;
+    right: 0;
+    z-index: 1;
+    flex: 1;
+  }
+`;
+
+const Line = styled.div`
+  position: relative;
   ::after {
     position: absolute;
     content: '';
