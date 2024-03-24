@@ -29,6 +29,7 @@ import { CheckPasswordDto } from './dtos/check-password.dto';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
 import { FacebookAuthGuard } from '@packages/nest-facebook';
+import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
 
 @Controller()
 @ApiTags('auth')
@@ -76,11 +77,31 @@ export class AuthController {
     return HttpStatus.OK;
   }
 
-  @Get('login-with-facebook')
+  @Get('/facebook-redirect')
   @UseGuards(FacebookAuthGuard('facebook'))
-  async loginWithFacebook(@Req() req: Request) {
+  async facebookRedirect(@Req() req: Request): Promise<any> {
     // @ts-ignore
+    // TODO: store user info here
     return { statusCode: HttpStatus.OK, data: req.user };
+  }
+
+  @Post('login-with-facebook')
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: LoginResponse, status: 200 })
+  async loginWithFacebook(@Body() payload: LoginWithFacebookDto) {
+    const fields = 'id,name,email,picture';
+
+    // Make a request to Facebook API to retrieve user information
+    const response = await fetch(
+      `https://graph.facebook.com/me?fields=${fields}&access_token=${payload.accessToken}`,
+    );
+
+    // Extract user information from the response
+    console.log(response);
+
+    // TODO: store user info here
+    return 'hello';
   }
 
   @Post('change-password')
