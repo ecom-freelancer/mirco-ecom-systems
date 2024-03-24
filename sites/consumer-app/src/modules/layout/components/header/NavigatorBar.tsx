@@ -57,7 +57,7 @@ export const NavigatorBar = () => {
 };
 
 const StyleNavigator = styled.nav`
-  background: url('./navbar_background.jpg');
+  background: url('/navbar_background.jpg');
   padding: 0.5rem;
   text-align: center;
 `;

@@ -17,7 +17,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   manifest: '/manifest.json',
-  icons: ['favicon.ico', 'favicon-16x16.png', 'favicon-32x32.png'],
+  icons: ['/favicon.ico', '/favicon-16x16.png', '/favicon-32x32.png'],
   title: {
     default: 'E-commerce',
     template: `%s | E-commerce`,
