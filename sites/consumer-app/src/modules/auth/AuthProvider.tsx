@@ -1,8 +1,9 @@
 'use client';
 
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { AuthContext } from './auth-context';
 import dynamic from 'next/dynamic';
+import { useUserInfo } from './hooks/useUserInfo';
 
 const AuthModal = dynamic(
   () => import('./containers/AuthModal').then((mod) => mod.AuthModal),
@@ -16,28 +17,39 @@ export interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [userId, setUserId] = useState<string>();
-  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [{ user, isLoading }, { mutate, setLoginResponse, logout }] =
+    useUserInfo();
 
-  useEffect(() => {
-    const timeOutId = setTimeout(() => {
-      setUserId('123');
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeOutId);
-    };
-  }, []);
+  const [showLoginModal, setShowLoginModal] = useState<{
+    mode?: 'login' | 'register' | 'forgot-password';
+    show: boolean;
+  }>({
+    show: false,
+  });
 
   return (
     <AuthContext.Provider
-      value={{ userId: userId, openLoginModal: () => setShowLoginModal(true) }}
+      value={{
+        logout,
+        loading: isLoading,
+        setLoginResponse: setLoginResponse,
+        refresh: () => mutate(),
+        user: user,
+        openLoginModal: (mode) =>
+          setShowLoginModal({
+            mode: mode,
+            show: true,
+          }),
+      }}
     >
       {children}
       <Suspense>
         <AuthModal
-          showLoginModal={showLoginModal}
-          setShowLoginModal={setShowLoginModal}
+          showLoginModal={showLoginModal.show}
+          mode={showLoginModal.mode}
+          setShowLoginModal={(show) =>
+            setShowLoginModal({ ...showLoginModal, show: show })
+          }
         />
       </Suspense>
     </AuthContext.Provider>

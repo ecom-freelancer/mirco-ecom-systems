@@ -6,21 +6,27 @@ import { AuthForm } from '../components/AuthForm';
 export interface AuthModalProps {
   showLoginModal: boolean;
   setShowLoginModal: (show: boolean) => void;
+  mode?: 'login' | 'register' | 'forgot-password';
 }
 export const AuthModal: React.FC<AuthModalProps> = ({
   showLoginModal,
   setShowLoginModal,
+  mode,
 }) => {
   const {} = useAuthContext();
+
+  const close = () => setShowLoginModal(false);
+
   return (
     <StyledAuthModal
       open={showLoginModal}
       footer={null}
       centered
       width={800}
-      onCancel={() => setShowLoginModal(false)}
+      onCancel={close}
+      destroyOnClose={true}
     >
-      <AuthForm />
+      <AuthForm mode={mode} onFinished={close} />
     </StyledAuthModal>
   );
 };

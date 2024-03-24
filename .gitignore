@@ -16,5 +16,6 @@ node_modules
 **/node_modules
 .database
 .data
+.DS_Store
 
 .idea

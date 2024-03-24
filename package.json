@@ -16,7 +16,7 @@
     "storybook": "yarn workspace @sites/storybook storybook",
     "start:admin-server": "yarn workspace @sites/admin-server start:prod",
     "start:consumer-app": "yarn workspace @sites/consumer-app start",
-    "migration": "yarn workspace @sites/admin-server migration",
+    "migration": "yarn workspace @sites/admin-server migration:up",
     "build:all": "yarn nx run-many --target=build --parallel= "
   },
   "devDependencies": {

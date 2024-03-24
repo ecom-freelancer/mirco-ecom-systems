@@ -15,9 +15,9 @@ export const FeatureCommingSoon: React.FC = ({}) => {
   }, []);
 
   const [time] = useCountdown(releseDiff);
-  const days = Math.round(time / (24 * 60 * 60));
-  const hours = Math.round((time - days * 86400) / 3600);
-  const minutes = Math.round((time - days * 86400 - hours * 3600) / 60);
+  const days = Math.floor(time / (24 * 60 * 60));
+  const hours = Math.floor((time - days * 86400) / 3600);
+  const minutes = Math.floor((time - days * 86400 - hours * 3600) / 60);
   const seconds = time % 60;
 
   return (
