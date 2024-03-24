@@ -14,6 +14,7 @@ const colorShades = {
 };
 
 export const alphaShades = {
+  A50: 0.075,
   A100: 0.2,
   A200: 0.4,
   A300: 0.6,

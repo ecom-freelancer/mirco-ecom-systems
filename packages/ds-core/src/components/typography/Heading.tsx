@@ -19,7 +19,7 @@ export const Heading = React.forwardRef<HTMLElement, HeadingProps>(
 const StyledHeading = styled(Text)<HeadingProps>`
   font-size: ${({ type, theme }) => theme.fontSizes[type]};
   margin-bottom: 0.5rem;
-  font-weight: ${({ type, theme }) => theme.fontWeights[600]};
+  font-weight: ${({ type, theme }) => theme.fontWeights[500]};
   line-height: 1.2;
   margin-top: 0.25rem;
   display: block;
