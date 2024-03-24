@@ -30,6 +30,8 @@ import { getResetPasswordRedisKey, RedisService } from '@packages/nest-redis';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { MailerService } from '@packages/nest-mail';
 import { UpdateAccountDto } from './dtos/update-account.dto';
+import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
+import { GoogleService } from '@packages/nest-google';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +42,7 @@ export class AuthService {
     private readonly redisService: RedisService,
     private readonly sessionService: SessionService,
     private readonly mailerService: MailerService,
+    private readonly googleService: GoogleService,
   ) {}
 
   async registerWithAccount(registerDto: RegisterDto) {
@@ -388,5 +391,35 @@ export class AuthService {
       subject: mapActionsToSubject(action), // Subject line
       html: content, // HTML body content
     });
+  }
+
+  async loginWithGoogle(payload: LoginWithGoogleDto) {
+    const { accessToken } = payload;
+    const googleUser = await this.googleService.authenticate(accessToken);
+
+    let customer = await this.customerService.getCustomerByEmail(
+      googleUser.email,
+    );
+
+    if (!customer) {
+      // Generate a random password, so I use this function too :D don't mind it
+      const hashedPassword = await hashPassword(
+        generateSessionId(),
+        parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+      );
+
+      customer = await this.customerService.createAccount({
+        email: googleUser.email,
+        password: hashedPassword,
+        firstName: googleUser.family_name,
+        lastName: googleUser.given_name,
+        avatarUrl: googleUser.picture,
+      });
+    }
+
+    const sessionId = generateSessionId();
+    await this.sessionService.storeSession(customer.id, sessionId);
+
+    return this.generateTokens(customer.id, sessionId);
   }
 }

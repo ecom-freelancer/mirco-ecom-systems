@@ -14,9 +14,8 @@ export class CustomerEntity {
   @Column({ type: 'varchar', length: 255, nullable: false, unique: true })
   email: string;
 
-  // Password can be empty when login with Google, or Facebook
-  @Column({ type: 'text', nullable: true })
-  password: string | null;
+  @Column({ type: 'text', nullable: false })
+  password: string;
 
   @Column({ type: 'varchar', length: 15, nullable: true, unique: true })
   phone: string | null;
