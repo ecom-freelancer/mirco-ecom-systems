@@ -6,7 +6,7 @@ export const accessTokenInterceptor = (request: InternalAxiosRequestConfig) => {
   if (typeof window == undefined) return request;
 
   const accessToken = localStorage.getItem(ACCESS_TOKEN);
-  if (accessToken) {
+  if (accessToken && request.headers['Authorization'] === undefined) {
     request.headers['Authorization'] = `Bearer ${accessToken}`;
   }
   return request;

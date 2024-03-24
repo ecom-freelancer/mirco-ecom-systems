@@ -5,6 +5,8 @@ import { ILoginResponse } from '../auth.interface';
 import { clearAllSwrCache } from '@/helpers/swr';
 import appApi from '@/configs/fetchers/app-api';
 import toast from 'react-hot-toast';
+import { useInterval } from '@packages/react-helper';
+import { IApiError } from '@/configs/fetchers/fetcher.interface';
 
 export const useUserInfo = () => {
   const {
@@ -20,10 +22,31 @@ export const useUserInfo = () => {
     },
     {
       onError: (error) => {
-        if (error.response.status === 401) {
-          // refresh token here
+        if ((error as IApiError).status === 401) {
+          refreshToken();
         }
       },
+      revalidateOnFocus: false,
+      revalidateOnReconnect: true,
+    },
+  );
+
+  const refreshToken = () =>
+    authService.refreshToken().then((response) => {
+      localStorage.setItem(ACCESS_TOKEN, response?.accessToken);
+      localStorage.setItem(REFRESH_TOKEN, response?.refreshToken);
+      mutate();
+    });
+
+  useInterval(
+    () => {
+      if (typeof window === 'undefined') return;
+      refreshToken();
+    },
+
+    {
+      delay: 10 * 60,
+      condition: !!user,
     },
   );
 

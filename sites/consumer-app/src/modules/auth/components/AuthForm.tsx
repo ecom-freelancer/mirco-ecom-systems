@@ -19,7 +19,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     defaultMode,
   );
 
-  const { register, loading, loginWithPassword } = useLogin();
+  const { register, loading, loginWithPassword, loginWithGoole } = useLogin();
 
   return (
     <SignInWrapper>
@@ -76,9 +76,12 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                   onSuccess: async () => {},
                 },
                 google: {
-                  clientId: '1234567890',
+                  clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
                   scopes: [],
-                  onSuccess: async () => {},
+                  onSuccess: async (v) =>
+                    loginWithGoole(v).then(() => {
+                      onFinished?.();
+                    }),
                 },
               }}
             />
@@ -140,7 +143,7 @@ const LeftSide = styled.div`
   color: white;
   align-items: center;
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 425px) {
     width: 0;
   }
 `;

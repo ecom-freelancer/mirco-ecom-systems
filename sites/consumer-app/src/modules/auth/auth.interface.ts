@@ -24,3 +24,7 @@ export interface ILoginResponse {
   accessToken: string;
   refreshToken: string;
 }
+
+export interface ILoginWithGooglePayload {
+  accessToken: string;
+}

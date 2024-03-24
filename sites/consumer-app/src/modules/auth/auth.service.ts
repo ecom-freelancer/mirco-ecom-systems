@@ -1,6 +1,7 @@
 import appApi from '@/configs/fetchers/app-api';
 import {
   ILoginResponse,
+  ILoginWithGooglePayload,
   ILoginWithPasswordPayload,
   IRegisterPayload,
   IUser,
@@ -14,6 +15,12 @@ export const authService = {
       .then((res) => res.data);
   },
 
+  loginWithGoogle: async (payload: ILoginWithGooglePayload) => {
+    return appApi
+      .post<ILoginResponse>('/login-with-google', payload)
+      .then((res) => res.data);
+  },
+
   register: async (payload: IRegisterPayload) => {
     return appApi.post('/register', payload).then((res) => res.data);
   },
@@ -23,9 +30,6 @@ export const authService = {
   logout: async () => appApi.post('/logout'),
 
   refreshToken: async () => {
-    if (!localStorage.getItem(REFRESH_TOKEN)) {
-      return;
-    }
     const refreshToken = localStorage.getItem(REFRESH_TOKEN);
     return appApi
       .get<ILoginResponse>('/refresh-token', {
