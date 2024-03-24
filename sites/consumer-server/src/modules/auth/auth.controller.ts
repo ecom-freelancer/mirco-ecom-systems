@@ -17,6 +17,7 @@ import { RefreshTokenResponse } from './dtos/refresh-token.dto';
 import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { UpdateAccountDto } from './dtos/update-account.dto';
+import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -51,7 +52,13 @@ export class AuthController {
   }
 
   @Post('login-with-google')
-  async loginWithGoogle() {}
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: LoginResponse, status: 200 })
+  @Post('login-with-google')
+  async loginWithGoogle(@Body() payload: LoginWithGoogleDto) {
+    return await this.authService.loginWithGoogle(payload);
+  }
 
   @Post('login-with-facebook')
   async loginWithFacebook() {}

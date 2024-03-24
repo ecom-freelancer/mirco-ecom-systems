@@ -6,11 +6,10 @@ export class UserEntity {
   id: string;
 
   @Column({ type: 'varchar', length: 255, unique: true, nullable: true })
-  username: string;
+  username: string | null;
 
-  // Password can be empty when login with Google, or Facebook
-  @Column({ type: 'text', nullable: true })
-  password?: string;
+  @Column({ type: 'text', nullable: false })
+  password: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   name?: string;

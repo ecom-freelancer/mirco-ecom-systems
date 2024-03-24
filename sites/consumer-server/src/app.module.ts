@@ -11,6 +11,8 @@ import { getMysqlOptions } from './configs/mysql.datasource';
 import { getRedisOptions } from './configs/redis.datasource';
 import { getEmailConfigOptions } from './configs/email-config';
 import { getCloudinaryConfig } from './configs/cloudinary.config';
+import { GoogleModule } from '@packages/nest-google';
+import { getGoogleConfigOptions } from './configs/google.config';
 
 @Module({
   imports: [
@@ -23,6 +25,7 @@ import { getCloudinaryConfig } from './configs/cloudinary.config';
     EmailModule.forRootAsync(getEmailConfigOptions()),
     CloudinaryModule.forRootAsync(getCloudinaryConfig()),
     AuthModule,
+    GoogleModule.forRootAsync(getGoogleConfigOptions()),
   ],
   controllers: [AppController],
   providers: [AppService],

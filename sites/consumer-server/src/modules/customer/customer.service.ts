@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CustomerEntity, InjectRepository } from '@packages/nest-mysql';
 import { Repository } from 'typeorm';
 import { CreateCustomerPayload } from './interfaces/create-customer.interface';
+import { CreateAccountDto } from '../auth/dtos/create-account.dto';
 
 @Injectable()
 export class CustomerService {
@@ -61,5 +62,11 @@ export class CustomerService {
 
   async checkDuplicatedPhoneWithOther(id: string, phone: string) {
     return (await this.customerRepository.count({ where: { id, phone } })) > 0;
+  }
+
+  async createAccount(payload: CreateAccountDto): Promise<CustomerEntity> {
+    const customer = this.customerRepository.create(payload);
+
+    return this.customerRepository.save(customer);
   }
 }
