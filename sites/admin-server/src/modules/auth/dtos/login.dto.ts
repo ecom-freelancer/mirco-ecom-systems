@@ -24,12 +24,6 @@ export class LoginWithFaceBookDto {
   facebookAccessToken: string;
 }
 
-export class LoginWithGoogleDto {
-  @ApiProperty()
-  @IsString()
-  googleAccessToken: string;
-}
-
 export class LoginResponse {
   @ApiProperty()
   accessToken: string;

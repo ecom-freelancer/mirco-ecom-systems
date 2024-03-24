@@ -31,6 +31,8 @@ import {
 } from '@packages/nest-helper';
 import { SessionService } from '../session/session.service';
 import { UpdateAccountDto } from './dtos/update-account.dto';
+import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
+import { GoogleService } from '@packages/nest-google';
 
 @Injectable()
 export class AuthService {
@@ -41,6 +43,7 @@ export class AuthService {
     private readonly redisService: RedisService,
     private readonly mailerService: MailerService,
     private readonly sessionService: SessionService,
+    private readonly googleService: GoogleService,
   ) {}
 
   async getProfileById(id: string): Promise<GetProfileResponse> {
@@ -66,6 +69,33 @@ export class AuthService {
 
     if (!(await comparePassword(password, user.password))) {
       throw new BadRequestException('Email or password is incorrect.');
+    }
+
+    const sessionId = generateSessionId();
+    await this.sessionService.storeSession(user.id, sessionId);
+
+    return this.generateTokens(user.id, sessionId);
+  }
+
+  async loginWithGoogle(payload: LoginWithGoogleDto) {
+    const { accessToken } = payload;
+    const googleUser = await this.googleService.authenticate(accessToken);
+
+    let user = await this.userService.getUserByEmail(googleUser.email);
+
+    // if user is not presented (new user) -> create new
+    if (!user) {
+      // Generate a random password, so I use this function too :D don't mind it
+      const hashedPassword = await hashPassword(
+        generateSessionId(),
+        parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+      );
+
+      user = await this.userService.createAccount({
+        email: googleUser.email,
+        name: googleUser.name,
+        password: hashedPassword,
+      });
     }
 
     const sessionId = generateSessionId();
