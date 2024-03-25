@@ -360,16 +360,31 @@ export class AuthService {
   }
 
   //---------------------------- Helpers function ----------------------------
-  async generateTokens(customerId: string, sessionId: string) {
-    const payload = { sub: customerId, sessionId };
+  async generateTokens(id: string, sessionId: string) {
+    const dayUnit = 'd';
+    const payload = { sub: id, sessionId };
+    const now = dayjs();
 
-    const accessToken = await this.generateJWT(
-      payload,
-      this.configService.get('JWT_ACCESS_TOKEN_VALID_DURATION'),
+    const accessTokenDuration = this.configService.get(
+      'ACCESS_TOKEN_VALID_DURATION',
     );
+    const accessTokenExpiredAt = now
+      .add(parseInt(accessTokenDuration), dayUnit)
+      .valueOf();
+    const accessToken = await this.generateJWT(
+      { ...payload, expiredAt: accessTokenExpiredAt },
+      this.configService.get('ACCESS_TOKEN_VALID_DURATION') + dayUnit,
+    );
+
+    const refreshTokenDuration = this.configService.get(
+      'REFRESH_TOKEN_VALID_DURATION',
+    );
+    const refreshTokenExpiredAt = now
+      .add(parseInt(refreshTokenDuration), dayUnit)
+      .valueOf();
     const refreshToken = await this.generateJWT(
-      payload,
-      this.configService.get('JWT_REFRESH_TOKEN_VALID_DURATION'),
+      { ...payload, expiredAt: refreshTokenExpiredAt },
+      this.configService.get('REFRESH_TOKEN_VALID_DURATION') + dayUnit,
     );
 
     return plainToInstance(LoginResponse, {
