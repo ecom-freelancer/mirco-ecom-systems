@@ -18,6 +18,7 @@ import { ForgotPasswordDto } from './dtos/forgot-password.dto';
 import { ResetPasswordDto } from './dtos/reset-password.dto';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
+import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
 
 @Controller('')
 @ApiTags('auth')
@@ -61,7 +62,12 @@ export class AuthController {
   }
 
   @Post('login-with-facebook')
-  async loginWithFacebook() {}
+  @HttpCode(200)
+  @HttpCode(401)
+  @ApiSuccessResponse({ type: LoginResponse, status: 200 })
+  async loginWithFacebook(@Body() payload: LoginWithFacebookDto) {
+    return await this.authService.loginWithFacebook(payload);
+  }
 
   @Post('change-password')
   @Protected()

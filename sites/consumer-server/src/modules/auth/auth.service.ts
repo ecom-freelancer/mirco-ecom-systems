@@ -32,6 +32,8 @@ import { MailerService } from '@packages/nest-mail';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
 import { GoogleService } from '@packages/nest-google';
+import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
+import { FacebookResponseInterface } from './interfaces/facebook-response.interface';
 
 @Injectable()
 export class AuthService {
@@ -414,6 +416,46 @@ export class AuthService {
         firstName: googleUser.family_name,
         lastName: googleUser.given_name,
         avatarUrl: googleUser.picture,
+      });
+    }
+
+    const sessionId = generateSessionId();
+    await this.sessionService.storeSession(customer.id, sessionId);
+
+    return this.generateTokens(customer.id, sessionId);
+  }
+
+  async loginWithFacebook(payload: LoginWithFacebookDto) {
+    const fields = 'id,name,email,picture,first_name,last_name';
+    // Make a request to Facebook API to retrieve user information
+    const response = await fetch(
+      `https://graph.facebook.com/me?fields=${fields}&access_token=${payload.accessToken}`,
+    );
+
+    const facebookUser: FacebookResponseInterface = await response.json();
+    const { error, email, first_name, last_name } = facebookUser;
+
+    if (!!error) {
+      throw new BadRequestException(error?.message);
+    }
+    if (!email) {
+      throw new BadRequestException('This account does not have email');
+    }
+
+    let customer = await this.customerService.getCustomerByEmail(email);
+
+    if (!customer) {
+      // Generate a random password, so I use this function too :D don't mind it
+      const hashedPassword = await hashPassword(
+        generateSessionId(),
+        parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+      );
+
+      customer = await this.customerService.createCustomer({
+        email,
+        password: hashedPassword,
+        firstName: first_name,
+        lastName: last_name,
       });
     }
 
