@@ -6,6 +6,6 @@ export const getFacebookConfigOptions = (): FacebookOptions => {
   return {
     clientId: process.env.FACEBOOK_AUTH_CLIENT_ID,
     clientSecret: process.env.FACEBOOK_AUTH_CLIENT_SECRET,
-    callbackUrl: 'http://localhost:3000/api/login-with-facebook',
+    callbackUrl: 'http://localhost:3000/api/facebook-redirect',
   };
 };

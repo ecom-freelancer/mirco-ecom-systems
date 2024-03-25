@@ -33,6 +33,7 @@ import { SessionService } from '../session/session.service';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
 import { GoogleService } from '@packages/nest-google';
+import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
 
 @Injectable()
 export class AuthService {
@@ -94,6 +95,41 @@ export class AuthService {
       user = await this.userService.createAccount({
         email: googleUser.email,
         name: googleUser.name,
+        password: hashedPassword,
+      });
+    }
+
+    const sessionId = generateSessionId();
+    await this.sessionService.storeSession(user.id, sessionId);
+
+    return this.generateTokens(user.id, sessionId);
+  }
+
+  async loginWithFacebook(payload: LoginWithFacebookDto) {
+    const fields = 'id,name,email,picture,first_name,last_name';
+
+    // Make a request to Facebook API to retrieve user information
+    const response = await fetch(
+      `https://graph.facebook.com/me?fields=${fields}&access_token=${payload.accessToken}`,
+    );
+
+    const facebookUser = await response.json();
+    if (!!facebookUser.error) {
+      throw new BadRequestException(facebookUser.error?.message);
+    }
+
+    let user = await this.userService.getUserByEmail(facebookUser.email);
+
+    if (!user) {
+      // Generate a random password, so I use this function too :D don't mind it
+      const hashedPassword = await hashPassword(
+        generateSessionId(),
+        parseInt(this.configService.get('BCRYPT_SALT_OR_ROUNDS')),
+      );
+
+      user = await this.userService.createAccount({
+        email: facebookUser.email,
+        name: facebookUser.name,
         password: hashedPassword,
       });
     }
