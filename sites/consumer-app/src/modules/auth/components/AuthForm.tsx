@@ -19,7 +19,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     defaultMode,
   );
 
-  const { register, loading, loginWithPassword, loginWithGoole } = useLogin();
+  const {
+    register,
+    loading,
+    loginWithPassword,
+    loginWithGoole,
+    loginWithFacebook,
+  } = useLogin();
 
   return (
     <SignInWrapper>
@@ -72,8 +78,13 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                   },
                 },
                 facebook: {
-                  appId: '1234567890',
-                  onSuccess: async () => {},
+                  appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '',
+                  onSuccess: async (v) =>
+                    loginWithFacebook(v).then(() => {
+                      onFinished?.();
+                    }),
+                  scope: 'public_profile,email',
+                  version: 'v19.0',
                 },
                 google: {
                   clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
@@ -92,13 +103,21 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                 loading={loading}
                 configs={{
                   facebook: {
-                    appId: '1234567890',
-                    onSuccess: async () => {},
+                    appId: process.env.NEXT_PUBLIC_FACEBOOK_APP_ID || '',
+                    onSuccess: async (v) =>
+                      loginWithFacebook(v).then(() => {
+                        onFinished?.();
+                      }),
+                    scope: 'public_profile,email',
+                    version: 'v19.0',
                   },
                   google: {
-                    clientId: '1234567890',
+                    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || '',
                     scopes: [],
-                    onSuccess: async () => {},
+                    onSuccess: async (v) =>
+                      loginWithGoole(v).then(() => {
+                        onFinished?.();
+                      }),
                   },
                   passwordLess: {
                     onSubmit: (v) => register(v).then(() => setMode('login')),

@@ -4,21 +4,11 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
-import { UserService } from '../user/user.service';
-import { JwtService } from '@nestjs/jwt';
-import { plainToInstance } from 'class-transformer';
-import { LoginResponse } from './dtos/login.dto';
-import { JwtPayload } from './interfaces/jwt.interface';
 import { ConfigService } from '@nestjs/config';
-import { GetProfileResponse } from './dtos/profile.dto';
-import { RegisterDto } from './dtos/register.dto';
-import { ChangePasswordDto } from './dtos/change-password.dto';
-import { RefreshTokenResponse } from './dtos/refresh-token.dto';
-import { RedisService, getResetPasswordRedisKey } from '@packages/nest-redis';
-import { MailerService } from '@packages/nest-mail';
-import { ForgotPasswordDto } from './dtos/forgot-password.dto';
-import { ResetPasswordDto } from './dtos/reset-password.dto';
+import { JwtService } from '@nestjs/jwt';
 import dayjs from 'dayjs';
+import { RedisService, getResetPasswordRedisKey } from '@packages/nest-redis';
+
 import {
   hashPassword,
   comparePassword,
@@ -29,10 +19,23 @@ import {
   CurrentVerifyInfo,
   SendEmailPayload,
 } from '@packages/nest-helper';
+import { GoogleService } from '@packages/nest-google';
+import { MailerService } from '@packages/nest-mail';
+
+import { UserService } from '../user/user.service';
+import { plainToInstance } from 'class-transformer';
+import { LoginResponse } from './dtos/login.dto';
+import { JwtPayload } from './interfaces/jwt.interface';
+import { GetProfileResponse } from './dtos/profile.dto';
+import { RegisterDto } from './dtos/register.dto';
+import { ChangePasswordDto } from './dtos/change-password.dto';
+import { RefreshTokenResponse } from './dtos/refresh-token.dto';
+import { ForgotPasswordDto } from './dtos/forgot-password.dto';
+import { ResetPasswordDto } from './dtos/reset-password.dto';
+
 import { SessionService } from '../session/session.service';
 import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
-import { GoogleService } from '@packages/nest-google';
 import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
 import { FacebookResponseInterface } from './interfaces/facebook-response.interface';
 
@@ -460,6 +463,7 @@ export class AuthService {
     const { destination, action, content } = payload;
 
     await this.mailerService.sendMail({
+      from: 'TiepNT.TECH <admin@tiepnt.tech>',
       to: destination, // list of receivers
       subject: mapActionsToSubject(action), // Subject line
       html: content, // HTML body content

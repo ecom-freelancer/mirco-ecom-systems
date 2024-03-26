@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,7 +11,7 @@
   "dependencies": {
     "@ant-design/nextjs-registry": "^1.0.0",
     "@packages/ds-core": "^1.0.0",
-    "@packages/react-form-builder": "workspace:^",
+    "@packages/react-form-builder": "^1.0.0",
     "@packages/react-helper": "^1.0.0",
     "@packages/react-user": "^1.0.0",
     "antd": "^5.15.1",

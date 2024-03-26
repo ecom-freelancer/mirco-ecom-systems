@@ -28,3 +28,7 @@ export interface ILoginResponse {
 export interface ILoginWithGooglePayload {
   accessToken: string;
 }
+
+export interface ILoginWithFacebook {
+  accessToken: string;
+}

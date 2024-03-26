@@ -17,5 +17,13 @@ node_modules
 .database
 .data
 .DS_Store
-
 .idea
+
+
+.next
+certificates
+
+.env
+.env.local
+.env.private
+sites/consumer-app/.env.local
