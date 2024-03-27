@@ -14,6 +14,7 @@ import { GoogleModule } from '@packages/nest-google';
 import { FacebookModule } from '@packages/nest-facebook';
 import { getGoogleConfigOptions } from './configs/google.config';
 import { getFacebookConfigOptions } from './configs/facebook.config';
+import { ProductModule } from './modules/products/product.module';
 
 @Module({
   imports: [
@@ -25,10 +26,12 @@ import { getFacebookConfigOptions } from './configs/facebook.config';
     RedisModule.forRootAsync(getRedisOptions()),
     EmailModule.forRootAsync(getEmailConfigOptions()),
     CloudinaryModule.forRootAsync(getCloudinaryConfig()),
-    AuthModule,
-    UserModule,
     GoogleModule.forRootAsync(getGoogleConfigOptions()),
     FacebookModule.forRootAsync(getFacebookConfigOptions()),
+
+    AuthModule,
+    UserModule,
+    ProductModule,
   ],
   controllers: [],
 })

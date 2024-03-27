@@ -19,5 +19,5 @@
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
   },
-  "include": ["src/"]
+  "include": ["src/", "../admin-server/src/modules/products"]
 }
