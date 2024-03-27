@@ -19,9 +19,9 @@ export class EmailModule {
                 user: options.authUser,
                 pass: options.authPassword,
               },
-            },
-            defaults: {
-              from: 'Hello <modules@nestjs.com>',
+              tls: {
+                rejectUnauthorized: false,
+              },
             },
           }),
         }),

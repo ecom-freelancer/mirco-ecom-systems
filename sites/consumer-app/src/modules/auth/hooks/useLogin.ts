@@ -50,6 +50,22 @@ export const useLogin = () => {
     }
   };
 
+  const loginWithFacebook = async (payload: fb.AuthResponse) => {
+    try {
+      setLoading(true);
+      if (!payload.accessToken) return;
+      const loginRespose = await authService.loginWithFacebook({
+        accessToken: payload.accessToken || '',
+      });
+      await afterLoginSuccess(loginRespose);
+    } catch (error) {
+      toast.error((error as ApiError).message);
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const register = async (payload: IRegisterPayload) => {
     try {
       setLoading(true);
@@ -68,6 +84,7 @@ export const useLogin = () => {
     loading,
     loginWithPassword,
     loginWithGoole,
+    loginWithFacebook,
     register,
   };
 };

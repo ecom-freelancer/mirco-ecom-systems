@@ -454,7 +454,9 @@ export class AuthService {
       throw new BadRequestException(error?.message);
     }
     if (!email) {
-      throw new BadRequestException('This account does not have email');
+      throw new BadRequestException(
+        'Please settings email for your Facebook account. We need it to create an account for you.',
+      );
     }
 
     let customer = await this.customerService.getCustomerByEmail(email);

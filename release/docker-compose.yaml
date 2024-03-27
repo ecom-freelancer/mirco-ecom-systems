@@ -17,7 +17,7 @@ services:
     volumes:
       - ./.data/mysql:/var/lib/mysql
     env_file:
-      - ./env/mysql.env
+      - ./env/.env.mysql
     restart: on-failure
     networks:
       - app-network
@@ -34,27 +34,30 @@ services:
     depends_on:
       - admin-server
       - admin-site
-
+      - consumer-server
+      - consumer-app
     networks:
       - app-network
+
   db-migration: 
-    image: tiepnt/ecom-80-admin-server:v1.0.5
+    image: tiepnt/ecom-80-admin-server:v1.1.2
     depends_on: 
-        - mysql
+      - mysql
     env_file: 
-        - ./env/admin_server.env
+      - ./env/.env.consumer_server
+      - ./env/.env.private
     environment:
       - MIGRATION_LOGGING=true
     command: ['yarn', 'migration']
     restart: on-failure
     networks:
-        - app-network
+      - app-network
 
-   
   admin-server: 
-    image: tiepnt/ecom-80-admin-server:v1.0.5
+    image: tiepnt/ecom-80-admin-server:v1.1.2
     env_file: 
-      - ./env/admin_server.env
+      - ./env/.env.admin_server
+      - ./env/.env.private
     ports:
       - 3000
     depends_on:
@@ -65,20 +68,37 @@ services:
     networks:
       - app-network
   admin-site:
-    image: tiepnt/ecom-80-admin-site:v1.0.5
+    image: tiepnt/ecom-80-admin-site:v1.1.2
     expose:
       - 8000
     networks:
       - app-network
 
+  consumer-server: 
+    image: tiepnt/ecom-80-consumer-server:v1.1.2
+    env_file: 
+      - ./env/.env.consumer_server
+      - ./env/.env.private
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+      - redis
+      
+    restart: on-failure
+    command: ['yarn', 'start:consumer-server']
+    networks:
+      - app-network
+
   consumer-app:
-    image: tiepnt/ecom-80-consumer-app:v1.0.5
-    expose:
+    image: tiepnt/ecom-80-consumer-app:v1.1.2
+    env_file: 
+      - ./env/.env.consumer_app
+    ports:
       - 3000
     command: ['yarn', 'start:consumer-app']
     networks:
       - app-network
-    
 
 networks:
   app-network:

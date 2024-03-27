@@ -9,4 +9,5 @@ export interface TypographyProps {
   lineHeight?: string;
   block?: boolean;
   transform?: 'capitalize' | 'uppercase' | 'lowercase' | 'none';
+  whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
 }

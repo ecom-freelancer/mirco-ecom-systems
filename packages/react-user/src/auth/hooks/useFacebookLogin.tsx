@@ -2,7 +2,13 @@ import { useEffect } from 'react';
 import { FacebookAuthConfig } from '../components/sign-in-form/FacebookLoginButton';
 
 export const useLoginFacebook = (config: FacebookAuthConfig) => {
-  const { appId, onSuccess, language } = config;
+  const {
+    appId,
+    onSuccess,
+    language,
+    scope = 'public_profile',
+    version = 'v19.0',
+  } = config;
 
   const handleClick = (): void => {
     // @ts-ignore
@@ -17,9 +23,14 @@ export const useLoginFacebook = (config: FacebookAuthConfig) => {
 
     FB.getLoginStatus((response) => {
       if (response.status !== 'connected') {
-        FB.login((loginResponse) => {
-          onSuccess(loginResponse.authResponse);
-        });
+        FB.login(
+          (loginResponse) => {
+            onSuccess(loginResponse.authResponse);
+          },
+          {
+            scope: scope,
+          },
+        );
       } else {
         onSuccess(response.authResponse);
       }
@@ -32,7 +43,7 @@ export const useLoginFacebook = (config: FacebookAuthConfig) => {
         appId: appId,
         cookie: true,
         xfbml: false,
-        version: 'v15.0',
+        version: version,
       });
     };
 

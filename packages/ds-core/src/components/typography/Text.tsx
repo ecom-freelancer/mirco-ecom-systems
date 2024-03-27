@@ -22,4 +22,5 @@ export const Text = styled.span<TextProps>`
   ${({ lineHeight }) => lineHeight && `line-height: ${lineHeight};`}
   ${({ block }) => block && `display: block;`}
   ${({ transform }) => transform && `text-transform: ${transform};`}
+  ${({ whiteSpace }) => whiteSpace && `white-space: ${whiteSpace};`}
 `;

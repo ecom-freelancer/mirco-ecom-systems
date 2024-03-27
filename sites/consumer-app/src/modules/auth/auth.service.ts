@@ -21,6 +21,12 @@ export const authService = {
       .then((res) => res.data);
   },
 
+  loginWithFacebook: async (payload: ILoginWithGooglePayload) => {
+    return appApi
+      .post<ILoginResponse>('/login-with-facebook', payload)
+      .then((res) => res.data);
+  },
+
   register: async (payload: IRegisterPayload) => {
     return appApi.post('/register', payload).then((res) => res.data);
   },

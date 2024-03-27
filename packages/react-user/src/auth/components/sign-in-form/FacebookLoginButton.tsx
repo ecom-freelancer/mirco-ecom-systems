@@ -5,8 +5,10 @@ import { useLoginFacebook } from '../../hooks/useFacebookLogin';
 
 export interface FacebookAuthConfig {
   appId: string;
-  onSuccess?: (response: any) => Promise<void>;
+  onSuccess?: (response: fb.AuthResponse) => Promise<void>;
   language?: string;
+  scope?: string;
+  version?: string;
 }
 
 export interface FacebookLoginButtonProps {
