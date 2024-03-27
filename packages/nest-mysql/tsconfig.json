@@ -6,8 +6,7 @@
     "declarationDir": "./dist",
     "lib": ["dom", "dom.iterable", "esnext"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "strict": false
+    "emitDecoratorMetadata": true
   },
   "include": ["src/"]
 }
