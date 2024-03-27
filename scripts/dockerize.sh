@@ -1,5 +1,5 @@
 # build add packages and push to docker hub
-
+# eg: sh scripts/dockerize.sh 1.0.0
 #!/bin/bash
 DOCKER_REPO="tiepnt"
 REPO="ecom-80"
