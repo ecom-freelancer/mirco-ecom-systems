@@ -1,0 +1,25 @@
+services:
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./.data/redis-data:/data
+    networks:
+      - db-network
+  mysql:
+    image: mysql:8.0
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - 3306:3306
+    volumes:
+      - ./.data/mysql:/var/lib/mysql
+    env_file:
+      - ./env/.env.mysql
+    restart: on-failure
+    networks:
+      - db-network
+
+networks:
+  db-network:
+    driver: bridge
