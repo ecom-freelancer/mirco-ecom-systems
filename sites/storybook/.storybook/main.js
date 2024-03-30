@@ -14,6 +14,7 @@ const config = {
     '../../../packages/ds-core/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/react-user/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
     '../../../packages/react-form-builder/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
+    '../../../packages/react-slape/src/**/*.stories.@(js|jsx|mjs|ts|tsx)',
   ],
   addons: [
     getAbsolutePath('@storybook/addon-links'),

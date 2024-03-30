@@ -3344,7 +3344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@juggle/resize-observer@npm:^3.3.1":
+"@juggle/resize-observer@npm:^3.3.1, @juggle/resize-observer@npm:^3.4.0":
   version: 3.4.0
   resolution: "@juggle/resize-observer@npm:3.4.0"
   checksum: 10/73d1d00ee9132fb6f0aea0531940a6b93603e935590bd450fc6285a328d906102eeeb95dea77b2edac0e779031a9708aa8c82502bd298ee4dd26e7dff48f397a
@@ -4067,7 +4067,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@packages/react-form-builder@npm:^1.0.0, @packages/react-form-builder@workspace:packages/react-form-builder":
+"@packages/react-form-builder@npm:^1.0.0, @packages/react-form-builder@workspace:^, @packages/react-form-builder@workspace:packages/react-form-builder":
   version: 0.0.0-use.local
   resolution: "@packages/react-form-builder@workspace:packages/react-form-builder"
   dependencies:
@@ -4096,6 +4096,32 @@ __metadata:
     "@packages/kit": "npm:1.0.0"
     react: "npm:^18.2.0"
   peerDependencies:
+    react: ^18.2.0
+  languageName: unknown
+  linkType: soft
+
+"@packages/react-slape@workspace:packages/react-slape":
+  version: 0.0.0-use.local
+  resolution: "@packages/react-slape@workspace:packages/react-slape"
+  dependencies:
+    "@packages/ds-core": "npm:^1.0.0"
+    "@packages/kit": "npm:1.0.0"
+    "@packages/react-form-builder": "workspace:^"
+    "@packages/react-helper": "npm:^1.0.0"
+    "@storybook/react": "npm:^7.6.17"
+    is-hotkey: "npm:^0.2.0"
+    is-url: "npm:^1.2.4"
+    prop-types: "npm:^15.8.1"
+    react: "npm:^18.2.0"
+    react-icons: "npm:^5.0.1"
+    slate: "npm:^0.102.0"
+    slate-history: "npm:^0.100.0"
+    slate-html-serializer: "npm:^0.8.13"
+    slate-plain-serializer: "npm:^0.7.13"
+    slate-react: "npm:^0.102.0"
+    storybook: "npm:^7.6.17"
+  peerDependencies:
+    antd: ^5.15.1
     react: ^18.2.0
   languageName: unknown
   linkType: soft
@@ -6741,6 +6767,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/is-hotkey@npm:^0.1.8":
+  version: 0.1.10
+  resolution: "@types/is-hotkey@npm:0.1.10"
+  checksum: 10/9ecc49fb3822b3cfa8335132d54c6e577d0b14bb52d0bf1f817cdd19c442555b7523945e2ae72f6098e3c7f64b4777390f38afec3e4660343cfb471377e7fd82
+  languageName: node
+  linkType: hard
+
 "@types/istanbul-lib-coverage@npm:*, @types/istanbul-lib-coverage@npm:^2.0.0, @types/istanbul-lib-coverage@npm:^2.0.1":
   version: 2.0.6
   resolution: "@types/istanbul-lib-coverage@npm:2.0.6"
@@ -6799,7 +6832,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.14.167":
+"@types/lodash@npm:^4.14.167, @types/lodash@npm:^4.14.200":
   version: 4.17.0
   resolution: "@types/lodash@npm:4.17.0"
   checksum: 10/2053203292b5af99352d108656ceb15d39da5922fc3fb8186e1552d65c82d6e545372cc97f36c95873aa7186404d59d9305e9d49254d4ae55e77df1e27ab7b5d
@@ -10908,6 +10941,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"direction@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "direction@npm:1.0.4"
+  bin:
+    direction: cli.js
+  checksum: 10/572ac399093d7c9f2181c96828d252922e2a962b8f31a7fc118e3f7619592c566cc2ed313baf7703f17b2be00cd3c1402550140d0c3f4f70362976376a08b095
+  languageName: node
+  linkType: hard
+
 "display-notification@npm:2.0.0":
   version: 2.0.0
   resolution: "display-notification@npm:2.0.0"
@@ -11237,6 +11279,7 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     eslint-plugin-react: "npm:^7.0.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
+    lodash: "npm:^4.17.21"
     nx: "npm:^16.6.0"
     prettier: "npm:^2.7.1"
     tslib: "npm:^2.4.0"
@@ -14445,6 +14488,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"immer@npm:^10.0.3":
+  version: 10.0.4
+  resolution: "immer@npm:10.0.4"
+  checksum: 10/c1196783cf18e836527f970e45dc88e5472756401831e94d494ca5fd00ab7b39de3156f50505908207e7efe59ac23244d2cde0bd0cff791de7e23709771757e6
+  languageName: node
+  linkType: hard
+
 "immer@npm:^9.0.7":
   version: 9.0.21
   resolution: "immer@npm:9.0.21"
@@ -14826,6 +14876,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-hotkey@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "is-hotkey@npm:0.2.0"
+  checksum: 10/d3d42026e70ea796fb9af8345e511de4b90eed55765eb67db8695f83e60bac8566ace16b191c08c7f6fab36c9318133a9f1c19eb9e5f8ce528d8a433e4b41190
+  languageName: node
+  linkType: hard
+
 "is-interactive@npm:^1.0.0":
   version: 1.0.0
   resolution: "is-interactive@npm:1.0.0"
@@ -14915,7 +14972,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-plain-object@npm:5.0.0":
+"is-plain-object@npm:5.0.0, is-plain-object@npm:^5.0.0":
   version: 5.0.0
   resolution: "is-plain-object@npm:5.0.0"
   checksum: 10/e32d27061eef62c0847d303125440a38660517e586f2f3db7c9d179ae5b6674ab0f469d519b2e25c147a1a3bc87156d0d5f4d8821e0ce4a9ee7fe1fcf11ce45c
@@ -15058,6 +15115,13 @@ __metadata:
   version: 1.3.0
   resolution: "is-unicode-supported@npm:1.3.0"
   checksum: 10/20a1fc161afafaf49243551a5ac33b6c4cf0bbcce369fcd8f2951fbdd000c30698ce320de3ee6830497310a8f41880f8066d440aa3eb0a853e2aa4836dd89abc
+  languageName: node
+  linkType: hard
+
+"is-url@npm:^1.2.4":
+  version: 1.2.4
+  resolution: "is-url@npm:1.2.4"
+  checksum: 10/100e74b3b1feab87a43ef7653736e88d997eb7bd32e71fd3ebc413e58c1cbe56269699c776aaea84244b0567f2a7d68dfaa512a062293ed2f9fdecb394148432
   languageName: node
   linkType: hard
 
@@ -22841,6 +22905,73 @@ __metadata:
   languageName: node
   linkType: hard
 
+"slate-history@npm:^0.100.0":
+  version: 0.100.0
+  resolution: "slate-history@npm:0.100.0"
+  dependencies:
+    is-plain-object: "npm:^5.0.0"
+  peerDependencies:
+    slate: ">=0.65.3"
+  checksum: 10/a751a9e4a227b28e861b4fc94e1faa2fedb98356874bee75b45791f916a14be0845b4a6b36530b728db59307121b61f18fb4963dcb2b548b6bde924335cca9f2
+  languageName: node
+  linkType: hard
+
+"slate-html-serializer@npm:^0.8.13":
+  version: 0.8.13
+  resolution: "slate-html-serializer@npm:0.8.13"
+  dependencies:
+    type-of: "npm:^2.0.1"
+  peerDependencies:
+    immutable: ">=3.8.1 || >4.0.0-rc"
+    react: ">=0.14.0"
+    react-dom: ">=0.14.0"
+    slate: ">=0.36.0 <0.50.0"
+  checksum: 10/1f2140f50f796c2c5837f8e39cc766ca7fd1012861d29eb53d6a54c0df2dc65424f5fffe59aac58c4de7e74e6acc2379faa8c4074909a9f7cd1452cd8d081ce3
+  languageName: node
+  linkType: hard
+
+"slate-plain-serializer@npm:^0.7.13":
+  version: 0.7.13
+  resolution: "slate-plain-serializer@npm:0.7.13"
+  peerDependencies:
+    immutable: ">=3.8.1"
+    slate: ">=0.46.0 <0.50.0"
+  checksum: 10/835a8c2a09cb3c091f9b900c2c2728731496c953d6183194d47a8ea62dfd45107dbde18f974070502182139f4ffc2a289b5e95a9d32654d2386cc64adbf985ee
+  languageName: node
+  linkType: hard
+
+"slate-react@npm:^0.102.0":
+  version: 0.102.0
+  resolution: "slate-react@npm:0.102.0"
+  dependencies:
+    "@juggle/resize-observer": "npm:^3.4.0"
+    "@types/is-hotkey": "npm:^0.1.8"
+    "@types/lodash": "npm:^4.14.200"
+    direction: "npm:^1.0.4"
+    is-hotkey: "npm:^0.2.0"
+    is-plain-object: "npm:^5.0.0"
+    lodash: "npm:^4.17.21"
+    scroll-into-view-if-needed: "npm:^3.1.0"
+    tiny-invariant: "npm:1.3.1"
+  peerDependencies:
+    react: ">=18.2.0"
+    react-dom: ">=18.2.0"
+    slate: ">=0.99.0"
+  checksum: 10/4bbae56eff7eb76685b55f6ebcc56d79849ac424ab82db52fa35bfbd81db970513b9352f2fa744d7c201123e0d93c053dc2a02e29d95f47b2182a71437e3ddfe
+  languageName: node
+  linkType: hard
+
+"slate@npm:^0.102.0":
+  version: 0.102.0
+  resolution: "slate@npm:0.102.0"
+  dependencies:
+    immer: "npm:^10.0.3"
+    is-plain-object: "npm:^5.0.0"
+    tiny-warning: "npm:^1.0.3"
+  checksum: 10/f5352b9268907ca0cf19342b97eda1b90f939a0c7e4b122675432d0da25c6fef5f2201cd31deed4480eadc51462b5ff262821ec5b413f1271d1834701008f2a2
+  languageName: node
+  linkType: hard
+
 "slick@npm:^1.12.2":
   version: 1.12.2
   resolution: "slick@npm:1.12.2"
@@ -23930,10 +24061,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tiny-invariant@npm:1.3.1":
+  version: 1.3.1
+  resolution: "tiny-invariant@npm:1.3.1"
+  checksum: 10/872dbd1ff20a21303a2fd20ce3a15602cfa7fcf9b228bd694a52e2938224313b5385a1078cb667ed7375d1612194feaca81c4ecbe93121ca1baebe344de4f84c
+  languageName: node
+  linkType: hard
+
 "tiny-invariant@npm:^1.3.1, tiny-invariant@npm:^1.3.3":
   version: 1.3.3
   resolution: "tiny-invariant@npm:1.3.3"
   checksum: 10/5e185c8cc2266967984ce3b352a4e57cb89dad5a8abb0dea21468a6ecaa67cd5bb47a3b7a85d08041008644af4f667fb8b6575ba38ba5fb00b3b5068306e59fe
+  languageName: node
+  linkType: hard
+
+"tiny-warning@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "tiny-warning@npm:1.0.3"
+  checksum: 10/da62c4acac565902f0624b123eed6dd3509bc9a8d30c06e017104bedcf5d35810da8ff72864400ad19c5c7806fc0a8323c68baf3e326af7cb7d969f846100d71
   languageName: node
   linkType: hard
 
@@ -24349,6 +24494,13 @@ __metadata:
     media-typer: "npm:0.3.0"
     mime-types: "npm:~2.1.24"
   checksum: 10/0bd9eeae5efd27d98fd63519f999908c009e148039d8e7179a074f105362d4fcc214c38b24f6cda79c87e563cbd12083a4691381ed28559220d4a10c2047bed4
+  languageName: node
+  linkType: hard
+
+"type-of@npm:^2.0.1":
+  version: 2.0.1
+  resolution: "type-of@npm:2.0.1"
+  checksum: 10/5da0273c61ae3eaeb4cb2580a823d2a5d593b572f994b92c2bebf124dc25b6a6cc9d55a2a7e709bae3b392c6b71ef62a93030c53417e859b0f9db942586ff2cd
   languageName: node
   linkType: hard
 

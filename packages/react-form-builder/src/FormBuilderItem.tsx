@@ -18,6 +18,7 @@ export const FormBuilderItem = <T,>(props: FormBuilderItemProps<T>) => {
 
   const Input = useMemo(() => {
     if (!formType) return null;
+    if (formType === 'custom') return ((itemConfig as any)?.render as any)!;
     return formItemMappings[formType];
   }, [formType]);
 

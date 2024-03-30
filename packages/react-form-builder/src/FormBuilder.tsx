@@ -32,6 +32,7 @@ export const FormBuilder = <T extends IFormType>(
       colon={!hideColon}
       autoComplete="off"
       disabled={disabled}
+      spellCheck={false}
     >
       <FormBuilderContext.Provider
         value={{
