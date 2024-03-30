@@ -1,0 +1,38 @@
+{
+  "name": "@packages/react-slape",
+  "version": "1.0.0",
+  "packageManager": "yarn@4.1.0",
+  "main": "dist/index.js",
+  "module": "dist/index.es.js",
+  "types": "dist/index.d.ts",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "kit build-package .",
+    "dev": "kit watch-package ."
+  },
+  "dependencies": {
+    "@packages/ds-core": "^1.0.0",
+    "@packages/react-form-builder": "workspace:^",
+    "@packages/react-helper": "^1.0.0",
+    "is-hotkey": "^0.2.0",
+    "is-url": "^1.2.4",
+    "react": "^18.2.0",
+    "react-icons": "^5.0.1",
+    "slate": "^0.102.0",
+    "slate-history": "^0.100.0",
+    "slate-html-serializer": "^0.8.13",
+    "slate-plain-serializer": "^0.7.13",
+    "slate-react": "^0.102.0"
+  },
+  "devDependencies": {
+    "@packages/kit": "1.0.0",
+    "@storybook/react": "^7.6.17",
+    "prop-types": "^15.8.1",
+    "storybook": "^7.6.17"
+  },
+  "peerDependencies": {
+    "antd": "^5.15.1",
+    "react": "^18.2.0"
+  }
+}

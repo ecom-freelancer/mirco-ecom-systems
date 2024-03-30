@@ -33,7 +33,6 @@ const menuItems = [
 
 export const AccountMenu = () => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <Flex direction="column" gapY="s2">
