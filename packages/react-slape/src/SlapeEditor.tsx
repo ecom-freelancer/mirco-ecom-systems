@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { withReact, Slate, ReactEditor } from 'slate-react';
 import { withHistory } from 'slate-history';
 import { createEditor, Descendant } from 'slate';
@@ -8,7 +8,7 @@ import { EditorContext } from './context';
 import { SlapEditable } from './Editable';
 import { debounce } from 'lodash';
 import { ToolBar } from './components';
-import { EventProvider } from './context/event-context';
+import { EventContext, EventProvider } from './context/event-context';
 
 export interface SlapeEditorProps<E extends SlapeElement = SlapeElement> {
   plugins?: SlapePlugin[];
@@ -16,15 +16,26 @@ export interface SlapeEditorProps<E extends SlapeElement = SlapeElement> {
   onChange?: (value: Descendant[]) => void;
   maxHeight?: string;
   minHeight?: string;
+  placeholder?: string;
 }
 
-export const SlapeEditor: React.FC<SlapeEditorProps> = ({
+export const SlapeEditor: React.FC<SlapeEditorProps> = (props) => {
+  return (
+    <EventProvider>
+      <EditorProvider {...props} />
+    </EventProvider>
+  );
+};
+
+const EditorProvider: React.FC<SlapeEditorProps> = ({
   plugins = defaultPlugins,
   initialValue: defaultInitialValue,
   onChange: onValueChange,
   maxHeight = '500px',
   minHeight = '500px',
+  placeholder,
 }) => {
+  const { emitEvent } = useContext(EventContext);
   const editor = useMemo(() => {
     return plugins.reduce(
       (e, plugin) => plugin.initialize(e),
@@ -47,7 +58,18 @@ export const SlapeEditor: React.FC<SlapeEditorProps> = ({
         };
       }
     };
-    return defaultInitialValue.map((e) => fillChildren(e));
+    return (
+      defaultInitialValue?.map((e) => fillChildren(e)) || [
+        {
+          type: 'paragraph',
+          children: [
+            {
+              text: '',
+            },
+          ],
+        },
+      ]
+    );
   }, []);
 
   const onChange = useMemo(() => {
@@ -62,7 +84,6 @@ export const SlapeEditor: React.FC<SlapeEditorProps> = ({
       .map((p) => p.elementKeys)
       .flat();
   }, [plugins]);
-
   return (
     <EditorContext.Provider
       value={{
@@ -71,18 +92,18 @@ export const SlapeEditor: React.FC<SlapeEditorProps> = ({
         elementKeys: allElementKeys,
         minHeight: minHeight,
         maxHeight: maxHeight,
+        emitEvent: emitEvent,
+        placeHolder: placeholder,
       }}
     >
-      <EventProvider>
-        <Slate
-          editor={editor as ReactEditor}
-          initialValue={initialValue as Descendant[]}
-          onChange={onChange}
-        >
-          <ToolBar />
-          <SlapEditable />
-        </Slate>
-      </EventProvider>
+      <Slate
+        editor={editor as ReactEditor}
+        initialValue={initialValue as Descendant[]}
+        onChange={onChange}
+      >
+        <ToolBar />
+        <SlapEditable />
+      </Slate>
     </EditorContext.Provider>
   );
 };

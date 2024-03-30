@@ -4,13 +4,14 @@ import { TypographyDropdown } from './TypographyDropdown';
 import { SlyleItems } from './StyleItems';
 import { Alignment } from './Alignment';
 import { ImageButton } from './ImageButton';
+import { LinkButton } from './LinkButton';
 
 export interface ToolBarProps {}
 
 export const ToolBar: React.FC<ToolBarProps> = () => {
   return (
     <Wrapper className="slape-toolbar">
-      <Flex align="center">
+      <Flex align="center" gapX="s8">
         <TypographyDropdown />
         <Line />
         <SlyleItems />
@@ -18,6 +19,7 @@ export const ToolBar: React.FC<ToolBarProps> = () => {
         <Alignment />
         <Line />
         <ImageButton />
+        <LinkButton />
       </Flex>
     </Wrapper>
   );
@@ -30,7 +32,7 @@ const Wrapper = styled.div`
 `;
 
 const Line = styled.div`
-  height: 32px;
+  height: 24px;
   width: 1px;
   margin: 0 0.5rem;
   background-color: ${({ theme }) => theme.colors.grayA100};

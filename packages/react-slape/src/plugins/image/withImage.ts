@@ -21,13 +21,11 @@ export const withImage = (
     const image: ImageElement = {
       type: ImageElementType.img,
       url: url,
+      align: 'center',
+      width: 500,
       children: [text],
     };
     Transforms.insertNodes(editor, image as any);
-    Transforms.insertNodes(editor, {
-      type: 'paragraph',
-      children: [{ text: '' }],
-    } as any);
   };
 
   editor.isVoid = (element: SlapeElement) => {
@@ -63,7 +61,6 @@ export const withImage = (
 
   editor.insertBreak = () => {
     const { selection } = editor;
-    console.log('insertBreak', selection);
     if (selection) {
       const matches = Array.from(
         Editor.nodes(editor, {

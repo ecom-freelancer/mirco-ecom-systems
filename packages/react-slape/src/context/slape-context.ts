@@ -7,6 +7,8 @@ export interface EditorContextModel {
   elementKeys: string[];
   maxHeight: string;
   minHeight: string;
+  emitEvent: (event: string, payload: any) => void;
+  placeHolder?: string;
 }
 
 export const EditorContext = React.createContext<EditorContextModel | null>(

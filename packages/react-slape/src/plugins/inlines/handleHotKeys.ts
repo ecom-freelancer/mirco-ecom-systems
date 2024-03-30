@@ -1,10 +1,18 @@
+import { ILink } from '../../components/LinkModal/LinkConfig';
 import { SlapeHotKey } from '../../types';
 import { Editor, Range, Transforms, Element } from 'slate';
 
 export const inlineHotKeys: SlapeHotKey[] = [
   {
     keys: ['mod+k'],
-    handler: (editor: any) => {},
+    handler: (editor, keys, context) => {
+      const { selection } = editor;
+      const { emitEvent } = context;
+      if (selection) {
+        const value = Math.random() * 100000;
+        emitEvent('hyperlink', value);
+      }
+    },
   },
   {
     keys: ['left'],
@@ -26,23 +34,31 @@ export const inlineHotKeys: SlapeHotKey[] = [
   },
 ];
 
-export const wrapLink = (editor, url: string) => {
+export const wrapLink = (editor, link: ILink) => {
   if (isLinkActive(editor)) {
     unwrapLink(editor);
   }
 
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
-  const link = {
+  const element = {
     type: 'link',
-    href: url,
-    children: isCollapsed ? [{ text: url }] : [],
+    href: link.href,
+    target: link.target,
+    rel: link.rel,
+    children: isCollapsed
+      ? [
+          {
+            text: link.href,
+          },
+        ]
+      : [],
   };
 
   if (isCollapsed) {
-    Transforms.insertNodes(editor, link);
+    Transforms.insertNodes(editor, element);
   } else {
-    Transforms.wrapNodes(editor, link, { split: true });
+    Transforms.wrapNodes(editor, element, { split: true });
     Transforms.collapse(editor, { edge: 'end' });
   }
 };

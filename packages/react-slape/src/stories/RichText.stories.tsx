@@ -15,8 +15,9 @@ export const RichTextStory: StoryObj<typeof SlapeEditor> = (props) => {
       <SlapeEditor
         initialValue={initialValue}
         onChange={onValueChange}
-        maxHeight="500px"
+        maxHeight="100%"
         minHeight="500px"
+        placeholder="Enter here"
       />
     </Wrapper>
   );

@@ -17,6 +17,7 @@ export interface ImageElement extends SlapeElement {
   width?: number;
   height?: number;
   name?: string;
+  align?: 'left' | 'center' | 'right' | 'justify';
 }
 
 export interface RenderRichTextElementProps

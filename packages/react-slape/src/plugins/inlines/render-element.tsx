@@ -6,11 +6,10 @@ import { LinkElement } from './elements/LinkElement';
 
 export interface InlineElement extends SlapeElement {
   type: InlineElementKeys;
-  url: string;
+  href: string;
   alt?: string;
-  width?: number;
-  height?: number;
-  name?: string;
+  rel?: string;
+  target?: string;
 }
 
 export interface RenderInlineElementProps
@@ -21,7 +20,7 @@ export interface RenderInlineElementProps
 export const renderElement = (props: RenderInlineElementProps) => {
   const { getNextRenderElement } = useSlape();
 
-  const { type, children, ...elementProps } = props.element;
+  const { type, children } = props.element;
 
   const styles = {
     ...props.styles,
@@ -30,7 +29,7 @@ export const renderElement = (props: RenderInlineElementProps) => {
   switch (type) {
     case InlineElementKeys.link:
       return (
-        <LinkElement attributes={props.attributes} {...(elementProps as any)}>
+        <LinkElement attributes={props.attributes} element={props.element}>
           {props.children}
         </LinkElement>
       );

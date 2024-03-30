@@ -5,7 +5,7 @@ import { styled } from '@packages/ds-core';
 import { EditorContext } from './context';
 
 export const SlapEditable = () => {
-  const { maxHeight, minHeight } = useContext(EditorContext);
+  const { maxHeight, minHeight, placeHolder } = useContext(EditorContext);
 
   const { renderLeaf, renderElement, hanldeHotKeys } = useSlape();
   return (
@@ -15,6 +15,7 @@ export const SlapEditable = () => {
         renderLeaf={renderLeaf}
         renderElement={renderElement}
         onKeyDown={hanldeHotKeys}
+        placeholder={placeHolder}
       />
     </Wrapper>
   );

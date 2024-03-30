@@ -6,7 +6,6 @@ import { Transforms } from 'slate';
 import { useSlape } from '../../hooks/useSlape';
 import { ImageElement } from '../../plugins/image/render-element';
 import { ImageElementType } from '../../plugins/image/constants';
-import { RichTextElementType } from '../../plugins/rich-text/constants';
 
 const ImageConfigModal = React.lazy(() => import('../images/ImageConfigModal'));
 
@@ -20,16 +19,13 @@ export const ImageButton = () => {
       type: ImageElementType.img,
       url: element.url,
       alt: element.alt,
-      width: element.width,
+      width: element.width ?? 500,
       height: element.height,
       name: element.name,
+      align: 'center',
       children: [text],
     };
     Transforms.insertNodes(editor, image as any);
-    Transforms.insertNodes(editor, {
-      type: RichTextElementType.paragraph,
-      children: [text],
-    } as any);
   };
 
   return (
