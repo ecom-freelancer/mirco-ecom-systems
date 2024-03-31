@@ -1,3 +1,8 @@
 {
-  "dashboard": "Dashboard"
+  "home": "Home",
+  "dashboard": "Dashboard",
+  "products": "Products",
+  "productList": "List Products",
+  "addProduct": "Add Product",
+  "categories": "Categories"
 }

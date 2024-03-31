@@ -12,8 +12,8 @@ export const Topbar: React.FC<TopbarProps> = () => {
   return (
     <StyledHeader>
       <StyleHeaderSidebar collapsed={collapsed}>
-        <StyleLogo src={'logo.svg'} show={!collapsed} />
-        <StyleMiniLogo src="logo-mini.svg" show={collapsed} />
+        <StyleLogo src="/logo.svg" show={!collapsed} />
+        <StyleMiniLogo src="/logo-mini.svg" show={collapsed} />
       </StyleHeaderSidebar>
 
       <MainTopBar>
@@ -71,4 +71,5 @@ const MainTopBar = styled.div`
   padding: 0 1rem;
   justify-content: space-between;
   flex: 1;
+  align-items: center;
 `;

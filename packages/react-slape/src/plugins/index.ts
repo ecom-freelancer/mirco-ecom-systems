@@ -3,7 +3,8 @@ import { SlapePlugin } from '../types';
 import { image } from './image';
 import { richtext } from './rich-text';
 import { inlinePlugin } from './inlines';
-// import { inlinePlugin } from './inlines';
+
+export { image, richtext, inlinePlugin };
 
 export const defaultPlugins: SlapePlugin[] = [
   richtext,

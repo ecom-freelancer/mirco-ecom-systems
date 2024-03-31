@@ -2,17 +2,10 @@ import isUrl from 'is-url';
 import { Transforms, Editor, Range, Element as SlateElement } from 'slate';
 
 export const withInlines = (editor) => {
-  const { insertData, insertText, isInline, isElementReadOnly, isSelectable } =
-    editor;
+  const { insertData, insertText, isInline } = editor;
 
   editor.isInline = (element) =>
-    ['link', 'button', 'badge'].includes(element['type']) || isInline(element);
-
-  editor.isElementReadOnly = (element) =>
-    element['type'] === 'badge' || isElementReadOnly(element);
-
-  editor.isSelectable = (element) =>
-    element['type'] !== 'badge' && isSelectable(element);
+    ['link'].includes(element['type']) || isInline(element);
 
   editor.insertText = (text) => {
     if (text && isUrl(text)) {

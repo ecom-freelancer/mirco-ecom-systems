@@ -7,15 +7,14 @@ export const routeKeys = {
   /**
    * start of catalog
    */
-  catalog: '/catalog',
-  products: '/catalog/products',
-  category: '/catalog/category',
-  importProducts: '/catalog/import-products',
-  createProduct: '/catalog/create-product',
-  productDetail: '/catalog/products/:id',
-  productDetailEdit: '/catalog/products/:id/edit',
-  productDetailVariants: '/catalog/products/:id/variants',
-  productDetailInventory: '/catalog/products/:id/inventory',
+  products: '/products',
+  category: '/products/categories',
+  importProducts: '/products/import',
+  createProduct: '/products/create-a-product',
+  productDetail: '/products/:id',
+  productDetailEdit: '/products/:id/edit',
+  productDetailVariants: '/products/:id/variants',
+  productDetailInventory: '/products/:id/inventory',
 
   /**
    * end of catalog

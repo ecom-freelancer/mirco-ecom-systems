@@ -5,7 +5,7 @@ export interface LogoProps {
 }
 
 export const Logo: React.FC<LogoProps> = () => {
-  return <StyleLogo src="logo.svg" />;
+  return <StyleLogo src="/logo.svg" />;
 };
 
 const StyleLogo = styled.img<LogoProps>`
