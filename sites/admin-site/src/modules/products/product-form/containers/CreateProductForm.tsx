@@ -25,7 +25,7 @@ export const CreateProductForm = () => {
           </Section>
           <Section>
             <Heading type="h6">Images</Heading>
-            <ProductImagesForm />
+            <ProductImagesForm form={form} />
           </Section>
         </Col>
       </Row>
