@@ -14,6 +14,7 @@ export const withImage = (
   editor: ReactEditor & HistoryEditor,
   configs: ImagePluginConfig,
 ): Editor => {
+  const onUploadImage = configs.onImageUpload;
   const { insertData, isVoid, insertBreak } = editor;
 
   const insertImage = (editor, url) => {
@@ -40,16 +41,12 @@ export const withImage = (
 
     if (files && files.length > 0) {
       for (const file of files) {
-        const reader = new FileReader();
         const [mime] = file.type.split('/');
 
         if (mime === 'image') {
-          reader.addEventListener('load', () => {
-            const url = reader.result;
+          onUploadImage(file).then((url) => {
             insertImage(editor, url);
           });
-
-          reader.readAsDataURL(file);
         }
       }
     } else if (isImageUrl(text)) {
