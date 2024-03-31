@@ -52,7 +52,7 @@ export const Alignment = () => {
 
     if (!selection) return '';
 
-    const nodes = Array.from(
+    const nodes: Array<SlapeElement> = Array.from(
       Editor.nodes(editor, {
         at: Editor.unhangRange(editor, selection),
         match: (n) =>
@@ -62,9 +62,13 @@ export const Alignment = () => {
       return e[0] as SlapeElement;
     });
 
-    const element = nodes.findLast((e) =>
+    // @ts-ignore
+    const elementIndex = nodes.findLastIndex((e) =>
       plugin.elementKeys.includes(e.type),
-    ) as RichTextElement;
+    );
+
+    if (elementIndex === -1) return '';
+    const element = nodes?.[elementIndex] as RichTextElement;
 
     return element?.align;
   }, [editor.selection, plugin]);

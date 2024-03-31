@@ -20,7 +20,7 @@ export interface RenderInlineElementProps
 export const renderElement = (props: RenderInlineElementProps) => {
   const { getNextRenderElement } = useSlape();
 
-  const { type, children } = props.element;
+  const { type } = props.element;
 
   const styles = {
     ...props.styles,
