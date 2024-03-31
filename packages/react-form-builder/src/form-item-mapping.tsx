@@ -9,6 +9,7 @@ import { FormItemTimePicker } from './form-items/FormItemTimePicker';
 import { FormItemSwitch } from './form-items/FormItemSwitch';
 import { FormItemSlider } from './form-items/FormItemSlider';
 import { FormItemRadioGroup } from './form-items/FormItemRadioGroup';
+import { NumberInput } from './form-items/FormItemInputNumber';
 
 export type FormItemMapping = Partial<
   Record<IFormItemTypeType, React.FC<BaseFormItemProps<AllowConfig<any, any>>>>
@@ -25,4 +26,5 @@ export const formItemMappings: FormItemMapping = {
   checkbox: FormItemCheckBox,
   'checkbox-group': FormItemCheckBoxGroup,
   radio: FormItemRadioGroup,
+  'input-number': NumberInput,
 };

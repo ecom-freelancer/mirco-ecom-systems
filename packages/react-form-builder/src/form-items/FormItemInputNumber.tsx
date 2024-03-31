@@ -26,11 +26,10 @@ export const NumberInput: React.FC<NumberInputProps> = ({
 };
 
 const StyledInput = styled(InputNumber)<StyledNumberInputProps>`
-  width: '100%';
+  width: 100%;
   input {
     text-align: ${({ align }) => align} !important;
   }
-  border-radius: 0 !important;
 `;
 
 StyledInput.defaultProps = {

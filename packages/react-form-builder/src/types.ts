@@ -227,4 +227,6 @@ export interface FormBuilderProps<T extends IFormType> {
 export interface BaseFormItemProps<T extends AllowConfig<any, any>> {
   config?: T;
   className?: string;
+  value?: any;
+  onChange?: (value: any) => void;
 }

@@ -13,7 +13,6 @@ export const PasswordWithRules: React.FC<PasswordInputAsyncProps> = ({
 }) => {
   const { value } = props;
 
-  console.log(props);
 
   return (
     <React.Fragment>
