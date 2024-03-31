@@ -22,12 +22,14 @@ export interface IProductAttribute {
   order?: number;
   showNameInConsumer?: boolean;
   options?: Array<IProductAttributeOption>;
+  uniqCode?: string;
 }
 
 export interface IProductAttributeOption {
   id?: number;
   order?: number;
   name?: string;
+  uniqCode?: string;
 }
 
 export interface IVariantAttribute {

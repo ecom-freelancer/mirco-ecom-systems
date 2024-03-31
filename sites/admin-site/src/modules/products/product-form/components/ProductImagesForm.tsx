@@ -1,30 +1,42 @@
-import { Box, styled } from '@packages/ds-core';
-import { Col, Row } from 'antd';
+import { FormInstance } from 'antd';
+import { UploadImages } from 'modules/_shared/components/ImageListFormItem';
+import { FormBuilder } from '@packages/react-form-builder';
+import { fileToBase64 } from '@packages/react-helper';
 
-export const ProductImagesForm = () => {
+export interface ProductImagesFormProps {
+  form: FormInstance;
+  onChange?: (value: string[]) => void;
+}
+
+export const ProductImagesForm: React.FC<ProductImagesFormProps> = ({
+  form,
+  onChange,
+}) => {
   return (
     <div>
-      <Box marginTop="s16">
-        <Row gutter={[8, 8]}>
-          {Array(5)
-            .fill(0)
-            .map(() => {
-              return (
-                <Col span={8}>
-                  <ImageWrapper />
-                </Col>
-              );
-            })}
-        </Row>
-      </Box>
+      <FormBuilder<{
+        images: string[];
+      }>
+        form={form}
+        onValuesChange={({ images }) => {
+          onChange?.(images || []);
+        }}
+        formLayout="vertical"
+        configs={{
+          images: {
+            formType: 'custom',
+            render: (props) => {
+              return <UploadImages {...props} onUpload={fileToBase64} />;
+            },
+          },
+        }}
+        layouts={[
+          {
+            name: 'images',
+            span: 24,
+          },
+        ]}
+      />
     </div>
   );
 };
-
-const ImageWrapper = styled(Box)`
-  width: 100%;
-  aspect-ratio: 1/1;
-  background-color: #fafafa;
-  position: relative;
-  border-radius: 0.5rem;
-`;

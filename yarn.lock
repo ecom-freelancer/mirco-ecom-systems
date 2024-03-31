@@ -4152,7 +4152,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@packages/react-helper@npm:^1.0.0, @packages/react-helper@workspace:packages/react-helper":
+"@packages/react-helper@npm:^1.0.0, @packages/react-helper@workspace:^, @packages/react-helper@workspace:packages/react-helper":
   version: 0.0.0-use.local
   resolution: "@packages/react-helper@workspace:packages/react-helper"
   dependencies:
@@ -5290,6 +5290,7 @@ __metadata:
     "@dnd-kit/modifiers": "npm:^7.0.0"
     "@dnd-kit/sortable": "npm:^8.0.0"
     "@dnd-kit/utilities": "npm:^3.2.2"
+    "@packages/react-helper": "workspace:^"
     "@packages/react-slape": "workspace:^"
     "@packages/react-user": "npm:^1.0.0"
     "@types/react": "npm:^18.2.56"
@@ -11349,7 +11350,6 @@ __metadata:
     eslint-plugin-prettier: "npm:^4.2.1"
     eslint-plugin-react: "npm:^7.0.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
-    lodash: "npm:^4.17.21"
     nx: "npm:^16.6.0"
     prettier: "npm:^2.7.1"
     tslib: "npm:^2.4.0"

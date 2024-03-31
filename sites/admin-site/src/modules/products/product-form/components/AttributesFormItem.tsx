@@ -4,13 +4,12 @@ import { t } from 'i18next';
 import { MdOutlineDragIndicator } from 'react-icons/md';
 import { IProductAttribute } from '../types';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
-
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { AiOutlinePlus } from 'react-icons/ai';
 
-import React from 'react';
+import React, { useState } from 'react';
 import AttributeUpsertForm from './AttributeForm';
 
 export interface ProductAttributesFormItemProps {
@@ -21,14 +20,18 @@ export interface ProductAttributesFormItemProps {
 export const ProductAttributesFormItem: React.FC<
   ProductAttributesFormItemProps
 > = ({ value: attributes = [], onChange: setAttributes }) => {
+  const [openIndex, setOpenIndex] = useState<number | undefined>();
+
+  const dragable = openIndex === undefined && attributes?.length > 1;
+
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
       const previous = [...attributes];
       const activeIndex = previous.findIndex(
-        (i, index) => (i.order || index + 1) === active.id,
+        (i) => (i.id || i.uniqCode) === active.id,
       );
       const overIndex = previous.findIndex(
-        (i, index) => (i.order || index + 1) === over?.id,
+        (i) => (i.id || i.uniqCode) === over?.id,
       );
 
       const newAttributes = arrayMove(previous, activeIndex, overIndex).map(
@@ -44,39 +47,92 @@ export const ProductAttributesFormItem: React.FC<
     }
   };
 
+  const onAddAttribute = () => {
+    setAttributes?.([
+      ...attributes,
+      {
+        name: '',
+        options: [],
+        uniqCode: Math.random().toString(36).substr(2, 9),
+      },
+    ]);
+    setOpenIndex(attributes.length);
+  };
+
+  const openEdit = (index: number) => {
+    setOpenIndex(index);
+  };
+
+  const onSetAttribute =
+    (index: number) =>
+    (value: IProductAttribute, closeEdit = true) => {
+      const newAttributes = [...attributes];
+      newAttributes[index] = value;
+      setAttributes?.(newAttributes);
+      if (closeEdit) {
+        setOpenIndex(undefined);
+      }
+    };
+
+  const onRemoveAttribute = (index: number) => {
+    const newAttributes = [...attributes];
+    newAttributes.splice(index, 1);
+    setAttributes?.(newAttributes);
+    setOpenIndex(undefined);
+  };
+
   return (
-    <ImageWrapper>
+    <Wrapper>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext
-          items={attributes.map((i, index) => i.order || index + 1)}
+          disabled={!dragable}
+          items={attributes.map(
+            (attribute, index) =>
+              attribute.id || attribute.uniqCode || index + 1,
+          )}
         >
           <Flex direction="column" gap="s4">
             {attributes.map((attribute, index) => {
               return (
                 <AttributeItem
-                  key={attribute.id || index}
+                  key={attribute.id || attribute.uniqCode || index}
+                  editing={openIndex === index}
+                  editable={openIndex === undefined}
                   attribute={attribute}
-                  order={attribute.order || index + 1}
+                  order={`${attribute.id || attribute.uniqCode || index + 1}`}
+                  onChange={onSetAttribute(index)}
+                  onEdit={() => openEdit(index)}
+                  onRemove={() => onRemoveAttribute(index)}
                 />
               );
             })}
           </Flex>
         </SortableContext>
       </DndContext>
-      <AttributeUpsertForm />
       <Flex>
-        <Button block type="primary" ghost icon={<AiOutlinePlus />}>
+        <Button
+          block
+          type="primary"
+          ghost
+          icon={<AiOutlinePlus />}
+          onClick={onAddAttribute}
+        >
           Add a Attribute
         </Button>
       </Flex>
-    </ImageWrapper>
+    </Wrapper>
   );
 };
 
 const AttributeItem: React.FC<{
   attribute: IProductAttribute;
-  order: number;
-}> = ({ attribute, order }) => {
+  order: string;
+  editing?: boolean;
+  editable?: boolean;
+  onChange?: (value: IProductAttribute, closeEdit?: boolean) => void;
+  onEdit?: () => void;
+  onRemove?: () => void;
+}> = ({ attribute, order, editable, editing, onChange, onEdit, onRemove }) => {
   const {
     attributes,
     listeners,
@@ -95,55 +151,75 @@ const AttributeItem: React.FC<{
     ...(isDragging ? { position: 'relative', zIndex: 9999 } : {}),
   };
 
+  const onCloseEdit = () => {
+    if (!attribute.name && !attribute?.options?.length) {
+      onRemove?.();
+    } else {
+      onChange?.(attribute, true);
+    }
+  };
+
   return (
-    <Row
-      align="middle"
-      className="attribute-item"
-      gutter={8}
-      ref={setNodeRef}
-      style={style}
-      {...attributes}
-    >
-      <Col>
-        <Box
-          padding={'s12'}
-          ref={setActivatorNodeRef}
-          style={{ touchAction: 'none', cursor: 'move' }}
-          {...listeners}
+    <AttributeWrapper>
+      {editing ? (
+        <AttributeUpsertForm
+          onCancel={onCloseEdit}
+          attribute={attribute}
+          onSubmit={(v) => onChange?.({ ...attribute, ...v })}
+        />
+      ) : (
+        <Row
+          align="middle"
+          className="attribute-item"
+          gutter={8}
+          ref={setNodeRef}
+          style={style}
+          {...attributes}
         >
-          <MdOutlineDragIndicator size={20} />
-        </Box>
-      </Col>
-      <Col flex={1}>
-        <Row align="middle">
-          <Col span={10}>
-            <Text fontWeight="bold"> {attribute.name} </Text>
+          <Col>
+            <Box
+              padding={'s12'}
+              ref={setActivatorNodeRef}
+              style={{ touchAction: 'none', cursor: 'move' }}
+              {...listeners}
+            >
+              <MdOutlineDragIndicator size={20} />
+            </Box>
           </Col>
-          <Col span={14}>
-            <Flex>
-              {attribute?.options?.map((option) => {
-                return <Tag key={option.id}>{option.name}</Tag>;
-              })}
-            </Flex>
+          <Col flex={1}>
+            <Row align="middle">
+              <Col span={10}>
+                <Text fontWeight="bold"> {attribute.name} </Text>
+              </Col>
+              <Col span={14}>
+                <Flex>
+                  {attribute?.options?.map((option) => {
+                    return <Tag key={option.id}>{option.name}</Tag>;
+                  })}
+                </Flex>
+              </Col>
+            </Row>
+          </Col>
+          <Col>
+            <Button
+              disabled={!editable}
+              style={{
+                borderRadius: 0,
+              }}
+              onClick={onEdit}
+            >
+              <Text fontSize="xs">{t('Edit')}</Text>
+            </Button>
           </Col>
         </Row>
-      </Col>
-      <Col>
-        <Button
-          style={{
-            borderRadius: 0,
-          }}
-        >
-          <Text fontSize="xs">{t('Edit')}</Text>
-        </Button>
-      </Col>
-    </Row>
+      )}
+    </AttributeWrapper>
   );
 };
 
-const ImageWrapper = styled(Box)`
-  .attribute-item {
-    padding: 0.375rem 0.25rem;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.grayA50};
-  }
+const Wrapper = styled(Box)``;
+
+const AttributeWrapper = styled.div`
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grayA50};
+  margin-bottom: 0.5rem;
 `;
