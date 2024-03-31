@@ -73,6 +73,7 @@ export const TypographyDropdown: React.FC<TypographyDropdownProps> = () => {
       }),
     ).map((e) => e[0] as SlapeElement);
 
+    // @ts-ignore
     const element = nodes.findLast((e) => plugin.elementKeys.includes(e.type));
 
     if (!element) {
