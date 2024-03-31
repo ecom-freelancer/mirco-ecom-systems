@@ -5,7 +5,6 @@ import React from 'react';
 import { routeKeys } from 'configs/constants';
 import { MdGridView, MdOutlineDashboard } from 'react-icons/md';
 
-import { NotFoundPage } from 'pages/NotFound';
 import { t } from 'configs/i18next';
 
 const WorkspaceProvider = React.lazy(() =>
@@ -20,6 +19,14 @@ const ProtectedRouterProvider = React.lazy(() =>
   })),
 );
 
+const ListProductPage = React.lazy(
+  () => import('pages/product/ListProductPage'),
+);
+
+const CreateProductPage = React.lazy(
+  () => import('pages/product/AddProductPage'),
+);
+
 export const workspacesRoutes: IRoute[] = [
   {
     icon: <MdOutlineDashboard />,
@@ -31,14 +38,25 @@ export const workspacesRoutes: IRoute[] = [
       })),
   },
   {
-    path: routeKeys.catalog,
-    label: t('catalog'),
-    element: <NotFoundPage />,
+    path: routeKeys.products,
+    label: t('products'),
+    element: <Outlet />,
     defaultOpen: true,
     children: [
       {
         path: routeKeys.products,
-        label: t('product'),
+        index: true,
+        label: t('productList'),
+        element: <ListProductPage />,
+      },
+      {
+        path: routeKeys.createProduct,
+        label: t('addProduct'),
+        element: <CreateProductPage />,
+      },
+      {
+        path: routeKeys.category,
+        label: t('categories'),
       },
     ],
     icon: <MdGridView />,

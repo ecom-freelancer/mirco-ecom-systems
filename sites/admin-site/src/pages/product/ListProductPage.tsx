@@ -1,3 +1,5 @@
-export const ListProductPage = () => {
-  return <div>ListProductPage</div>;
+const ListProductPage = () => {
+  return <div> List Product Page</div>;
 };
+
+export default ListProductPage;

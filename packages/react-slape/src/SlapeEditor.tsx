@@ -37,7 +37,13 @@ const EditorProvider: React.FC<SlapeEditorProps> = ({
 }) => {
   const { emitEvent } = useContext(EventContext);
   const editor = useMemo(() => {
-    return plugins.reduce(
+    /** filter unique */
+    const oldPlugins = defaultPlugins.filter((p) =>
+      plugins.find((input) => input.name == p.name),
+    );
+    const applyPlugin = [...oldPlugins, ...plugins];
+
+    return applyPlugin.reduce(
       (e, plugin) => plugin.initialize(e),
       withReact(withHistory(createEditor())),
     );

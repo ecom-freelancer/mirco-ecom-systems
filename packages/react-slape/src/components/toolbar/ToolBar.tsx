@@ -29,6 +29,7 @@ const Wrapper = styled.div`
   padding: 0.5rem 0.75rem;
   margin-bottom: 2px;
   background-color: ${({ theme }) => theme.colors.background};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.grayA100};
 `;
 
 const Line = styled.div`

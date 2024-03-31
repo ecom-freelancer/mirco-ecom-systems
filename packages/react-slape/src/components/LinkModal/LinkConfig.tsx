@@ -2,7 +2,8 @@ import { Box, Flex } from '@packages/ds-core';
 import { FormBuilder } from '@packages/react-form-builder';
 import { Button } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import React, { useEffect } from 'react';
+import { debounce } from 'lodash';
+import React, { useEffect, useMemo } from 'react';
 import { MdOutlineLinkOff } from 'react-icons/md';
 
 export interface ILink {
@@ -28,17 +29,24 @@ export const LinkConfig: React.FC<LinkConfigProps> = ({
 
   const ref = React.useRef<HTMLDivElement>(null);
 
+  const handleSubmit = useMemo(() => {
+    return debounce(() => {
+      form.submit();
+    }, 150);
+  }, []);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Enter') {
-        form.submit();
+        e.preventDefault();
+        handleSubmit();
       }
     };
     ref.current?.addEventListener('keydown', handleKeyDown);
     return () => {
       ref.current?.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, []);
 
   return (
     <div ref={ref}>
@@ -50,6 +58,7 @@ export const LinkConfig: React.FC<LinkConfigProps> = ({
         configs={{
           href: {
             formType: 'input',
+            autoFocus: true,
             label: 'URL',
             required: false,
             placeholder: 'https://example.com',

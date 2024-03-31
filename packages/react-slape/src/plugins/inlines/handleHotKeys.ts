@@ -41,6 +41,9 @@ export const wrapLink = (editor, link: ILink) => {
 
   const { selection } = editor;
   const isCollapsed = selection && Range.isCollapsed(selection);
+
+  console.log(isCollapsed);
+
   const element = {
     type: 'link',
     href: link.href,

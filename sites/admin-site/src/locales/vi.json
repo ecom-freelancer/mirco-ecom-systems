@@ -1,3 +1,8 @@
 {
-  "dashboard": "Trang chủ"
+  "home": "Trang chủ",
+  "dashboard": "Trang chủ",
+  "products": "Sản phẩm",
+  "productList": "Danh sách sản phẩm",
+  "addProduct": "Tạo sản phẩm",
+  "categories": "Danh mục ngành hàng"
 }
