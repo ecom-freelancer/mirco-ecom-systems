@@ -3,6 +3,7 @@ import { RenderElementProps, SlapeElement } from '../../types';
 import { InlineElementKeys, inlinePluginKey } from './constants';
 import { useSlape } from '../../hooks/useSlape';
 import { LinkElement } from './elements/LinkElement';
+import { Paragraph } from '../../components/elements/paragraph';
 
 export interface InlineElement extends SlapeElement {
   type: InlineElementKeys;
@@ -37,7 +38,7 @@ export const renderElement = (props: RenderInlineElementProps) => {
     default:
       return (
         getNextRenderElement(inlinePluginKey)?.({ ...props, styles }) || (
-          <p {...props.attributes}>{props.children}</p>
+          <Paragraph {...props.attributes}>{props.children}</Paragraph>
         )
       );
   }
