@@ -8,7 +8,7 @@ import {
   IsString,
 } from 'class-validator';
 
-export class ProductCatgoryDto {
+export class ProductCategoryDto {
   @ApiProperty()
   @Expose()
   id: number;
@@ -34,11 +34,11 @@ export class ProductCatgoryDto {
   display?: boolean;
 
   @ApiProperty({
-    type: () => [ProductCatgoryDto],
+    type: () => [ProductCategoryDto],
   })
   @Expose()
-  @Type(() => ProductCatgoryDto)
-  items: ProductCatgoryDto[];
+  @Type(() => ProductCategoryDto)
+  items: ProductCategoryDto[];
 
   @ApiProperty()
   @Expose()
@@ -48,11 +48,11 @@ export class ProductCatgoryDto {
 // getCategories
 export class GetCategoriesDto {
   @ApiProperty({
-    type: ProductCatgoryDto,
+    type: ProductCategoryDto,
   })
   @Expose()
-  @Type(() => ProductCatgoryDto)
-  categories: ProductCatgoryDto[];
+  @Type(() => ProductCategoryDto)
+  categories: ProductCategoryDto[];
 }
 
 export class CategoryPayloadDto {
