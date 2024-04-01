@@ -12,17 +12,16 @@ export const KeywordsFormInput: React.FC<KeywordsFormInputProps> = ({
   onChange,
 }) => {
   const handleChange = useMemo(() => {
-    return debounce((v: string) => {
-      onChange?.(v.split(','));
+    return debounce((v: string[]) => {
+      onChange?.(v);
     }, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const selectValue = value?.join(',');
   return (
     <Select
       mode="tags"
-      value={selectValue}
+      value={value}
       tokenSeparators={[',']}
       onChange={handleChange}
       maxLength={10}

@@ -51,9 +51,3 @@ export interface IProductInfoFormType
   attributes: Array<IProductAttribute>;
   variants: Array<IVariants>;
 }
-
-export interface IProductCategory {
-  id: number;
-  name: string;
-  parentId?: number;
-}

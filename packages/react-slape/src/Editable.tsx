@@ -3,11 +3,14 @@ import { Editable } from 'slate-react';
 import { useSlape } from './hooks/useSlape';
 import { styled } from '@packages/ds-core';
 import { EditorContext } from './context';
+import { useHotKeys } from './hooks/useHotKeys';
 
 export const SlapEditable = () => {
   const { maxHeight, minHeight, placeHolder } = useContext(EditorContext);
+  const { hanldeHotKeys } = useHotKeys();
 
-  const { renderLeaf, renderElement, hanldeHotKeys } = useSlape();
+  const { renderLeaf, renderElement } = useSlape();
+
   return (
     <Wrapper maxHeight={maxHeight} minHeight={minHeight}>
       <Editable

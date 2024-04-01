@@ -21,6 +21,7 @@ export const ProductAttributesForm: React.FC<ProductAttributesFormProps> = ({
         attributes: Array<IProductAttribute>;
       }>
         form={form}
+        asChild
         formLayout="vertical"
         configs={{
           attributes: {
@@ -28,6 +29,28 @@ export const ProductAttributesForm: React.FC<ProductAttributesFormProps> = ({
             render: (props) => {
               return <ProductAttributesFormItem {...props} />;
             },
+            validateFirst: true,
+            rules: [
+              {
+                validator: (_, value?: IProductAttribute[]) => {
+                  if (!!value && value?.length > 0) {
+                    const isValueValid = value.every((attr) => {
+                      return (
+                        !!attr.name &&
+                        !!attr.options &&
+                        attr.options.length > 0 &&
+                        attr.options.every((opt) => !!opt.name)
+                      );
+                    });
+
+                    if (!isValueValid) {
+                      return Promise.reject('Please fill all attribute fields');
+                    }
+                  }
+                  return Promise.resolve();
+                },
+              },
+            ],
           },
         }}
         layouts={[

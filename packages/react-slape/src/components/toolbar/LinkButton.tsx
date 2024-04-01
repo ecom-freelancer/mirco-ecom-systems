@@ -3,16 +3,16 @@ import { Tooltip } from 'antd';
 import React, { Suspense, useMemo, useState } from 'react';
 import { IoMdLink } from 'react-icons/io';
 import { useListenEvent } from '../../hooks/useEvent';
-import { useSlape } from '../../hooks/useSlape';
 import { wrapLink } from '../../plugins/inlines/handleHotKeys';
 import { ILink } from '../LinkModal/LinkConfig';
+import { useEditor } from '../../hooks/useEditor';
 
 const LinkModal = React.lazy(() => import('../LinkModal/LinkModal'));
 
 export const LinkButton = () => {
   const [open, setOpen] = useState(undefined);
 
-  const { editor } = useSlape();
+  const editor = useEditor();
 
   const disabled = useMemo(() => {
     const { selection } = editor;

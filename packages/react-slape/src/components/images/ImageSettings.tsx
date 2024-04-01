@@ -4,8 +4,8 @@ import React, { Suspense, useMemo, useState } from 'react';
 import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { BaseElement, Transforms } from 'slate';
 import { ReactEditor } from 'slate-react';
-import { useSlape } from '../../hooks/useSlape';
 import { ImageElement } from '../../plugins/image/render-element';
+import { useEditor } from '../../hooks/useEditor';
 
 const ImageConfigModal = React.lazy(
   () => import('../../components/images/ImageConfigModal'),
@@ -17,7 +17,7 @@ const ImageSettings: React.FC<{
 }> = ({ element, showSettings }) => {
   const [openConfig, setOpenConfig] = useState(undefined);
 
-  const { editor } = useSlape();
+  const editor = useEditor();
 
   const path = useMemo(
     () => ReactEditor.findPath(editor, element as BaseElement),

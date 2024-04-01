@@ -213,6 +213,7 @@ export type FormLayout<T> = {
 export interface FormBuilderProps<T extends IFormType> {
   form?: FormInstance<T>;
   configs: FormConfig<T>;
+  asChild?: boolean;
   layouts: FormLayout<FormBuilderProps<T>['configs']>[];
   space?: Space;
   formLayout?: 'horizontal' | 'vertical';
