@@ -4,10 +4,10 @@ import { RiItalic, RiBold, RiUnderline, RiStrikethrough } from 'react-icons/ri';
 import { IoIosCode } from 'react-icons/io';
 
 import { Editor } from 'slate';
-import { useSlape } from '../../hooks/useSlape';
 import { Tooltip } from 'antd';
 import { inlineHandler } from '../../plugins/rich-text/handleHotKey';
 import { IRichLeaf } from '../../plugins/rich-text/types';
+import { useEditor } from '../../hooks/useEditor';
 const styleItems = [
   {
     style: 'bold',
@@ -37,7 +37,7 @@ const styleItems = [
 ];
 
 export const SlyleItems = () => {
-  const { editor } = useSlape();
+  const editor = useEditor();
   const getIsActive = useCallback(
     (format: string) => {
       const marks = Editor.marks(editor);
@@ -65,7 +65,7 @@ const ItemOption: React.FC<{
   item: (typeof styleItems)[number];
   active?: boolean;
 }> = ({ item, active }) => {
-  const { editor } = useSlape();
+  const editor = useEditor();
 
   const handleClick = () => {
     inlineHandler(editor, item.style as keyof IRichLeaf);

@@ -6,10 +6,10 @@ import { LuExternalLink } from 'react-icons/lu';
 import { MdOutlineLinkOff } from 'react-icons/md';
 import { ReactEditor, useSelected } from 'slate-react';
 import { BaseElement, Transforms } from 'slate';
-import { useSlape } from '../../../hooks/useSlape';
 import { ILink } from '../../../components/LinkModal/LinkConfig';
 import { InlineElement } from '../render-element';
 import { unwrapLink } from '../handleHotKeys';
+import { useEditor } from '../../../hooks/useEditor';
 
 const LinkModal = React.lazy(
   () => import('../../../components/LinkModal/LinkModal'),
@@ -28,7 +28,7 @@ export const LinkElement: React.FC<LinkElementProps> = ({
 }) => {
   const { href, target, rel } = element;
   const [open, setOpen] = useState(undefined);
-  const { editor } = useSlape();
+  const editor = useEditor();
   const selected = useSelected();
 
   const path = useMemo(

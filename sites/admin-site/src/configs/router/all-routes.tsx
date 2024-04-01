@@ -1,31 +1,9 @@
-/* eslint-disable react-refresh/only-export-components */
 import { IRoute } from './types';
 import { Navigate, Outlet } from 'react-router';
-import React from 'react';
 import { routeKeys } from 'configs/constants';
 import { MdGridView, MdOutlineDashboard } from 'react-icons/md';
 
 import { t } from 'configs/i18next';
-
-const WorkspaceProvider = React.lazy(() =>
-  import('modules/workspace/WorkspaceProvider').then((module) => ({
-    default: module.WorkspaceProvider,
-  })),
-);
-
-const ProtectedRouterProvider = React.lazy(() =>
-  import('modules/auth/provider/ProctectRouterProvider').then((module) => ({
-    default: module.ProtectedRouterProvider,
-  })),
-);
-
-const ListProductPage = React.lazy(
-  () => import('pages/product/ListProductPage'),
-);
-
-const CreateProductPage = React.lazy(
-  () => import('pages/product/AddProductPage'),
-);
 
 export const workspacesRoutes: IRoute[] = [
   {
@@ -47,12 +25,18 @@ export const workspacesRoutes: IRoute[] = [
         path: routeKeys.products,
         index: true,
         label: t('productList'),
-        element: <ListProductPage />,
+        lazy: () =>
+          import('pages/product/ListProductPage').then((module) => ({
+            Component: module.default,
+          })),
       },
       {
         path: routeKeys.createProduct,
         label: t('addProduct'),
-        element: <CreateProductPage />,
+        lazy: () =>
+          import('pages/product/AddProductPage').then((module) => ({
+            Component: module.default,
+          })),
       },
       {
         path: routeKeys.category,
@@ -76,7 +60,6 @@ export const workspacesRoutes: IRoute[] = [
     path: routeKeys.orders,
     label: t('Orders'),
     icon: <MdGridView />,
-    // icon: MdShoppingCart,
   },
   {
     path: routeKeys.home,
@@ -87,15 +70,17 @@ export const workspacesRoutes: IRoute[] = [
 
 const privateRoutes: IRoute = {
   path: '/',
-  element: (
-    <ProtectedRouterProvider>
-      <Outlet />
-    </ProtectedRouterProvider>
-  ),
+  loader: () =>
+    import('modules/auth/provider/ProctectRouterProvider').then((module) => ({
+      Component: module.ProtectedRouterProvider,
+    })),
   children: [
     {
       path: '/',
-      element: <WorkspaceProvider />,
+      lazy: () =>
+        import('modules/workspace/WorkspaceProvider').then((module) => ({
+          Component: module.WorkspaceProvider,
+        })),
       children: workspacesRoutes,
     },
   ],

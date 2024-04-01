@@ -21,6 +21,7 @@ export const ProductAdvanceForm: React.FC<ProductAdvanceFormProps> = ({
     <div>
       <FormBuilder<IProductAdvanceInfo>
         form={form}
+        asChild
         initialValues={initialValues}
         formLayout="vertical"
         configs={{

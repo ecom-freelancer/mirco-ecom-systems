@@ -111,7 +111,7 @@ export const typographyHandler = (
       type: isActive ? RichTextElementType.paragraph : type,
     } as any);
   } catch (e) {
-    console.log(e);
+    console.error(e);
   }
 };
 

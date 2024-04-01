@@ -36,18 +36,22 @@ const EditorProvider: React.FC<SlapeEditorProps> = ({
   placeholder,
 }) => {
   const { emitEvent } = useContext(EventContext);
-  const editor = useMemo(() => {
+  const { editor, applyPlugins } = useMemo(() => {
     /** filter unique */
-    const oldPlugins = defaultPlugins.filter((p) =>
-      plugins.find((input) => input.name == p.name),
+    const oldPlugins = defaultPlugins.filter(
+      (p) => !plugins.find((input) => input.name == p.name),
     );
-    const applyPlugin = [...oldPlugins, ...plugins];
 
-    return applyPlugin.reduce(
-      (e, plugin) => plugin.initialize(e),
-      withReact(withHistory(createEditor())),
-    );
-  }, [plugins]);
+    const applyPlugins = [...oldPlugins, ...plugins];
+
+    return {
+      editor: applyPlugins.reduce(
+        (e, plugin) => plugin.initialize(e),
+        withReact(withHistory(createEditor())),
+      ),
+      applyPlugins,
+    };
+  }, []);
 
   const initialValue: SlapeElement[] = useMemo(() => {
     // if item type != null && child == null, add child = []
@@ -90,10 +94,11 @@ const EditorProvider: React.FC<SlapeEditorProps> = ({
       .map((p) => p.elementKeys)
       .flat();
   }, [plugins]);
+
   return (
     <EditorContext.Provider
       value={{
-        plugins,
+        plugins: applyPlugins,
         editor,
         elementKeys: allElementKeys,
         minHeight: minHeight,

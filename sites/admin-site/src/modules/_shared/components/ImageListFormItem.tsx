@@ -55,6 +55,11 @@ export const UploadImages: React.FC<UploadImagesProps> = ({
 
   const ref = useRef<HTMLLabelElement>(null);
 
+  const onDelete = (id?: string) => {
+    if (!id) return;
+    setImages((prev) => prev.filter((image) => image.id !== id));
+  };
+
   return (
     <Wrapper>
       <label ref={ref}>
@@ -88,7 +93,10 @@ export const UploadImages: React.FC<UploadImagesProps> = ({
                       destroyOnClose: true,
                     }}
                   />
-                  <CloseWrapper className="icon-close">
+                  <CloseWrapper
+                    className="icon-close"
+                    onClick={() => onDelete(image.id)}
+                  >
                     <IoCloseOutline />
                   </CloseWrapper>
                 </React.Fragment>

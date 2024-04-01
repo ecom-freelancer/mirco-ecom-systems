@@ -109,17 +109,19 @@ export const ProductAttributesFormItem: React.FC<
           </Flex>
         </SortableContext>
       </DndContext>
-      <Flex>
-        <Button
-          block
-          type="primary"
-          ghost
-          icon={<AiOutlinePlus />}
-          onClick={onAddAttribute}
-        >
-          Add a Attribute
-        </Button>
-      </Flex>
+      <Box marginBottom="s4">
+        <Flex>
+          <Button
+            block
+            type="primary"
+            ghost
+            icon={<AiOutlinePlus />}
+            onClick={onAddAttribute}
+          >
+            Add a Attribute
+          </Button>
+        </Flex>
+      </Box>
     </Wrapper>
   );
 };

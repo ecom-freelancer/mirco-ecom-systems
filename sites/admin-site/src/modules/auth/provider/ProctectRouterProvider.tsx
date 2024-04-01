@@ -15,5 +15,7 @@ export const ProtectedRouterProvider: React.FC<
     return <Navigate to={routeKeys.signin} />;
   }
 
+  console.log('pass protected router provider');
+
   return children;
 };

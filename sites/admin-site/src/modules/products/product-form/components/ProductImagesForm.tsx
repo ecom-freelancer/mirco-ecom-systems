@@ -1,7 +1,7 @@
 import { FormInstance } from 'antd';
 import { UploadImages } from 'modules/_shared/components/ImageListFormItem';
 import { FormBuilder } from '@packages/react-form-builder';
-import { fileToBase64 } from '@packages/react-helper';
+import { useServices } from 'modules/_shared/hooks';
 
 export interface ProductImagesFormProps {
   form: FormInstance;
@@ -12,11 +12,13 @@ export const ProductImagesForm: React.FC<ProductImagesFormProps> = ({
   form,
   onChange,
 }) => {
+  const { fileService } = useServices();
   return (
     <div>
       <FormBuilder<{
         images: string[];
       }>
+        asChild
         form={form}
         onValuesChange={({ images }) => {
           onChange?.(images || []);
@@ -26,7 +28,7 @@ export const ProductImagesForm: React.FC<ProductImagesFormProps> = ({
           images: {
             formType: 'custom',
             render: (props) => {
-              return <UploadImages {...props} onUpload={fileToBase64} />;
+              return <UploadImages {...props} onUpload={fileService.upload} />;
             },
           },
         }}

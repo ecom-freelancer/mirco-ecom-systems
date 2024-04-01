@@ -3,8 +3,8 @@ import { IRichLeaf } from './types';
 import { RenderLeafFunc } from '../../types';
 import React from 'react';
 import { useSlape } from '../../hooks/useSlape';
-import { richTextPluginKey } from './constants';
 import { css } from '@packages/ds-core';
+import { richTextPluginKey } from './constants';
 
 export interface RenderRichTextLeafProps extends Omit<RenderLeafProps, 'leaf'> {
   leaf: IRichLeaf;

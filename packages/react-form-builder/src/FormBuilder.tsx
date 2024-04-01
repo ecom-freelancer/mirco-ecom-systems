@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { FormBuilderProps, IFormType } from './types';
 import { Form, Row } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -7,6 +7,35 @@ import { FormBuilderItem } from './FormBuilderItem';
 
 export const FormBuilder = <T extends IFormType>(
   props: FormBuilderProps<T>,
+) => {
+  const { asChild } = props;
+  const layouts = props.layouts;
+
+  const Wrapper: React.FC<
+    FormBuilderProps<any> & { children: React.ReactNode }
+  > = useMemo(() => (!asChild ? FormWrapper : React.Fragment), [asChild]);
+
+  return (
+    <Wrapper {...(asChild ? {} : (props as any))}>
+      <FormBuilderContext.Provider
+        value={{
+          itemConfigs: props.configs,
+        }}
+      >
+        <Row gutter={[8, 8]}>
+          {layouts.map((layout, index) => {
+            return <FormBuilderItem key={index} layout={layout} />;
+          })}
+        </Row>
+      </FormBuilderContext.Provider>
+    </Wrapper>
+  );
+};
+
+const FormWrapper = (
+  props: FormBuilderProps<any> & {
+    children: React.ReactNode;
+  },
 ) => {
   const {
     initialValues,
@@ -17,10 +46,10 @@ export const FormBuilder = <T extends IFormType>(
     validateTrigger,
     hideColon,
     disabled,
+    children,
   } = props;
-
-  const layouts = props.layouts;
   const [form] = useForm(control);
+
   return (
     <Form
       form={form}
@@ -34,18 +63,7 @@ export const FormBuilder = <T extends IFormType>(
       disabled={disabled}
       spellCheck={false}
     >
-      <FormBuilderContext.Provider
-        value={{
-          itemConfigs: props.configs,
-          form,
-        }}
-      >
-        <Row gutter={[8, 8]}>
-          {layouts.map((layout, index) => {
-            return <FormBuilderItem key={index} layout={layout} />;
-          })}
-        </Row>
-      </FormBuilderContext.Provider>
+      {children}
     </Form>
   );
 };

@@ -18,9 +18,9 @@ import { Editor } from 'slate';
 import { Element } from 'slate';
 import { SlapeElement, SlapePlugin } from '../../types';
 import { usePlugin } from '../../hooks/usePlugin';
-import { useSlape } from '../../hooks/useSlape';
 import { typographyHandler } from '../../plugins/rich-text/handleHotKey';
 import { IoChevronDown } from 'react-icons/io5';
+import { useEditor } from '../../hooks/useEditor';
 
 export interface TypographyDropdownProps {}
 
@@ -58,7 +58,7 @@ const typographyOptions = [
 ];
 
 export const TypographyDropdown: React.FC<TypographyDropdownProps> = () => {
-  const { editor } = useSlape();
+  const editor = useEditor();
   const plugin = usePlugin<SlapePlugin>(richTextPluginKey);
 
   const getSelection = useCallback(() => {
