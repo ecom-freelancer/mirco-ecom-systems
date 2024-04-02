@@ -74,4 +74,13 @@ export class CategoryService {
 
     return await this.categoryRepository.save({ ...category, ...payload });
   }
+
+  async changeCategoryDisplay(id: number, display: boolean) {
+    const category = await this.categoryRepository.findOneBy({ id });
+    if (!category) {
+      throw new NotFoundException(`Cannot find category with id = ${id}`);
+    }
+
+    return await this.categoryRepository.save({ ...category, display });
+  }
 }

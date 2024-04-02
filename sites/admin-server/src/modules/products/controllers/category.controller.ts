@@ -3,8 +3,11 @@ import {
   Controller,
   Get,
   HttpStatus,
+  Param,
   ParseFilePipeBuilder,
+  ParseIntPipe,
   Post,
+  Put,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -24,6 +27,7 @@ import { ProductCategoryEntity } from '@packages/nest-mysql';
 import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
 import { CreateCategoryPayload } from '../interfaces/create-category.interface';
 import { Protected } from '../../auth/auth.guard';
+import { ChangeCategoryDisplayDto } from '../dtos/change-category-status.dto';
 
 @Protected()
 @Controller('categories')
@@ -64,6 +68,18 @@ export class CategoryController {
 
     return await this.categoryService.createCategory(
       payload as CreateCategoryPayload,
+    );
+  }
+
+  @Put(':id/display')
+  @ApiSuccessResponse({ status: 200, type: ProductCategoryEntity })
+  async changeCategoryDisplay(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: ChangeCategoryDisplayDto,
+  ) {
+    return await this.categoryService.changeCategoryDisplay(
+      id,
+      payload.display,
     );
   }
 
