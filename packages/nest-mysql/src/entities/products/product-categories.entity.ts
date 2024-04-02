@@ -27,7 +27,7 @@ export class ProductCategoryEntity {
   code: string;
 
   @Column({
-    nullable: false,
+    nullable: true,
     type: 'double',
   })
   order?: number;

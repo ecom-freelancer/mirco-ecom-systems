@@ -1,9 +1,13 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
+  Param,
   ParseFilePipeBuilder,
+  ParseIntPipe,
   Post,
+  Put,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -18,7 +22,14 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiFile } from '../../../configs/file.decorator';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
+import { UpsertCategoryDto } from '../dtos/upsert-category.dto';
+import { ProductCategoryEntity } from '@packages/nest-mysql';
+import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
+import { CreateCategoryPayload } from '../interfaces/create-category.interface';
+import { Protected } from '../../auth/auth.guard';
+import { ChangeCategoryDisplayDto } from '../dtos/change-category-status.dto';
 
+@Protected()
 @Controller('categories')
 @ApiTags('Category')
 @ApiBearerAuth('Authorization')
@@ -38,6 +49,37 @@ export class CategoryController {
       {
         excludeExtraneousValues: true,
       },
+    );
+  }
+
+  @Post()
+  @ApiSuccessResponse({
+    status: 200,
+    type: ProductCategoryEntity,
+  })
+  async upsertCategory(
+    @Body() payload: UpsertCategoryDto,
+  ): Promise<ProductCategoryEntity> {
+    if (payload.id) {
+      return await this.categoryService.updateCategory(
+        payload as UpdateCategoryPayload,
+      );
+    }
+
+    return await this.categoryService.createCategory(
+      payload as CreateCategoryPayload,
+    );
+  }
+
+  @Put(':id/display')
+  @ApiSuccessResponse({ status: 200, type: ProductCategoryEntity })
+  async changeCategoryDisplay(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() payload: ChangeCategoryDisplayDto,
+  ) {
+    return await this.categoryService.changeCategoryDisplay(
+      id,
+      payload.display,
     );
   }
 
@@ -75,6 +117,6 @@ export class CategoryController {
       throw classValidatorException(errors);
     }
 
-    await this.categoryService.upsertCategories(data);
+    await this.categoryService.importCategories(data);
   }
 }
