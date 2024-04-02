@@ -5,6 +5,7 @@ import { useSlape } from '../../hooks/useSlape';
 import { RenderElementProps, SlapeElement } from '../../types';
 import { Image } from 'antd';
 import { Box, Flex, styled, Text } from '@packages/ds-core';
+import { Paragraph } from '../../components/elements/paragraph';
 
 const ImageSettings = React.lazy(
   () => import('../../components/images/ImageSettings'),
@@ -93,7 +94,7 @@ export const renderImageElement = (props: RenderRichTextElementProps) => {
 
   return (
     getNextRenderElement(imagePluginName)?.({ ...props, styles }) || (
-      <p {...props.attributes}>{props.children}</p>
+      <Paragraph {...props.attributes}>{props.children}</Paragraph>
     )
   );
 };

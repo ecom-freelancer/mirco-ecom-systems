@@ -1,13 +1,14 @@
 import { FormBuilder } from '@packages/react-form-builder';
 import { FormInstance } from 'antd';
 import React, { useMemo } from 'react';
-import { IProductBaseInfo, IProductCategory } from '../types';
+import { IProductBaseInfo } from '../types';
 import { Text } from '@packages/ds-core';
 import { debounce } from 'lodash';
 import {
   FormDescriptionInput,
   FormDescriptionInputProps,
 } from './ProductDescription';
+import { IProductCategory } from 'modules/products/product-category/types';
 
 export interface ProductBaseInfoFormProps {
   form: FormInstance;
@@ -34,7 +35,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
     return debounce((value: string) => {
       const slug = stringToSlug(value);
       form.setFieldsValue({ slug: slug });
-    }, 500);
+    }, 300);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -42,6 +43,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
     <div>
       <FormBuilder<IProductBaseInfo>
         form={form}
+        asChild
         configs={{
           title: {
             formType: 'input',
@@ -52,6 +54,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
               </Text>
             ),
             onChange: (e) => {
+              form.setFieldValue('title', e.target.value);
               generateSlugFun(e.target.value);
             },
           },
@@ -67,7 +70,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
             rules: [
               {
                 required: true,
-                message: 'Slug is rer',
+                message: 'Slug is required',
               },
             ],
           },
@@ -93,12 +96,12 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
               value: category.id,
               label: category.name,
             })),
-            rules: [
-              {
-                required: true,
-                message: 'Category is required',
-              },
-            ],
+            // rules: [
+            //   {
+            //     required: true,
+            //     message: 'Category is required',
+            //   },
+            // ],
           },
           brand: {
             formType: 'input',

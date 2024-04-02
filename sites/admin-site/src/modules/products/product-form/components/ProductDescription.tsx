@@ -1,5 +1,7 @@
 import { Box, styled } from '@packages/ds-core';
-import { SlapeEditor } from '@packages/react-slape';
+import { SlapeEditor, image } from '@packages/react-slape';
+import { message } from 'antd';
+import { useServices } from 'modules/_shared/hooks';
 import React, { useMemo } from 'react';
 
 export interface FormDescriptionInputProps {
@@ -11,6 +13,8 @@ export const FormDescriptionInput: React.FC<FormDescriptionInputProps> = ({
   value,
   onChange,
 }) => {
+  const { fileService } = useServices();
+
   const initialValue = useMemo(() => {
     try {
       if (!value) return null;
@@ -20,6 +24,16 @@ export const FormDescriptionInput: React.FC<FormDescriptionInputProps> = ({
       return null;
     }
   }, [value]);
+
+  const onUploadFile = async (file: File) => {
+    try {
+      const url = await fileService.upload(file);
+      return url;
+    } catch (e) {
+      message.error('Upload file failed');
+      return '';
+    }
+  };
 
   const onChangeValue = (value) => {
     try {
@@ -32,6 +46,11 @@ export const FormDescriptionInput: React.FC<FormDescriptionInputProps> = ({
   return (
     <Wrapper>
       <SlapeEditor
+        plugins={[
+          image({
+            onImageUpload: onUploadFile,
+          }),
+        ]}
         placeholder="Write a litte for product"
         minHeight="100px"
         maxHeight="700px"

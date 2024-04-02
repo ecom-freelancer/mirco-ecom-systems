@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import { useMatches } from 'react-router';
 import { MenuProps } from 'antd';
-import { IRoute, workspacesRoutes } from 'configs/router';
+import { IRoute } from 'configs/router';
 import { Link } from 'react-router-dom';
+import { workspacesRoutes } from '../routers';
 
 type IMenuItem = NonNullable<MenuProps['items']>[number];
 

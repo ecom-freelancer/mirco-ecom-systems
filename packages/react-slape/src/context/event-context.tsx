@@ -27,6 +27,13 @@ export const EventProvider: React.FC<{
       switch (action.type) {
         case 'INIT':
           return { ...action.payload };
+        case 'loading': {
+          const { id, value } = action.payload as {
+            id: string;
+            value: boolean;
+          };
+          return { ...state, loading: { ...state.loading, [id]: value } };
+        }
         default:
           return { ...state, [action.type]: action.payload };
       }

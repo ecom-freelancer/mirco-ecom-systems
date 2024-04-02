@@ -3,15 +3,18 @@ import { Tooltip } from 'antd';
 import React, { Suspense } from 'react';
 import { FaImage } from 'react-icons/fa';
 import { Transforms } from 'slate';
-import { useSlape } from '../../hooks/useSlape';
 import { ImageElement } from '../../plugins/image/render-element';
 import { ImageElementType } from '../../plugins/image/constants';
+import { useEditor } from '../../hooks/useEditor';
 
 const ImageConfigModal = React.lazy(() => import('../images/ImageConfigModal'));
 
 export const ImageButton = () => {
   const [open, setOpen] = React.useState(undefined);
-  const { editor } = useSlape();
+
+  const editor = useEditor();
+
+  const disabled = !editor.selection;
 
   const onSave = (element: ImageElement) => {
     const text = { text: '' };
@@ -31,7 +34,7 @@ export const ImageButton = () => {
   return (
     <React.Fragment>
       <Tooltip title="Upload image">
-        <IconButton onClick={() => setOpen(true)}>
+        <IconButton onClick={() => setOpen(true)} disabled={disabled}>
           <FaImage />
         </IconButton>
       </Tooltip>
@@ -48,11 +51,15 @@ export const ImageButton = () => {
     </React.Fragment>
   );
 };
-const IconButton = styled.div`
+const IconButton = styled.div<{
+  disabled?: boolean;
+}>`
   font-size: 20px;
   border-radius: 4px;
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme, disabled }) =>
+    disabled ? theme.colors.gray100 : theme.colors.gray};
   display: flex;
   align-items: center;
   cursor: pointer;
+  ${({ disabled }) => (disabled ? 'pointer-events: none;' : '')}
 `;

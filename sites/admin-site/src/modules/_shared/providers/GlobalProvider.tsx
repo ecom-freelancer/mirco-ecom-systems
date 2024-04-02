@@ -2,6 +2,7 @@ import { notification } from 'antd';
 import { NotificationInstance } from 'antd/es/notification/interface';
 import React, { ReactNode } from 'react';
 import { Toaster } from 'react-hot-toast';
+import { ServiceProvider } from './ServiceProvider';
 
 export interface IGlobalContext {
   noti: NotificationInstance;
@@ -23,9 +24,11 @@ export const GlobalProvider: React.FC<{ children: ReactNode }> = ({
 
   return (
     <GlobalContext.Provider value={{ noti: api }}>
-      {contextHolder}
-      {children}
-      <Toaster />
+      <ServiceProvider>
+        {contextHolder}
+        {children}
+        <Toaster />
+      </ServiceProvider>
     </GlobalContext.Provider>
   );
 };

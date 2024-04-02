@@ -7,7 +7,6 @@ import {
   RiAlignJustify,
 } from 'react-icons/ri';
 
-import { useSlape } from '../../hooks/useSlape';
 import { Tooltip } from 'antd';
 import { alignHandler } from '../../plugins/rich-text/handleHotKey';
 
@@ -16,6 +15,7 @@ import { Editor, Element } from 'slate';
 import { SlapeElement, SlapePlugin } from '../../types';
 import { usePlugin } from '../../hooks/usePlugin';
 import { richTextPluginKey } from '../../plugins/rich-text/constants';
+import { useEditor } from '../../hooks/useEditor';
 const styleItems: Array<{
   align: RichTextElement['align'];
   icon: React.ReactNode;
@@ -44,7 +44,7 @@ const styleItems: Array<{
 ];
 
 export const Alignment = () => {
-  const { editor } = useSlape();
+  const editor = useEditor();
   const plugin = usePlugin<SlapePlugin>(richTextPluginKey);
 
   const getAlign = useCallback(() => {
@@ -93,7 +93,7 @@ const ItemOption: React.FC<{
   item: (typeof styleItems)[number];
   active?: boolean;
 }> = ({ item, active }) => {
-  const { editor } = useSlape();
+  const editor = useEditor();
 
   const handleClick = () => {
     alignHandler(editor, item.align);

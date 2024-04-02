@@ -15,6 +15,7 @@ import { FacebookModule } from '@packages/nest-facebook';
 import { getGoogleConfigOptions } from './configs/google.config';
 import { getFacebookConfigOptions } from './configs/facebook.config';
 import { ProductModule } from './modules/products/product.module';
+import { FileModule } from './modules/files/file.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { ProductModule } from './modules/products/product.module';
     AuthModule,
     UserModule,
     ProductModule,
+    FileModule,
   ],
   controllers: [],
 })

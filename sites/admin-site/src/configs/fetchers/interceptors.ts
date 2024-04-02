@@ -12,7 +12,10 @@ export const accessTokenInterceptor = (request: InternalAxiosRequestConfig) => {
 export const accessApplicationJsonIntercepter = (
   request: InternalAxiosRequestConfig,
 ) => {
-  request.headers['Content-Type'] = 'application/json';
+  if (request.headers['Content-Type'] === undefined) {
+    request.headers['Content-Type'] = 'application/json';
+  }
+
   return request;
 };
 

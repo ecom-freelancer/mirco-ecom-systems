@@ -6,6 +6,7 @@ import {
   richTextPluginKey,
 } from './constants';
 import { useSlape } from '../../hooks/useSlape';
+import { Paragraph } from '../../components/elements/paragraph';
 
 export interface RichTextElement {
   type: RichTextKey;
@@ -66,9 +67,9 @@ export const renderRichTextElement: RenderElementFunc<
         );
       case RichTextElementType.paragraph:
         return (
-          <div {...props.attributes} style={elementStyles}>
+          <Paragraph {...props.attributes} style={elementStyles}>
             {props.children}
-          </div>
+          </Paragraph>
         );
     }
   }
@@ -78,9 +79,9 @@ export const renderRichTextElement: RenderElementFunc<
       ...props,
       styles: elementStyles,
     }) || (
-      <p {...props.attributes} style={elementStyles}>
+      <Paragraph {...props.attributes} style={elementStyles}>
         {props.children}
-      </p>
+      </Paragraph>
     )
   );
 };

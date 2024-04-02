@@ -1,23 +1,9 @@
-import { Button, Col, Input, Row, Upload, message } from 'antd';
-import React, { useState } from 'react';
+import { Button, Col, Input, Row } from 'antd';
+import React, { useRef, useState } from 'react';
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { usePlugin } from '../../hooks/usePlugin';
 import { ImagePlugin } from '../../plugins/image';
-import {
-  RcFile,
-  UploadChangeParam,
-  UploadFile,
-  UploadProps,
-} from 'antd/es/upload';
 import { styled } from '@packages/ds-core';
-
-const beforeUpload = (file: RcFile) => {
-  const isLt2M = file.size / 1024 / 1024 < 10;
-  if (!isLt2M) {
-    message.error('Image must smaller than 10MB!');
-  }
-  return isLt2M;
-};
 
 export interface ImageUrlFormInputProps {
   value?: string;
@@ -28,17 +14,17 @@ export const ImageUrlFormInput: React.FC<ImageUrlFormInputProps> = ({
   onChange,
 }) => {
   const { configs } = usePlugin<ImagePlugin>('image');
+  const ref = useRef<HTMLLabelElement>(null);
 
   const { onImageUpload, accept } = configs || {};
 
   const [loading, setLoading] = useState(false);
 
-  const handleChange: UploadProps['onChange'] = (
-    info: UploadChangeParam<UploadFile>,
-  ) => {
-    if (info.file.status === 'uploading') {
+  const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files?.[0];
       setLoading(true);
-      onImageUpload?.(info.file.originFileObj as File)
+      onImageUpload?.(file)
         .then((url) => {
           onChange?.(url);
         })
@@ -58,16 +44,21 @@ export const ImageUrlFormInput: React.FC<ImageUrlFormInputProps> = ({
         />
       </Col>
       <Col>
-        <Upload
-          itemRender={() => <React.Fragment />}
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-          disabled={loading}
-          accept={accept}
-          customRequest={() => {}}
-        >
-          <Button icon={<MdOutlineFileUpload size={18} />} loading={loading} />
-        </Upload>
+        <label ref={ref}>
+          <input
+            type="file"
+            multiple={false}
+            accept={accept || 'image/*'}
+            hidden
+            onChange={onInputChange}
+            style={{ display: 'none' }}
+          />
+        </label>
+        <Button
+          icon={<MdOutlineFileUpload size={18} />}
+          loading={loading}
+          onClick={() => ref.current?.click()}
+        />
       </Col>
     </Row>
   );
