@@ -1,14 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {
+  IsArray,
   IsBoolean,
   IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
 } from 'class-validator';
-import { UpsertSeoInfoDto } from './seo-info.dto';
 
-export class UpsertCategoryDto {
+export class UpsertSeoInfoDto {
   @ApiPropertyOptional()
   @IsNumber()
   @IsOptional()
@@ -16,32 +16,30 @@ export class UpsertCategoryDto {
 
   @ApiProperty()
   @IsString()
-  name: string;
+  @IsNotEmpty()
+  title: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
-  code: string;
-
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsNumber()
-  order?: number;
+  shortDescription?: string;
 
   @ApiProperty()
   @IsOptional()
   @IsString()
   image?: string;
 
-  @ApiProperty()
-  @IsBoolean()
-  @IsOptional()
-  display?: boolean = true;
+  @ApiPropertyOptional()
+  @IsArray()
+  @IsString({ each: true })
+  keywords?: string[];
 
   @ApiPropertyOptional()
-  @IsNumber()
   @IsOptional()
-  parentId?: number;
+  @IsBoolean()
+  noIndex?: boolean = true;
 
-  seoInfo?: UpsertSeoInfoDto;
+  @ApiProperty()
+  @IsOptional()
+  @IsString()
+  canonical?: string;
 }

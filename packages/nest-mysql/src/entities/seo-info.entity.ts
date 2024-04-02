@@ -43,5 +43,5 @@ export class SeoInfoEntity {
     nullable: true,
     type: 'varchar',
   })
-  canonial?: string;
+  canonical?: string;
 }

@@ -1,3 +1,5 @@
+import { SeoInfoEntity } from '@packages/nest-mysql';
+
 export interface UpdateCategoryPayload {
   id: number;
   name: string;
@@ -6,4 +8,5 @@ export interface UpdateCategoryPayload {
   image?: string;
   display?: boolean;
   parentId?: number;
+  seoInfo?: SeoInfoEntity;
 }
