@@ -3,6 +3,7 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
@@ -103,11 +104,11 @@ export class ProductEntity extends BaseEntity {
   })
   categoryId?: number;
 
-  // releation_ships
-
-  @ManyToOne(() => SeoInfoEntity, {
+  // relationships
+  @OneToOne(() => SeoInfoEntity, {
     nullable: true,
-    onDelete: 'SET NULL',
+    cascade: true,
+    orphanedRowAction: 'soft-delete',
   })
   @JoinColumn({
     name: 'seo_info_id',

@@ -76,10 +76,10 @@ export class ProductSkuEntity extends BaseEntity {
   variantId?: number;
 
   // relationships
-
-  @ManyToOne(() => SeoInfoEntity, {
+  @OneToOne(() => SeoInfoEntity, {
     nullable: true,
-    onDelete: 'SET NULL',
+    cascade: true,
+    orphanedRowAction: 'soft-delete',
   })
   @JoinColumn({
     name: 'seo_info_id',
