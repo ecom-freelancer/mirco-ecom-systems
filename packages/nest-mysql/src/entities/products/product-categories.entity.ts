@@ -4,6 +4,7 @@ import {
   JoinColumn,
   ManyToOne,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { SeoInfoEntity } from '../seo-info.entity';
@@ -56,7 +57,11 @@ export class ProductCategoryEntity {
   items?: ProductCategoryEntity[];
 
   // relationships
-  @ManyToOne(() => SeoInfoEntity)
+  @OneToOne(() => SeoInfoEntity, {
+    nullable: true,
+    cascade: true,
+    orphanedRowAction: 'soft-delete',
+  })
   @JoinColumn({
     name: 'seo_info_id',
   })
