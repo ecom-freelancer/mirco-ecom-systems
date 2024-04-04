@@ -14,6 +14,10 @@ const CreateProductPage = React.lazy(
   () => import('pages/product/AddProductPage'),
 );
 
+const CategoryListPage = React.lazy(
+  () => import('pages/product/CategoryListPage'),
+);
+
 export const workspacesRoutes: IRoute[] = [
   {
     icon: <MdOutlineDashboard />,
@@ -44,6 +48,7 @@ export const workspacesRoutes: IRoute[] = [
       {
         path: routeKeys.category,
         label: t('categories'),
+        element: <CategoryListPage />,
       },
     ],
     icon: <MdGridView />,

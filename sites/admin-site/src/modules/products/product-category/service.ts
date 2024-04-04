@@ -9,4 +9,8 @@ export const categoryService = {
       }>('/categories')
       .then((res) => res.data.categories);
   },
+
+  changeCategoryDisplay: async (id: number, display: boolean) => {
+    return appApi.put(`/categories/${id}/display`, { display }).then();
+  },
 };
