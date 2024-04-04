@@ -8,6 +8,7 @@ import { IsNull, Not, Repository } from 'typeorm';
 import { CategoryPayloadDto } from '../dtos/category.dto';
 import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
 import { CreateCategoryPayload } from '../interfaces/create-category.interface';
+import omit from 'lodash.omit';
 
 @Injectable()
 export class CategoryService {
@@ -17,7 +18,7 @@ export class CategoryService {
   ) {}
 
   async getCategories() {
-    const categories = await this.categoryRepository.find({
+    return await this.categoryRepository.find({
       where: {
         parent: IsNull(),
       },
@@ -27,8 +28,6 @@ export class CategoryService {
         },
       },
     });
-
-    return categories;
   }
 
   async importCategories(categories: CategoryPayloadDto[]) {
@@ -57,7 +56,13 @@ export class CategoryService {
   ): Promise<ProductCategoryEntity> {
     const { id, code } = payload;
 
-    const category = await this.categoryRepository.findOneBy({ id });
+    const category = await this.categoryRepository.findOne({
+      where: { id },
+      relations: {
+        seoInfo: true,
+      },
+    });
+
     if (!category) {
       throw new NotFoundException(`Cannot find category with id = ${id}`);
     }
@@ -72,7 +77,20 @@ export class CategoryService {
       throw new BadRequestException('Category code is duplicated');
     }
 
-    return await this.categoryRepository.save({ ...category, ...payload });
+    if (!category.seoInfoId) {
+      category.seoInfo = payload.seoInfo;
+    } else {
+      category.seoInfo = {
+        ...category.seoInfo,
+        ...omit(payload.seoInfo, 'id'),
+      };
+    }
+
+    return await this.categoryRepository.save({
+      ...category,
+      ...payload,
+      seoInfo: category.seoInfo,
+    });
   }
 
   async changeCategoryDisplay(id: number, display: boolean) {
