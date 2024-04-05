@@ -8,12 +8,12 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileService } from '@packages/nest-file';
-import { ApiFile } from 'src/configs/file.decorator';
+import { ApiFile } from 'configs/file.decorator';
 import { Express } from 'express';
 
 @Controller('profile')
 @ApiTags('Profile')
-export class ProfileControler {
+export class ProfileController {
   constructor(private readonly fileService: FileService) {}
 
   @Get()

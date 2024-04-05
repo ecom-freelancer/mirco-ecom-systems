@@ -15,6 +15,7 @@ import { FormLabelAlign } from 'antd/es/form/interface';
 import { SliderSingleProps } from 'antd/es/slider';
 import { ReactNode } from 'react';
 import { NumberInputProps } from './form-items/FormItemInputNumber';
+import { TextAreaProps } from 'antd/es/input';
 
 export interface IFormType {}
 
@@ -26,6 +27,7 @@ export interface IFormItemProps<Key extends keyof T, T> {
 export type IFormItemTypeType =
   | 'input'
   | 'input-number'
+  | 'textarea'
   | 'password'
   | 'select'
   | 'multiSelect'
@@ -70,6 +72,12 @@ export type ArrayValueKey<K, T> = ValueKey<K, T> extends []
 export interface InputFormItemConfig<T, K extends keyof T>
   extends BaseFormItem<T, K, 'input'>,
     InputProps {
+  placeholder?: string;
+}
+
+export interface TextAreaFormItemConfig<T, K extends keyof T>
+  extends BaseFormItem<T, K, 'textarea'>,
+    TextAreaProps {
   placeholder?: string;
 }
 
@@ -162,6 +170,7 @@ export type AllowItemConfigBoolean<T, K extends keyof T> =
 export type AllowItemConfigString<T, K extends keyof T> =
   | InputFormItemConfig<T, K>
   | InputPasswordFormItemConfig<T, K>
+  | TextAreaFormItemConfig<T, K>
   | SelectFormConfig<T, K>
   | DatePickerFormConfig<T, K>
   | TimePickerFormConfig<T, K>
@@ -195,7 +204,23 @@ export type FormConfig<T> = {
   [K in keyof T]?: AllowConfig<Required<T>, K>;
 };
 
-export type FormLayout<T> = {
+export type FormLayout<T> = FormItemLayout<T> | FormGroupLayout<T>;
+export interface FormGroupLayout<T> {
+  items: Array<FormItemLayout<T>>;
+  type: 'group';
+  span?: number;
+  breakpoints?: {
+    xs?: number;
+    sm?: number;
+    md?: number;
+    lg?: number;
+    xl?: number;
+    xxl?: number;
+  };
+}
+
+export interface FormItemLayout<T> {
+  type?: 'item';
   name: keyof T;
   span?: number;
   labelCol?: ColProps;
@@ -208,7 +233,7 @@ export type FormLayout<T> = {
     xl?: number;
     xxl?: number;
   };
-};
+}
 
 export interface FormBuilderProps<T extends IFormType> {
   form?: FormInstance<T>;
@@ -223,6 +248,7 @@ export interface FormBuilderProps<T extends IFormType> {
   initialValues?: Partial<T>;
   onValuesChange?: (changedValues: Partial<T>, allValues: T) => void;
   disabled?: boolean;
+  gutter?: number | [number, number];
 }
 
 export interface BaseFormItemProps<T extends AllowConfig<any, any>> {

@@ -5,7 +5,6 @@ import {
   IBreadcrumb,
   styled,
 } from '@packages/ds-core';
-import { BackTop } from 'antd';
 import React, { useRef } from 'react';
 
 export interface PageProps {
@@ -21,7 +20,6 @@ export const Page: React.FC<PageProps> = ({ breadcrumbs, children, title }) => {
       {breadcrumbs && <StyledBreadcrumbs breadcrumbs={breadcrumbs} />}
       {title && <Heading type="h3">{title}</Heading>}
       {children}
-      <BackTop target={ref.current as never} />
     </Wrapper>
   );
 };

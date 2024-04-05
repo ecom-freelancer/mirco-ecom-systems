@@ -1,6 +1,6 @@
 export const routeKeys = {
   home: '/',
-  signin: '/login',
+  signIn: '/login',
   dashboard: '/dashboard',
   notFound: '/404',
 
@@ -31,7 +31,8 @@ export const dynamicRouteKeys = {
   /**
    * start of catalog
    */
-  productDetail: (id: string) => routeKeys.productDetail.replace(':id', id),
+  productDetail: (id: string | number) =>
+    routeKeys.productDetail.replace(':id', `${id}`),
   /**
    * end of catalog
    */

@@ -31,6 +31,16 @@ export const workspacesRoutes: IRoute[] = [
           })),
       },
       {
+        path: routeKeys.productDetail,
+        hiddenOnMenu: true,
+        lazy: () =>
+          import('pages/product/product-detail/ProductDetailPage').then(
+            (module) => ({
+              Component: module.default,
+            }),
+          ),
+      },
+      {
         path: routeKeys.createProduct,
         label: t('addProduct'),
         lazy: () =>
@@ -74,8 +84,8 @@ export const workspacesRoutes: IRoute[] = [
 
 const privateRoutes: IRoute = {
   path: '/',
-  loader: () =>
-    import('modules/auth/provider/ProctectRouterProvider').then((module) => ({
+  lazy: () =>
+    import('modules/auth/provider/ProtectRouterProvider').then((module) => ({
       Component: module.ProtectedRouterProvider,
     })),
   children: [
@@ -92,7 +102,7 @@ const privateRoutes: IRoute = {
 
 const publicRoutes: IRoute[] = [
   {
-    path: routeKeys.signin,
+    path: routeKeys.signIn,
     lazy: () =>
       import('pages/SignIn').then((module) => ({
         Component: module.SignInPage,

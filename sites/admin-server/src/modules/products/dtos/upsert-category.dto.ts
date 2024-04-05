@@ -6,7 +6,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { UpsertSeoInfoDto } from './seo-info.dto';
+import { UpsertSeoInfoDto } from 'modules/seo-info';
 
 export class UpsertCategoryDto {
   @ApiPropertyOptional()

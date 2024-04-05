@@ -1,22 +1,17 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity } from '../base.entity';
+import { ArrayStringTransformer } from '../helpers/array-string-transformer';
 
 @Entity('seo_infos')
-export class SeoInfoEntity {
+export class SeoInfoEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Column({
-    nullable: false,
+    nullable: true,
     type: 'nvarchar',
   })
-  title: string;
+  title?: string;
 
   @Column({
     nullable: true,
@@ -31,11 +26,9 @@ export class SeoInfoEntity {
   image?: string;
 
   @Column({
-    transformer: {
-      to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',') || [],
-    },
+    transformer: ArrayStringTransformer,
     type: 'text',
+    nullable: true,
   })
   keywords?: Array<string>;
 
@@ -51,13 +44,4 @@ export class SeoInfoEntity {
     type: 'varchar',
   })
   canonical?: string;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
-
-  @DeleteDateColumn()
-  deletedAt: Date;
 }
