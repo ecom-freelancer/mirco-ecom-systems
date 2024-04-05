@@ -15,3 +15,7 @@ export interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
+
+export interface IUpsertResponse {
+  id: number;
+}

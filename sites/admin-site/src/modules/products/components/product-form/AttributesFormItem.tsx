@@ -2,7 +2,6 @@ import { Box, Flex, Text, styled } from '@packages/ds-core';
 import { Button, Col, Row, Tag } from 'antd';
 import { t } from 'i18next';
 import { MdOutlineDragIndicator } from 'react-icons/md';
-import { IProductAttribute } from '../types';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
@@ -11,6 +10,7 @@ import { AiOutlinePlus } from 'react-icons/ai';
 
 import React, { useState } from 'react';
 import AttributeUpsertForm from './AttributeForm';
+import { IProductAttribute } from 'modules/products/types';
 
 export interface ProductAttributesFormItemProps {
   value?: IProductAttribute[];
@@ -19,10 +19,20 @@ export interface ProductAttributesFormItemProps {
 
 export const ProductAttributesFormItem: React.FC<
   ProductAttributesFormItemProps
-> = ({ value: attributes = [], onChange: setAttributes }) => {
+> = ({ value: attributes = [], onChange }) => {
   const [openIndex, setOpenIndex] = useState<number | undefined>();
 
   const dragable = openIndex === undefined && attributes?.length > 1;
+
+  const setAttributes = (attributes: IProductAttribute[]) => {
+    // set order for each attribute
+    onChange?.(
+      attributes.map((attribute, index) => ({
+        ...attribute,
+        order: index + 1,
+      })),
+    );
+  };
 
   const onDragEnd = ({ active, over }: DragEndEvent) => {
     if (active.id !== over?.id) {
@@ -54,6 +64,8 @@ export const ProductAttributesFormItem: React.FC<
         name: '',
         options: [],
         uniqCode: Math.random().toString(36).substr(2, 9),
+        order: attributes.length + 1,
+        showNameInConsumer: true,
       },
     ]);
     setOpenIndex(attributes.length);

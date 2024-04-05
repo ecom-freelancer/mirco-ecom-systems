@@ -1,9 +1,19 @@
-import { routeKeys } from 'configs/constants';
+import { dynamicRouteKeys, routeKeys } from 'configs/constants';
 import { t } from 'i18next';
 import { Page } from 'modules/_shared/components/Page';
-import { CreateProductForm } from 'modules/products';
+import { ProductInfoForm, useProductAction } from 'modules/products';
+import { IProductInfoFormType } from 'modules/products/types';
+import { useNavigate } from 'react-router';
 
-const AddProductPage = () => {
+const AddProductPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { createProduct, loading } = useProductAction();
+
+  const onCreateProduct = async (product: IProductInfoFormType) => {
+    createProduct(product, (id) => {
+      navigate(dynamicRouteKeys.productDetail(id));
+    });
+  };
   return (
     <Page
       breadcrumbs={[
@@ -18,7 +28,7 @@ const AddProductPage = () => {
       ]}
       title={t('addProduct')}
     >
-      <CreateProductForm />
+      <ProductInfoForm onSubmit={onCreateProduct} loading={loading} />
     </Page>
   );
 };

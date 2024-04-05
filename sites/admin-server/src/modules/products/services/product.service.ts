@@ -20,7 +20,6 @@ export class ProductService {
   constructor(
     @InjectDataSource()
     private readonly dataSource: DataSource,
-
     @InjectRepository(ProductEntity)
     private readonly productRepository: Repository<ProductEntity>,
     @InjectRepository(ProductCategoryEntity)
@@ -84,7 +83,7 @@ export class ProductService {
         userManual: newPayload.userManual,
         deliveryType: newPayload.deliveryType,
         status: newPayload.status,
-        seoInfoId: newPayload.seoInfo.id,
+        seoInfoId: newPayload.seoInfo?.id,
         keywords: newPayload.keywords,
       });
 
@@ -167,7 +166,6 @@ export class ProductService {
         },
       ],
       relations: {
-        category: true,
         skus: true,
         seoInfo: true,
         attributes: {

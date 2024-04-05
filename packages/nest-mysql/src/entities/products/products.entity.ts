@@ -13,6 +13,7 @@ import { ProductCategoryEntity } from './product-categories.entity';
 import { ProductAttributeEntity } from '../product-attributes/product-attributes.entity';
 import { ProductSkuEntity } from './product-skus.entity';
 import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
+import { ArrayStringTransformer } from '../../helpers/array-string-transformer';
 
 export enum ProductStatus {
   draft = 'draft',
@@ -55,10 +56,7 @@ export class ProductEntity extends BaseEntity {
   userManual?: string;
 
   @Column({
-    transformer: {
-      to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',').filter((v) => !!v) || [],
-    },
+    transformer: ArrayStringTransformer,
     nullable: true,
     type: 'text',
   })
@@ -67,15 +65,13 @@ export class ProductEntity extends BaseEntity {
   @Column({
     type: 'nvarchar',
     length: 255,
+    nullable: true,
   })
   brand?: string;
 
   @Column({
     nullable: true,
-    transformer: {
-      to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',').filter((v) => !!v) || [],
-    },
+    transformer: ArrayStringTransformer,
     type: 'nvarchar',
   })
   keywords?: Array<string>;

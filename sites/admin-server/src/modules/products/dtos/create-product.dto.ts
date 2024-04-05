@@ -90,6 +90,7 @@ export class UpsertProductDto {
   })
   @Type(() => UpsertProductAttributeDto)
   @IsArray()
+  @IsOptional()
   @ValidateNested({
     each: true,
   })

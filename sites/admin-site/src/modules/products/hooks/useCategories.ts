@@ -1,6 +1,7 @@
 import useSWR from 'swr';
+
+import { categoryService } from '../services';
 import { IProductCategory } from '../types';
-import { categoryService } from '../service';
 
 export const useCategories = () => {
   const { data: categories, isLoading } = useSWR(
