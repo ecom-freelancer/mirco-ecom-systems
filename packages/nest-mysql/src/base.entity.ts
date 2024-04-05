@@ -5,7 +5,7 @@ export class BaseEntity {
   createdAt?: string;
 
   @DeleteDateColumn()
-  detatedAt?: string;
+  deletedAt?: string;
 
   @UpdateDateColumn()
   updatedAt?: string;

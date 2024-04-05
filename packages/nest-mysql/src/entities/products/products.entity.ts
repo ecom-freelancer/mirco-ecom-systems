@@ -3,12 +3,14 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductCategoryEntity } from './product-categories.entity';
+import { ProductAttributeEntity } from '../product-attributes/product-attributes.entity';
 
 export enum ProductStatus {
   draft = 'draft',
@@ -17,7 +19,7 @@ export enum ProductStatus {
 }
 
 export enum ProductDeliveryType {
-  only_by_email = 'only_by_email',
+  online_by_email = 'online_by_email',
 }
 
 @Entity('products')
@@ -120,4 +122,7 @@ export class ProductEntity extends BaseEntity {
     onDelete: 'SET NULL',
   })
   category?: ProductCategoryEntity;
+
+  @OneToMany(() => ProductAttributeEntity, (attribute) => attribute.product)
+  attributes?: Array<ProductAttributeEntity>;
 }

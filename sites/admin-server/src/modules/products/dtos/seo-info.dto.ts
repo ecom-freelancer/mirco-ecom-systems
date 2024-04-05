@@ -6,6 +6,7 @@ import {
   IsNumber,
   IsOptional,
   IsString,
+  IsUrl,
 } from 'class-validator';
 
 export class UpsertSeoInfoDto {
@@ -25,7 +26,7 @@ export class UpsertSeoInfoDto {
 
   @ApiProperty()
   @IsOptional()
-  @IsString()
+  @IsUrl()
   image?: string;
 
   @ApiPropertyOptional()
@@ -41,5 +42,6 @@ export class UpsertSeoInfoDto {
   @ApiProperty()
   @IsOptional()
   @IsString()
+  @IsUrl()
   canonical?: string;
 }
