@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import {
   InjectDataSource,
   InjectRepository,
@@ -9,7 +13,7 @@ import {
   SeoInfoEntity,
 } from '@packages/nest-mysql';
 import { UpsertProductDto } from '../dtos/create-product.dto';
-import { DataSource, Repository } from 'typeorm';
+import { DataSource, IsNull, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductService {
@@ -54,6 +58,18 @@ export class ProductService {
           newPayload.seoInfo,
         );
         newPayload.seoInfo = seoInfo;
+      }
+
+      // validate slug uniqueness
+      const slugIsUnique = !(await this.productRepository.exists({
+        where: {
+          slug: newPayload.slug,
+          id: !!newPayload.id ? Not(newPayload.id) : Not(IsNull()),
+        },
+      }));
+
+      if (!slugIsUnique) {
+        throw new BadRequestException('Slug already exists');
       }
 
       // insert product info
