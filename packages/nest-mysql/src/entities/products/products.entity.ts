@@ -11,6 +11,8 @@ import { BaseEntity } from '../../base.entity';
 import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductCategoryEntity } from './product-categories.entity';
 import { ProductAttributeEntity } from '../product-attributes/product-attributes.entity';
+import { ProductSkuEntity } from './product-skus.entity';
+import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
 
 export enum ProductStatus {
   draft = 'draft',
@@ -55,7 +57,7 @@ export class ProductEntity extends BaseEntity {
   @Column({
     transformer: {
       to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',') || [],
+      from: (value?: string) => value?.split(',').filter((v) => !!v) || [],
     },
     nullable: true,
     type: 'text',
@@ -72,7 +74,7 @@ export class ProductEntity extends BaseEntity {
     nullable: true,
     transformer: {
       to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',') || [],
+      from: (value?: string) => value?.split(',').filter((v) => !!v) || [],
     },
     type: 'nvarchar',
   })
@@ -125,4 +127,10 @@ export class ProductEntity extends BaseEntity {
 
   @OneToMany(() => ProductAttributeEntity, (attribute) => attribute.product)
   attributes?: Array<ProductAttributeEntity>;
+
+  @OneToMany(() => ProductSkuEntity, (sku) => sku.product)
+  skus?: Array<ProductSkuEntity>;
+
+  @OneToMany(() => ProductAttributeGroupEntity, (variant) => variant.product)
+  variants?: Array<ProductAttributeGroupEntity>;
 }
