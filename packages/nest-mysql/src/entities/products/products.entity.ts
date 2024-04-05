@@ -12,6 +12,7 @@ import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductCategoryEntity } from './product-categories.entity';
 import { ProductAttributeEntity } from '../product-attributes/product-attributes.entity';
 import { ProductSkuEntity } from './product-skus.entity';
+import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
 
 export enum ProductStatus {
   draft = 'draft',
@@ -129,4 +130,7 @@ export class ProductEntity extends BaseEntity {
 
   @OneToMany(() => ProductSkuEntity, (sku) => sku.product)
   skus?: Array<ProductSkuEntity>;
+
+  @OneToMany(() => ProductAttributeGroupEntity, (variant) => variant.product)
+  variants?: Array<ProductAttributeGroupEntity>;
 }
