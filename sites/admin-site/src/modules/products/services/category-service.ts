@@ -1,5 +1,5 @@
 import appApi from 'configs/fetchers/app-api';
-import { IProductCategory } from './types';
+import { IProductCategory } from '../types';
 
 export const categoryService = {
   getAllCategories: async () => {

@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { FormLayout } from './types';
+import { FormItemLayout } from './types';
 import { Col } from 'antd';
 import { formItemMappings } from './form-item-mapping';
 import { useFormItem } from './useFormItem';
@@ -7,7 +7,7 @@ import FormItem from 'antd/es/form/FormItem';
 import { styled } from '@packages/ds-core';
 
 export interface FormBuilderItemProps<T> {
-  layout: FormLayout<T>;
+  layout: FormItemLayout<T>;
 }
 
 export const FormBuilderItem = <T,>(props: FormBuilderItemProps<T>) => {
@@ -31,6 +31,7 @@ export const FormBuilderItem = <T,>(props: FormBuilderItemProps<T>) => {
         name={props.layout.name}
         labelCol={props.layout.labelCol}
         validateFirst={validateFirst}
+        required={itemConfig?.required}
         labelAlign={props.layout.labelAlign || 'left'}
       >
         {Input && <Input config={itemConfig as any} />}
@@ -47,6 +48,9 @@ const StyledFormItem = styled(FormItem)`
     font-size: ${({ theme }) => theme.fontSizes.xs} !important;
   }
 
+  .ant-form-item-explain-connected {
+    margin-top: 0.25rem !important;
+  }
   .ant-form-item-explain-error:empty {
     margin: 0 !important;
   }

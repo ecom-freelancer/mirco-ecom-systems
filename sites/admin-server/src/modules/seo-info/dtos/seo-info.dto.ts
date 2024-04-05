@@ -3,13 +3,11 @@ import { Expose } from 'class-transformer';
 import {
   IsArray,
   IsBoolean,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,
   IsUrl,
 } from 'class-validator';
-import { BaseDto } from 'configs/base.dto';
 
 export class UpsertSeoInfoDto {
   @ApiPropertyOptional()
@@ -19,11 +17,12 @@ export class UpsertSeoInfoDto {
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   title: string;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsString()
+  @IsOptional()
   shortDescription?: string;
 
   @ApiProperty()
@@ -34,12 +33,13 @@ export class UpsertSeoInfoDto {
   @ApiPropertyOptional()
   @IsArray()
   @IsString({ each: true })
+  @IsOptional()
   keywords?: string[];
 
   @ApiPropertyOptional()
   @IsOptional()
   @IsBoolean()
-  noIndex?: boolean = true;
+  noIndex?: boolean;
 
   @ApiProperty()
   @IsOptional()
@@ -48,7 +48,7 @@ export class UpsertSeoInfoDto {
   canonical?: string;
 }
 
-export class SeoInfoDto extends BaseDto {
+export class SeoInfoDto {
   @ApiPropertyOptional()
   @Expose()
   id?: number;

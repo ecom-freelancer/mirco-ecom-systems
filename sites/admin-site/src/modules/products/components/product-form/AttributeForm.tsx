@@ -1,8 +1,7 @@
-import { IProductAttribute, IProductAttributeOption } from '../types';
 import { useForm } from 'antd/es/form/Form';
 import { FormBuilder } from '@packages/react-form-builder';
 import React, { useMemo } from 'react';
-import { Button, Col, Input, Row } from 'antd';
+import { Button, Col, Input, Popconfirm, Row } from 'antd';
 import { Box, Flex, styled } from '@packages/ds-core';
 import { DndContext, DragEndEvent } from '@dnd-kit/core';
 import { SortableContext, arrayMove, useSortable } from '@dnd-kit/sortable';
@@ -12,6 +11,10 @@ import { AiOutlineDrag } from 'react-icons/ai';
 import { CiTrash } from 'react-icons/ci';
 import { CSS } from '@dnd-kit/utilities';
 import { t } from 'i18next';
+import {
+  IProductAttribute,
+  IProductAttributeOption,
+} from 'modules/products/types';
 
 export interface AttributeUpsertFormProps {
   attribute?: IProductAttribute;
@@ -33,6 +36,10 @@ export const AttributeUpsertForm: React.FC<AttributeUpsertFormProps> = ({
         onSubmit={onSubmit}
         validateTrigger="onSubmit"
         configs={{
+          showNameInConsumer: {
+            formType: 'checkbox',
+            children: 'Show name in consumer',
+          },
           name: {
             formType: 'input',
             label: 'Attribute',
@@ -69,15 +76,33 @@ export const AttributeUpsertForm: React.FC<AttributeUpsertFormProps> = ({
               },
             ],
           },
+          id: {
+            hidden: true,
+            formType: 'input-number',
+          },
         }}
         layouts={[
           {
-            name: 'name',
+            type: 'group',
             span: 12,
+            items: [
+              {
+                name: 'name',
+                span: 24,
+              },
+              {
+                name: 'showNameInConsumer',
+                span: 24,
+              },
+            ],
           },
           {
             name: 'options',
             span: 12,
+          },
+          {
+            name: 'id',
+            span: 0,
           },
         ]}
         formLayout="vertical"
@@ -143,6 +168,12 @@ const AttributeOptionsFormItem: React.FC<{
       setOptions?.(newOptions);
     };
 
+  const removeOption = (id: every) => {
+    const newOptions = options.filter(
+      (option) => option.id !== id && option.uniqCode !== id,
+    );
+    setOptions?.(newOptions);
+  };
   return (
     <div>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
@@ -157,6 +188,7 @@ const AttributeOptionsFormItem: React.FC<{
                   option={option}
                   order={`${option.id || option.uniqCode}`}
                   onChange={setOptionValue(index)}
+                  onRemove={() => removeOption(option.id || option.uniqCode)}
                 />
               );
             })}
@@ -174,7 +206,8 @@ const OptionItem: React.FC<{
   option: IProductAttributeOption;
   order: string;
   onChange?: (value: IProductAttributeOption) => void;
-}> = ({ order, option, onChange }) => {
+  onRemove?: () => void;
+}> = ({ order, option, onChange, onRemove }) => {
   const {
     attributes,
     listeners,
@@ -219,9 +252,14 @@ const OptionItem: React.FC<{
           >
             <AiOutlineDrag />
           </IconButton>
-          <IconButton>
-            <CiTrash />
-          </IconButton>
+          <Popconfirm
+            title="Deleting this field may result in variant data changing"
+            onConfirm={onRemove}
+          >
+            <IconButton>
+              <CiTrash />
+            </IconButton>
+          </Popconfirm>
         </Flex>
       </Col>
     </Row>

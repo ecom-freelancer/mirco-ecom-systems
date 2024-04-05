@@ -1,7 +1,7 @@
 import { ProductStatus } from 'configs/constants/product';
 
 export interface IProductBaseInfo {
-  title?: string;
+  name?: string;
   slug?: string;
   brand?: string;
   categoryId?: string;
@@ -51,3 +51,5 @@ export interface IProductInfoFormType
   attributes: Array<IProductAttribute>;
   variants: Array<IVariants>;
 }
+
+export type ICreateProductPayload = IProductInfoFormType;

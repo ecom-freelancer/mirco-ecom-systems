@@ -1,8 +1,8 @@
 import React, { useMemo } from 'react';
-import { FormBuilderProps, IFormType } from './types';
-import { Form, Row } from 'antd';
+import { FormBuilderProps, FormGroupLayout, IFormType } from './types';
+import { Col, Form, Row } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import { FormBuilderContext } from './FormBuilderProvider';
+import { FormBuilderContext, useFormBuilder } from './FormBuilderProvider';
 import { FormBuilderItem } from './FormBuilderItem';
 
 export const FormBuilder = <T extends IFormType>(
@@ -20,15 +20,37 @@ export const FormBuilder = <T extends IFormType>(
       <FormBuilderContext.Provider
         value={{
           itemConfigs: props.configs,
+          gutter: props.gutter || [8, 8],
         }}
       >
-        <Row gutter={[8, 8]}>
+        <Row gutter={props.gutter || [8, 8]}>
           {layouts.map((layout, index) => {
-            return <FormBuilderItem key={index} layout={layout} />;
+            return layout.type === 'group' ? (
+              <FormGroupBuilderLayout {...layout} key={index} />
+            ) : (
+              <FormBuilderItem key={index} layout={layout} />
+            );
           })}
         </Row>
       </FormBuilderContext.Provider>
     </Wrapper>
+  );
+};
+
+const FormGroupBuilderLayout: React.FC<FormGroupLayout<any>> = ({
+  span = 24,
+  items,
+  breakpoints,
+}) => {
+  const { gutter } = useFormBuilder();
+  return (
+    <Col span={span} {...breakpoints}>
+      <Row gutter={gutter}>
+        {items.map((layout, index) => {
+          return <FormBuilderItem key={index} layout={layout} />;
+        })}
+      </Row>
+    </Col>
   );
 };
 

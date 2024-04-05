@@ -1,12 +1,15 @@
 import { FormBuilder } from '@packages/react-form-builder';
 import { FormInstance, Tag } from 'antd';
-import { IProductAdvanceInfo } from '../types';
-import { KeywordsFormInput, KeywordsFormInputProps } from './KeywordsFormInput';
 import {
   ProductStatus,
   deliveryOptions,
   productStatuses,
 } from 'configs/constants/product';
+import {
+  KeywordsFormInput,
+  KeywordsFormInputProps,
+} from 'modules/_shared/components';
+import { IProductAdvanceInfo } from 'modules/products/types';
 
 export interface ProductAdvanceFormProps {
   form: FormInstance;
@@ -55,6 +58,13 @@ export const ProductAdvanceForm: React.FC<ProductAdvanceFormProps> = ({
             formType: 'select',
             options: deliveryOptions,
             label: 'Delivery Type',
+            required: false,
+            rules: [
+              {
+                required: true,
+                message: 'Please select delivery type',
+              },
+            ],
           },
           keywords: {
             formType: 'custom',

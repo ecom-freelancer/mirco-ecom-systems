@@ -1,25 +1,26 @@
 import { FormBuilder } from '@packages/react-form-builder';
 import { FormInstance } from 'antd';
 import React, { useMemo } from 'react';
-import { IProductBaseInfo } from '../types';
 import { Text } from '@packages/ds-core';
 import { debounce } from 'lodash';
 import {
   FormDescriptionInput,
   FormDescriptionInputProps,
 } from './ProductDescription';
-import { IProductCategory } from 'modules/products/product-category/types';
+import { IProductBaseInfo, IProductCategory } from 'modules/products/types';
 
 export interface ProductBaseInfoFormProps {
   form: FormInstance;
   initialValue?: Partial<IProductBaseInfo>;
   allCategories?: IProductCategory[];
+  asChild?: boolean;
 }
 
 function stringToSlug(str: string) {
   return str
     .normalize('NFD') // split an accented letter in the base letter and the acent
-    .replace(/[\u0300-\u036f]/g, '') // remove all previously split accents
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace('đ', 'd') // remove all previously split accents
     .toLowerCase()
     .trim()
     .replace(/[^a-z0-9 ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
@@ -30,6 +31,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
   form,
   initialValue,
   allCategories,
+  asChild,
 }) => {
   const generateSlugFun = useMemo(() => {
     return debounce((value: string) => {
@@ -43,9 +45,9 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
     <div>
       <FormBuilder<IProductBaseInfo>
         form={form}
-        asChild
+        asChild={asChild}
         configs={{
-          title: {
+          name: {
             formType: 'input',
             placeholder: 'Enter name of the product',
             label: (
@@ -54,9 +56,15 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
               </Text>
             ),
             onChange: (e) => {
-              form.setFieldValue('title', e.target.value);
+              form.setFieldValue('name', e.target.value);
               generateSlugFun(e.target.value);
             },
+            rules: [
+              {
+                required: true,
+                message: 'Title is required',
+              },
+            ],
           },
           slug: {
             formType: 'input',
@@ -96,12 +104,13 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
               value: category.id,
               label: category.name,
             })),
-            // rules: [
-            //   {
-            //     required: true,
-            //     message: 'Category is required',
-            //   },
-            // ],
+
+            rules: [
+              {
+                required: true,
+                message: 'Category is required',
+              },
+            ],
           },
           brand: {
             formType: 'input',
@@ -111,7 +120,7 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
         }}
         layouts={[
           {
-            name: 'title',
+            name: 'name',
             span: 24,
           },
           {
@@ -125,6 +134,10 @@ export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({
           },
           {
             name: 'description',
+            span: 24,
+          },
+          {
+            name: 'userManual',
             span: 24,
           },
         ]}

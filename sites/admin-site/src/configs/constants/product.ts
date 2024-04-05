@@ -25,12 +25,12 @@ export const productStatuses: Option[] = [
 ];
 
 export enum ProductDeliveryType {
-  only_by_email = 'only_by_email',
+  online_by_email = 'online_by_email',
 }
 
 export const deliveryOptions: Option[] = [
   {
-    value: ProductDeliveryType.only_by_email,
+    value: ProductDeliveryType.online_by_email,
     label: t('Online By Email'),
     color: 'gold',
   },
