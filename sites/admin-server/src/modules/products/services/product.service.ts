@@ -12,7 +12,7 @@ import {
   ProductEntity,
   SeoInfoEntity,
 } from '@packages/nest-mysql';
-import { UpsertProductDto } from '../dtos/create-product.dto';
+import { UpsertProductDto } from '../dtos';
 import { DataSource, IsNull, Not, Repository } from 'typeorm';
 
 @Injectable()
@@ -152,4 +152,46 @@ export class ProductService {
       await queryRunner.release();
     }
   }
+
+  async getProductDetail(params: {
+    id?: number;
+    slug?: string;
+  }): Promise<ProductEntity> {
+    const product = await this.productRepository.findOne({
+      where: [
+        {
+          id: params.id,
+        },
+        {
+          slug: params.slug,
+        },
+      ],
+      relations: {
+        category: true,
+        skus: true,
+        seoInfo: true,
+        attributes: {
+          options: true,
+        },
+      },
+    });
+
+    if (!product) {
+      throw new NotFoundException('Product not found');
+    }
+
+    return product;
+  }
+
+  async isExitProductById(id: number): Promise<boolean> {
+    return await this.productRepository.exists({
+      where: { id },
+    });
+  }
+
+  // get all skus of product
+
+  // upsert a variant of product
+
+  // delete a variant of product
 }

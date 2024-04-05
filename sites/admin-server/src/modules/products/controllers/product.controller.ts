@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
-import { UpsertProductDto } from '../dtos/create-product.dto';
+import { CreateProductDto } from '../dtos';
 import { ProductService } from '../services/product.service';
 
 @Controller('products')
@@ -15,7 +15,7 @@ export class ProductController {
   }
 
   @Post()
-  async createProduct(@Body() body: UpsertProductDto) {
+  async createProduct(@Body() body: CreateProductDto) {
     return await this.productService.upsertProduct(body);
   }
 }

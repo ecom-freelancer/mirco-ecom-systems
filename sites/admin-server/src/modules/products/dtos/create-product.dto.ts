@@ -1,6 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ProductDeliveryType, ProductStatus } from '@packages/nest-mysql';
-import { UpsertSeoInfoDto } from './seo-info.dto';
 import {
   IsOptional,
   IsNumber,
@@ -12,14 +11,13 @@ import {
   IsBoolean,
   ArrayNotEmpty,
   IsUrl,
+  IsEmpty,
 } from 'class-validator';
 import { IsJsonString, IsSlug } from '@packages/nest-helper';
 import { Type } from 'class-transformer';
+import { UpsertSeoInfoDto } from 'modules/seo-info';
 
 export class UpsertProductDto {
-  @ApiPropertyOptional()
-  @IsOptional()
-  @IsNumber()
   id?: number;
 
   @ApiProperty()
@@ -151,4 +149,17 @@ export class UpsertProductAttributeOptionDto {
   @ApiProperty()
   @IsString()
   name: string;
+}
+
+export class CreateProductDto extends UpsertProductDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsEmpty()
+  id?: number;
+}
+
+export class UpdateProductDto extends UpsertProductDto {
+  @ApiProperty()
+  @IsNumber()
+  id: number;
 }
