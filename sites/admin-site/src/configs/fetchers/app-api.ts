@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {
-  accessApplicationJsonIntercepter,
+  accessApplicationJsonInterceptor,
   accessTokenInterceptor,
   errorInterceptor,
   responseInterceptor,
@@ -11,7 +11,7 @@ const appApi = axios.create({
   timeout: 100000,
 });
 
-appApi.interceptors.request.use(accessApplicationJsonIntercepter);
+appApi.interceptors.request.use(accessApplicationJsonInterceptor);
 
 appApi.interceptors.request.use(accessTokenInterceptor);
 

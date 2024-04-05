@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { Page } from 'modules/_shared/components/Page';
 import { routeKeys } from 'configs/constants';
-import CategoryList from 'modules/products/product-category/components';
+import CategoryList from 'modules/products/components/product-category';
 
 const CategoryListPage = () => {
   return (

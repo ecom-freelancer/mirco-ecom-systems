@@ -19,7 +19,7 @@ import {
 } from '@packages/nest-helper';
 import { CategoryPayloadDto, GetCategoriesDto } from '../dtos/category.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiFile } from '../../../configs/file.decorator';
+import { ApiFile } from 'configs/file.decorator';
 import { validate } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 import { UpsertCategoryDto } from '../dtos/upsert-category.dto';

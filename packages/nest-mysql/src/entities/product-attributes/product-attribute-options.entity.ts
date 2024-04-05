@@ -39,7 +39,8 @@ export class ProductAttributeOptionEntity extends BaseEntity {
   attributeId: number;
 
   @ManyToOne(() => ProductAttributeEntity, {
-    cascade: true,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   })
   attribute: ProductAttributeEntity;
 }

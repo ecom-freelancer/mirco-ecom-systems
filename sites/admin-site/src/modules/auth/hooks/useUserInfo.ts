@@ -45,7 +45,7 @@ export const useUserInfo = () => {
     },
   );
 
-  const setUserLoged = (loginResponse: ILoginResponse) => {
+  const setUserLogged = (loginResponse: ILoginResponse) => {
     localStorage.setItem(ACCESS_TOKEN_KEY, loginResponse.accessToken);
     localStorage.setItem(REFRESH_TOKEN_KEY, loginResponse.refreshToken);
     mutate();
@@ -65,7 +65,7 @@ export const useUserInfo = () => {
     user: user,
     loading: isLoading,
     mutate,
-    setUserLoged,
+    setUserLogged,
     logout,
   };
 };

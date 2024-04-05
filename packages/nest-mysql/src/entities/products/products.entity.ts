@@ -3,12 +3,17 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductCategoryEntity } from './product-categories.entity';
+import { ProductAttributeEntity } from '../product-attributes/product-attributes.entity';
+import { ProductSkuEntity } from './product-skus.entity';
+import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
+import { ArrayStringTransformer } from '../../helpers/array-string-transformer';
 
 export enum ProductStatus {
   draft = 'draft',
@@ -17,7 +22,7 @@ export enum ProductStatus {
 }
 
 export enum ProductDeliveryType {
-  only_by_email = 'only_by_email',
+  online_by_email = 'online_by_email',
 }
 
 @Entity('products')
@@ -51,10 +56,7 @@ export class ProductEntity extends BaseEntity {
   userManual?: string;
 
   @Column({
-    transformer: {
-      to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',') || [],
-    },
+    transformer: ArrayStringTransformer,
     nullable: true,
     type: 'text',
   })
@@ -63,15 +65,13 @@ export class ProductEntity extends BaseEntity {
   @Column({
     type: 'nvarchar',
     length: 255,
+    nullable: true,
   })
   brand?: string;
 
   @Column({
     nullable: true,
-    transformer: {
-      to: (value?: Array<string>) => value?.join(',') || '',
-      from: (value?: string) => value?.split(',') || [],
-    },
+    transformer: ArrayStringTransformer,
     type: 'nvarchar',
   })
   keywords?: Array<string>;
@@ -120,4 +120,13 @@ export class ProductEntity extends BaseEntity {
     onDelete: 'SET NULL',
   })
   category?: ProductCategoryEntity;
+
+  @OneToMany(() => ProductAttributeEntity, (attribute) => attribute.product)
+  attributes?: Array<ProductAttributeEntity>;
+
+  @OneToMany(() => ProductSkuEntity, (sku) => sku.product)
+  skus?: Array<ProductSkuEntity>;
+
+  @OneToMany(() => ProductAttributeGroupEntity, (variant) => variant.product)
+  variants?: Array<ProductAttributeGroupEntity>;
 }
