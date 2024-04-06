@@ -21,7 +21,12 @@ const CategoryListPage: React.FC = () => {
       ]}
       title={t('categories')}
     >
-      <Button onClick={() => navigate(routeKeys.categoryAdd)}>Add new</Button>
+      <Button type="primary" onClick={() => navigate(routeKeys.categoryAdd)}>
+        Add new
+      </Button>
+      <br />
+      <br />
+
       <CategoryList categories={categories} loading={loading} />
     </Page>
   );

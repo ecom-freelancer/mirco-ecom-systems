@@ -1,5 +1,81 @@
-const CategoryBaseInfoForm = () => {
-  return <h1>Category Base Form</h1>;
+import { FormInstance } from 'antd';
+import { ICategoryBaseInfo } from '../../types';
+import React from 'react';
+import { FormBuilder } from '@packages/react-form-builder';
+import { Text } from '@packages/ds-core';
+
+type CategoryBaseInfoFormValue = Omit<
+  ICategoryBaseInfo,
+  'id' | 'parentId' | 'order' | 'image'
+>;
+
+interface CategoryBaseInfoFormProps {
+  form: FormInstance;
+  initialValues?: CategoryBaseInfoFormValue;
+}
+
+const CategoryBaseInfoForm: React.FC<CategoryBaseInfoFormProps> = ({
+  form,
+  initialValues,
+}) => {
+  return (
+    <FormBuilder<CategoryBaseInfoFormValue>
+      form={form}
+      asChild
+      formLayout="vertical"
+      initialValues={initialValues}
+      layouts={[
+        { name: 'name', span: 24 },
+        { name: 'code', span: 24 },
+        { name: 'display', span: 24 },
+      ]}
+      configs={{
+        name: {
+          formType: 'input',
+          placeholder: 'Enter name of the category',
+          label: (
+            <Text color="textPrimary" fontWeight="300">
+              Name
+            </Text>
+          ),
+          onChange: (e) => {
+            form.setFieldValue('name', e.target.value);
+          },
+          rules: [
+            {
+              required: true,
+              message: 'Name is required',
+            },
+          ],
+        },
+        code: {
+          formType: 'input',
+          placeholder: 'Enter category code',
+          label: (
+            <Text color="textPrimary" fontWeight="300">
+              Code
+            </Text>
+          ),
+          onChange: (e) => {
+            form.setFieldValue('code', e.target.value);
+          },
+          rules: [
+            {
+              required: true,
+              message: 'Code is required',
+            },
+          ],
+        },
+        display: {
+          formType: 'checkbox',
+          children: 'Display this category to end user?',
+          onChange: (e) => {
+            form.setFieldValue('display', e.target.checked);
+          },
+        },
+      }}
+    />
+  );
 };
 
 export default CategoryBaseInfoForm;
