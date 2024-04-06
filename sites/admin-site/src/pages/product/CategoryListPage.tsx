@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { Page } from 'modules/_shared/components/Page';
 import { routeKeys } from 'configs/constants';
-import CategoryList from 'modules/products/components/product-category';
+import { CategoryList } from 'modules/products/components/product-category';
 import { useCategories } from 'modules/products/hooks';
 import { useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
@@ -16,7 +16,7 @@ const CategoryListPage: React.FC = () => {
       breadcrumbs={[
         {
           label: t('Category'),
-          href: routeKeys.category,
+          href: '#',
         },
       ]}
       title={t('categories')}
