@@ -56,7 +56,7 @@ export class CategoryController {
   @Get(':id')
   @ApiSuccessResponse({ status: 200, type: ProductCategoryEntity })
   async getCategoryDetail(
-    @Param('id') id: number,
+    @Param('id', ParseIntPipe) id: number,
   ): Promise<GetCategoryDetailResponse> {
     const category = await this.categoryService.getCategoryDetail(id);
     return plainToInstance(GetCategoryDetailResponse, category, {

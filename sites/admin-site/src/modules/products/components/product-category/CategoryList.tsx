@@ -1,13 +1,16 @@
 import { Space, Switch, Table } from 'antd';
-import { useCategories } from 'modules/products/hooks';
 import { categoryService } from 'modules/products/services';
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { IProductCategory } from 'modules/products/types';
 
-const CategoryList = () => {
+interface CategoryListProps {
+  categories: IProductCategory[];
+  loading: boolean;
+}
+
+const CategoryList = ({ categories, loading }: CategoryListProps) => {
   const [updateLoading, setUpdateLoading] = useState(false);
-  const { categories, loading } = useCategories();
 
   const onChangeDisplay = useCallback(async (display: boolean, id: number) => {
     setUpdateLoading(true);

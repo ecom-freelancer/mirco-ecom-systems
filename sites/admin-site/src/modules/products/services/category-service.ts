@@ -10,11 +10,9 @@ export const categoryService = {
       .then((res) => res.data.categories);
   },
 
-  getCategoryById: async (id: number) => {
+  getCategoryDetail: async (id: string | number) => {
     return appApi
-      .get<{
-        categories: IProductCategory[];
-      }>(`/categories/${id}`)
+      .get<IProductCategory>(`/categories/${id}`)
       .then((res) => res.data);
   },
 
