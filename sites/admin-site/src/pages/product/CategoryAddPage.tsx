@@ -2,8 +2,9 @@ import { Page } from '../../modules/_shared/components/Page.tsx';
 import { t } from 'i18next';
 import { routeKeys } from '../../configs/constants';
 import UpsertCategoryForm from '../../modules/products/containers/UpsertCategoryForm.tsx';
+import React from 'react';
 
-const CategoryAddPage = () => {
+const CategoryAddPage: React.FC = () => {
   return (
     <Page
       breadcrumbs={[
@@ -18,7 +19,7 @@ const CategoryAddPage = () => {
       ]}
       title={t('categoryAdd')}
     >
-      <UpsertCategoryForm initialValue={null} />
+      <UpsertCategoryForm />
     </Page>
   );
 };

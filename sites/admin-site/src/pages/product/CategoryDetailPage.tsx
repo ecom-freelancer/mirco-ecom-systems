@@ -4,8 +4,9 @@ import { routeKeys } from 'configs/constants';
 import UpsertCategoryForm from 'modules/products/containers/UpsertCategoryForm';
 import { useParams } from 'react-router-dom';
 import { useCategoryDetail } from 'modules/products/hooks/useCategoryDetail';
+import React from 'react';
 
-const CategoryDetailPage = () => {
+const CategoryDetailPage: React.FC = () => {
   const { id } = useParams();
   const { category, isLoading } = useCategoryDetail(id);
 
@@ -28,7 +29,7 @@ const CategoryDetailPage = () => {
       title={t('categoryDetail')}
     >
       {category ? (
-        <UpsertCategoryForm initialValue={category} />
+        <UpsertCategoryForm category={category} />
       ) : (
         <h1>Not found</h1>
       )}

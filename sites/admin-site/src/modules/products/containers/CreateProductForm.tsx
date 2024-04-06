@@ -4,7 +4,6 @@ import { Button, Col, Form, Row } from 'antd';
 import { useCategories } from 'modules/products/hooks';
 
 import {
-  FormSection,
   ProductAdvanceForm,
   ProductAttributesForm,
   ProductBaseInfoForm,
@@ -12,6 +11,8 @@ import {
 } from '../components/product-form';
 import { ProductImagesForm } from '../components/product-form/ProductImagesForm';
 import { IProductInfoFormType } from '../types';
+import React from 'react';
+import { FormSection } from '../components/_shared';
 
 export interface ProductInfoFormFormProps {
   initialValues?: Partial<IProductInfoFormType>;
