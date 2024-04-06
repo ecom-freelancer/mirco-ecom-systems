@@ -7,9 +7,6 @@ import { useCategoryDetail } from 'modules/products/hooks/useCategoryDetail';
 
 const CategoryDetailPage = () => {
   const { id } = useParams();
-  // Get id from here, call API get category
-  // If no id -> Add
-  // If it has id but cannot find category with id -> Not found
   const { category, isLoading } = useCategoryDetail(id);
 
   if (isLoading) {
@@ -25,7 +22,7 @@ const CategoryDetailPage = () => {
         },
         {
           label: t('categoryDetail'),
-          href: '',
+          href: '#',
         },
       ]}
       title={t('categoryDetail')}

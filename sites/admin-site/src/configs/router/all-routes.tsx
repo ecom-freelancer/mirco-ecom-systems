@@ -57,8 +57,16 @@ export const workspacesRoutes: IRoute[] = [
           })),
       },
       {
+        path: routeKeys.categoryAdd,
+        label: t('categoryAdd'),
+        lazy: () =>
+          import('pages/product/CategoryAddPage').then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
         path: routeKeys.categoryDetails,
-        label: t('categories'),
+        label: t('categoryDetail'),
         lazy: () =>
           import('pages/product/CategoryDetailPage').then((module) => ({
             Component: module.default,
