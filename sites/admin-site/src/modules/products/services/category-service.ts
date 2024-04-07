@@ -1,5 +1,9 @@
 import appApi from 'configs/fetchers/app-api';
-import { IProductCategory, IUpsertCategoryFormValues } from '../types';
+import {
+  IProductCategory,
+  IReorderCategoryPayload,
+  IUpsertCategoryFormValues,
+} from '../types';
 
 export const categoryService = {
   getAllCategories: async () => {
@@ -22,5 +26,9 @@ export const categoryService = {
 
   upsertCategory: async (payload: IUpsertCategoryFormValues) => {
     return appApi.post(`/categories`, payload);
+  },
+
+  reorderCategory: async (payload: IReorderCategoryPayload) => {
+    return appApi.post(`/categories/reorder`, payload);
   },
 };

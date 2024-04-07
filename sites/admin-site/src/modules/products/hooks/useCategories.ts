@@ -8,6 +8,7 @@ export const useCategories = () => {
     data: categories,
     isLoading,
     error,
+    mutate: getCategories,
   } = useSWR('/categories', categoryService.getAllCategories, {
     revalidateIfStale: true,
     keepPreviousData: true,
@@ -17,5 +18,6 @@ export const useCategories = () => {
     categories: categories || ([] as IProductCategory[]),
     loading: isLoading,
     error,
+    getCategories,
   };
 };
