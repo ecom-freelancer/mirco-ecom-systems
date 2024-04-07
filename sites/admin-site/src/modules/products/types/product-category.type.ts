@@ -21,5 +21,5 @@ export interface IUpsertCategoryFormValues
 
 export type ICategoryBaseInfoFormValues = Omit<
   ICategoryBaseInfo,
-  'id' | 'parentId' | 'order' | 'image'
+  'parentId' | 'order' | 'image'
 >;

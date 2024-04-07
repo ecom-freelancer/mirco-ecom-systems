@@ -20,11 +20,16 @@ const CategoryBaseInfoForm: React.FC<CategoryBaseInfoFormProps> = ({
       formLayout="vertical"
       initialValues={initialValues}
       layouts={[
+        { name: 'id', span: 0 },
         { name: 'name', span: 24 },
         { name: 'code', span: 24 },
         { name: 'display', span: 24 },
       ]}
       configs={{
+        id: {
+          formType: 'input-number',
+          hidden: true,
+        },
         name: {
           formType: 'input',
           placeholder: 'Enter name of the category',
