@@ -2,7 +2,6 @@ import { ProductDeliveryType, ProductStatus } from '@packages/nest-mysql';
 import { BaseDto } from 'configs/base.dto';
 import { SeoInfoDto } from 'modules/seo-info';
 import { ProductSkuDto } from './product-sku.dto';
-import { ProductCategoryDto } from './category.dto';
 import { Expose, Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { ProductAttributeDto } from './product-attribute.dto';
@@ -39,13 +38,6 @@ export class ProductDetailDto extends BaseDto {
   @Expose()
   @ApiProperty()
   categoryId: number;
-
-  @Expose()
-  @ApiPropertyOptional({
-    type: ProductCategoryDto,
-  })
-  @Type(() => ProductCategoryDto)
-  category?: ProductCategoryDto;
 
   @Expose()
   @ApiProperty({

@@ -34,12 +34,21 @@ export class ProductAttributeGroupItemEntity {
   attributeOptionId: number;
 
   // relationships
-  @ManyToOne(() => ProductAttributeGroupEntity)
+  @ManyToOne(() => ProductAttributeGroupEntity, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   attributeGroup?: ProductAttributeGroupEntity;
 
-  @ManyToOne(() => ProductAttributeEntity)
+  @ManyToOne(() => ProductAttributeEntity, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   attribute?: ProductAttributeEntity;
 
-  @ManyToOne(() => ProductAttributeOptionEntity)
+  @ManyToOne(() => ProductAttributeOptionEntity, {
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
   attributeOption?: ProductAttributeOptionEntity;
 }

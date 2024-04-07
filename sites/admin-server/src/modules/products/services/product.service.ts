@@ -99,7 +99,7 @@ export class ProductService {
           .createQueryBuilder()
           .delete()
           .where('productId = :id', { id: newProduct.id })
-          .andWhere('id NOT IN (:ids)', { ids: ids.join(',') })
+          .andWhere(`id NOT IN (${ids.join(',')})`)
           .execute();
 
         // insert new attributes
@@ -126,7 +126,7 @@ export class ProductService {
               .createQueryBuilder()
               .delete()
               .where('attributeId = :id', { id: attribute.id })
-              .andWhere('id NOT IN (:ids)', { ids: optionIds.join(',') })
+              .andWhere(`id NOT IN (${optionIds.join(',')})`)
               .execute();
           }
 
@@ -170,6 +170,14 @@ export class ProductService {
         seoInfo: true,
         attributes: {
           options: true,
+        },
+      },
+      order: {
+        attributes: {
+          order: 'ASC',
+          options: {
+            order: 'ASC',
+          },
         },
       },
     });

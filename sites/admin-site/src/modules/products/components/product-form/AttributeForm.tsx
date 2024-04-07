@@ -142,10 +142,10 @@ const AttributeOptionsFormItem: React.FC<{
     if (active.id !== over?.id) {
       const previous = [...options];
       const activeIndex = previous.findIndex(
-        (option) => (option.id || option.uniqCode) === active.id,
+        (option) => (option.id?.toString() || option.uniqCode) === active.id,
       );
       const overIndex = previous.findIndex(
-        (option) => (option.id || option.uniqCode) === over?.id,
+        (option) => (option.id?.toString() || option.uniqCode) === over?.id,
       );
 
       const newOptions = arrayMove(previous, activeIndex, overIndex).map(
@@ -178,7 +178,9 @@ const AttributeOptionsFormItem: React.FC<{
     <div>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext
-          items={options.map((i, index) => i.id || i.uniqCode || index + 1)}
+          items={options.map(
+            (i, index) => i.id?.toString() || i.uniqCode || index + 1,
+          )}
         >
           <Flex direction="column" gap="s4">
             {options.map((option, index) => {

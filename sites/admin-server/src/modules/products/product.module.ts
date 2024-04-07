@@ -6,10 +6,11 @@ import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { CategoryController } from './controllers/category.controller';
 import { ProductDetailMiddleware } from './middlewares';
+import { ProductVariantService } from './services/product-variant.service';
 
 @Module({
   imports: [MysqlModule.getMysqlModule()],
-  providers: [ProductService, CategoryService],
+  providers: [ProductService, CategoryService, ProductVariantService],
   controllers: [ProductController, ProductDetailController, CategoryController],
 })
 export class ProductModule implements NestModule {

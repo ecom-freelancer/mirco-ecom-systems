@@ -1,5 +1,6 @@
 export interface IBase {
   createdAt?: string;
+  updatedAt?: string;
 }
 export interface IApiResponse<T> {
   data: T;
@@ -19,3 +20,5 @@ export interface IModalProps {
 export interface IUpsertResponse {
   id: number;
 }
+
+export type ID = string | number;

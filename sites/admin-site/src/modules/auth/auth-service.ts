@@ -5,13 +5,7 @@ import { REFRESH_TOKEN_KEY } from 'configs/constants';
 
 export const authService = {
   getUserInfo: () => {
-    return appApi
-      .get<IUser>('/me')
-      .then((res) => res.data)
-      .catch(() => {
-        console.log('fetch error');
-        return mockUser;
-      });
+    return appApi.get<IUser>('/me').then((res) => res.data);
   },
 
   refreshToken: async (): Promise<ILoginResponse> => {
@@ -69,16 +63,4 @@ export const authService = {
       });
   },
   logout: async () => appApi.post('/logout'),
-};
-
-const mockUser: IUser = {
-  id: '16e7c2c8-fefd-41b4-9710-099699a7aab0',
-  firstName: 'Quan',
-  lastName: 'Tri vien',
-  email: 'admin@daiphat.vn',
-  phonenumber: '0819200620',
-  avatarUrl:
-    'http://res.cloudinary.com/dmy6xnsql/image/upload/v1705293116/users/vwxtcstpj7joeqnocr3y.jpg',
-  isVerified: true,
-  createdAt: '2024-01-07T21:55:12.526Z',
 };

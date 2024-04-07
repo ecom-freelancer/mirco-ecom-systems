@@ -1,4 +1,5 @@
 import { ProductStatus } from 'configs/constants/product';
+import { ISeoInfo } from 'modules/seo-info/types';
 
 export interface IProductBaseInfo {
   name?: string;
@@ -49,7 +50,7 @@ export interface IProductInfoFormType
     IProductBaseInfo {
   id: number;
   attributes: Array<IProductAttribute>;
-  variants: Array<IVariants>;
+  seoInfo: ISeoInfo;
 }
 
 export type ICreateProductPayload = IProductInfoFormType;

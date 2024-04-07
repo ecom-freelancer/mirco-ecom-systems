@@ -22,7 +22,7 @@ export const ProductAttributesFormItem: React.FC<
 > = ({ value: attributes = [], onChange }) => {
   const [openIndex, setOpenIndex] = useState<number | undefined>();
 
-  const dragable = openIndex === undefined && attributes?.length > 1;
+  const dragAble = openIndex === undefined && attributes?.length > 1;
 
   const setAttributes = (attributes: IProductAttribute[]) => {
     // set order for each attribute
@@ -38,10 +38,10 @@ export const ProductAttributesFormItem: React.FC<
     if (active.id !== over?.id) {
       const previous = [...attributes];
       const activeIndex = previous.findIndex(
-        (i) => (i.id || i.uniqCode) === active.id,
+        (i) => (i.id?.toString() || i.uniqCode) === active.id,
       );
       const overIndex = previous.findIndex(
-        (i) => (i.id || i.uniqCode) === over?.id,
+        (i) => (i.id?.toString() || i.uniqCode) === over?.id,
       );
 
       const newAttributes = arrayMove(previous, activeIndex, overIndex).map(
@@ -97,10 +97,10 @@ export const ProductAttributesFormItem: React.FC<
     <Wrapper>
       <DndContext modifiers={[restrictToVerticalAxis]} onDragEnd={onDragEnd}>
         <SortableContext
-          disabled={!dragable}
+          disabled={!dragAble}
           items={attributes.map(
             (attribute, index) =>
-              attribute.id || attribute.uniqCode || index + 1,
+              attribute.id?.toString() ?? attribute.uniqCode ?? index + 1,
           )}
         >
           <Flex direction="column" gap="s4">
@@ -111,7 +111,9 @@ export const ProductAttributesFormItem: React.FC<
                   editing={openIndex === index}
                   editable={openIndex === undefined}
                   attribute={attribute}
-                  order={`${attribute.id || attribute.uniqCode || index + 1}`}
+                  id={`${
+                    attribute.id?.toString() ?? attribute.uniqCode ?? index + 1
+                  }`}
                   onChange={onSetAttribute(index)}
                   onEdit={() => openEdit(index)}
                   onRemove={() => onRemoveAttribute(index)}
@@ -140,13 +142,13 @@ export const ProductAttributesFormItem: React.FC<
 
 const AttributeItem: React.FC<{
   attribute: IProductAttribute;
-  order: string;
+  id: string;
   editing?: boolean;
   editable?: boolean;
   onChange?: (value: IProductAttribute, closeEdit?: boolean) => void;
   onEdit?: () => void;
   onRemove?: () => void;
-}> = ({ attribute, order, editable, editing, onChange, onEdit, onRemove }) => {
+}> = ({ attribute, id, editable, editing, onChange, onEdit, onRemove }) => {
   const {
     attributes,
     listeners,
@@ -156,8 +158,9 @@ const AttributeItem: React.FC<{
     transition,
     isDragging,
   } = useSortable({
-    id: order,
+    id: id,
   });
+  console.log('id', id);
 
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform && { ...transform, scaleY: 1 }),

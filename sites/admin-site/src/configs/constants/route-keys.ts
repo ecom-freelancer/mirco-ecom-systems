@@ -14,6 +14,7 @@ export const routeKeys = {
   importProducts: '/products/import',
   createProduct: '/products/create-a-product',
   productDetail: '/products/:id',
+  productDetailGroup: '/products/:id/*',
   productDetailEdit: '/products/:id/edit',
   productDetailVariants: '/products/:id/variants',
   productDetailInventory: '/products/:id/inventory',

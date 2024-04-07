@@ -30,4 +30,5 @@ const StyledWorkspaceLayout = styled(Layout)`
 const MainContent = styled(Layout.Content)`
   background-color: #f5f7ff;
   overflow: auto;
+  position: relative;
 `;
