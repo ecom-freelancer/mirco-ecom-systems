@@ -13,3 +13,13 @@ export interface ICategoryBaseInfo {
 export interface IProductCategory extends ICategoryBaseInfo {
   seoInfo: ISeoInfo | null;
 }
+
+export interface IUpsertCategoryFormValues
+  extends Omit<IProductCategory, 'id' | 'parentId'> {
+  id?: number;
+}
+
+export type ICategoryBaseInfoFormValues = Omit<
+  ICategoryBaseInfo,
+  'id' | 'parentId' | 'order' | 'image'
+>;

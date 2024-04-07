@@ -3,13 +3,16 @@ import { t } from 'i18next';
 import { routeKeys } from '../../configs/constants';
 import UpsertCategoryForm from '../../modules/products/containers/UpsertCategoryForm.tsx';
 import React from 'react';
+import { useUpsertCategory } from '../../modules/products';
 
 const CategoryAddPage: React.FC = () => {
+  const { upsertCategory, loading: upsertLoading } = useUpsertCategory();
+
   return (
     <Page
       breadcrumbs={[
         {
-          label: t('Category'),
+          label: t('categories'),
           href: routeKeys.category,
         },
         {
@@ -19,7 +22,7 @@ const CategoryAddPage: React.FC = () => {
       ]}
       title={t('categoryAdd')}
     >
-      <UpsertCategoryForm />
+      <UpsertCategoryForm onSubmit={upsertCategory} loading={upsertLoading} />
     </Page>
   );
 };

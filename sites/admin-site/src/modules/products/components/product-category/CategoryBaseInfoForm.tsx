@@ -1,17 +1,12 @@
 import { FormInstance } from 'antd';
-import { ICategoryBaseInfo } from '../../types';
+import { ICategoryBaseInfoFormValues } from '../../types';
 import React from 'react';
 import { FormBuilder } from '@packages/react-form-builder';
 import { Text } from '@packages/ds-core';
 
-type CategoryBaseInfoFormValue = Omit<
-  ICategoryBaseInfo,
-  'id' | 'parentId' | 'order' | 'image'
->;
-
 interface CategoryBaseInfoFormProps {
   form: FormInstance;
-  initialValues?: CategoryBaseInfoFormValue;
+  initialValues?: ICategoryBaseInfoFormValues;
 }
 
 const CategoryBaseInfoForm: React.FC<CategoryBaseInfoFormProps> = ({
@@ -19,7 +14,7 @@ const CategoryBaseInfoForm: React.FC<CategoryBaseInfoFormProps> = ({
   initialValues,
 }) => {
   return (
-    <FormBuilder<CategoryBaseInfoFormValue>
+    <FormBuilder<ICategoryBaseInfoFormValues>
       form={form}
       asChild
       formLayout="vertical"

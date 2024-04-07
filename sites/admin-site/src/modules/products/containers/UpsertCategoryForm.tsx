@@ -1,4 +1,4 @@
-import { IProductCategory } from '../types';
+import { IProductCategory, IUpsertCategoryFormValues } from '../types';
 import React from 'react';
 import { Button, Col, Form, Row } from 'antd';
 import { useForm } from 'antd/es/form/Form';
@@ -11,15 +11,16 @@ import {
 import { FloatingWrapper } from 'modules/_shared/components';
 
 interface UpsertCategoryFormProps {
-  onSubmit: () => void;
+  onSubmit: (payload: IUpsertCategoryFormValues) => void;
   loading: boolean;
   category?: IProductCategory;
 }
 
-const generateInitialFormValues = (category: IProductCategory | undefined) => {
+const generateInitialFormValues = (
+  category: IProductCategory | undefined,
+): IUpsertCategoryFormValues => {
   if (!category) {
     return {
-      id: null,
       name: '',
       code: '',
       image: '',
@@ -51,7 +52,7 @@ const generateInitialFormValues = (category: IProductCategory | undefined) => {
         (category.seoInfo?.keywords?.length as number) > 0
           ? category.seoInfo?.keywords
           : [],
-      noIndex: category.seoInfo?.noIndex || true,
+      noIndex: category.seoInfo?.noIndex || false,
       canonical: category.seoInfo?.canonical || '',
     },
   };
@@ -75,13 +76,13 @@ const UpsertCategoryForm: React.FC<UpsertCategoryFormProps> = ({
         block: 'center',
       }}
     >
-      <Row gutter={[16, 16]} wrap>
-        <Col span={24} lg={17}>
+      <Row gutter={[16, 16]}>
+        <Col span={24} lg={17} style={{ height: '100%' }}>
           <FormSection title="Base Info">
             <CategoryBaseInfoForm form={form} />
           </FormSection>
         </Col>
-        <Col span={24} lg={7}>
+        <Col span={24} lg={7} style={{ height: '100%' }}>
           <FormSection title="Image">
             <CategoryImagesForm form={form} />
           </FormSection>

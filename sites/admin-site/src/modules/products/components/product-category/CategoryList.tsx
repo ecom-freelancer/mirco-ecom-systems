@@ -48,7 +48,6 @@ const CategoryList = ({ categories, loading }: CategoryListProps) => {
             <Link to={`/products/categories/${category.id}`}>
               <a>Edit</a>
             </Link>
-            <a>Delete</a>
           </Space>
         ),
       },

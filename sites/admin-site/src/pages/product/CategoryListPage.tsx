@@ -7,6 +7,14 @@ import { useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import React from 'react';
 
+import { styled } from '@packages/ds-core';
+
+const ActionButtonsWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  column-gap: ${({ theme }) => theme.spaces.s8};
+`;
+
 const CategoryListPage: React.FC = () => {
   const { categories, loading } = useCategories();
   const navigate = useNavigate();
@@ -15,17 +23,18 @@ const CategoryListPage: React.FC = () => {
     <Page
       breadcrumbs={[
         {
-          label: t('Category'),
+          label: t('categories'),
           href: '#',
         },
       ]}
       title={t('categories')}
     >
-      <Button type="primary" onClick={() => navigate(routeKeys.categoryAdd)}>
-        Add new
-      </Button>
-      <br />
-      <br />
+      <ActionButtonsWrapper>
+        <Button>Reorder</Button>
+        <Button type="primary" onClick={() => navigate(routeKeys.categoryAdd)}>
+          Add new
+        </Button>
+      </ActionButtonsWrapper>
 
       <CategoryList categories={categories} loading={loading} />
     </Page>

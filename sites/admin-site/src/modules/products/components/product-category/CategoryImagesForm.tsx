@@ -24,7 +24,7 @@ const CategoryImagesForm: React.FC<CategoryImagesFromProps> = ({
       asChild
       form={form}
       formLayout="vertical"
-      layouts={[{ name: 'image', span: 12 }]}
+      layouts={[{ name: 'image', span: 9 }]}
       configs={{
         image: {
           formType: 'custom',

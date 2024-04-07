@@ -3,14 +3,15 @@ import { Page } from 'modules/_shared/components/Page';
 import { routeKeys } from 'configs/constants';
 import UpsertCategoryForm from 'modules/products/containers/UpsertCategoryForm';
 import { useParams } from 'react-router-dom';
-import { useCategoryDetail } from 'modules/products/hooks/useCategoryDetail';
+import { useCategoryDetail, useUpsertCategory } from 'modules/products/hooks';
 import React from 'react';
 
 const CategoryDetailPage: React.FC = () => {
   const { id } = useParams();
-  const { category, isLoading } = useCategoryDetail(id);
+  const { category, isLoading: detailLoading } = useCategoryDetail(id);
+  const { upsertCategory, loading: upsertLoading } = useUpsertCategory();
 
-  if (isLoading) {
+  if (detailLoading) {
     return <h1>Loading...</h1>;
   }
 
@@ -22,14 +23,18 @@ const CategoryDetailPage: React.FC = () => {
           href: routeKeys.category,
         },
         {
-          label: t('categoryDetail'),
+          label: t('categories'),
           href: '#',
         },
       ]}
       title={t('categoryDetail')}
     >
       {category ? (
-        <UpsertCategoryForm category={category} />
+        <UpsertCategoryForm
+          category={category}
+          onSubmit={upsertCategory}
+          loading={upsertLoading}
+        />
       ) : (
         <h1>Not found</h1>
       )}
