@@ -19,11 +19,11 @@ const CategoryDetailPage: React.FC = () => {
     <Page
       breadcrumbs={[
         {
-          label: t('Category'),
+          label: t('categories'),
           href: routeKeys.category,
         },
         {
-          label: t('categories'),
+          label: t('categoryDetail'),
           href: '#',
         },
       ]}
