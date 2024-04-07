@@ -9,6 +9,7 @@ import { CategoryPayloadDto } from '../dtos/category.dto';
 import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
 import { CreateCategoryPayload } from '../interfaces/create-category.interface';
 import omit from 'lodash.omit';
+import { ReorderCategoryDto } from '../dtos/reorder-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -116,5 +117,10 @@ export class CategoryService {
     }
 
     return await this.categoryRepository.save({ ...category, display });
+  }
+
+  async reorderCategory(payload: ReorderCategoryDto) {
+    // Should we check id must exists, order must be unique?
+    return await this.categoryRepository.save(payload.newOrder);
   }
 }
