@@ -9,6 +9,7 @@ import { CategoryPayloadDto } from '../dtos/category.dto';
 import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
 import { CreateCategoryPayload } from '../interfaces/create-category.interface';
 import omit from 'lodash.omit';
+import { ReorderCategoryDto } from '../dtos/reorder-category.dto';
 
 @Injectable()
 export class CategoryService {
@@ -26,6 +27,9 @@ export class CategoryService {
         items: {
           items: true,
         },
+      },
+      order: {
+        order: 'desc',
       },
     });
   }
@@ -61,7 +65,17 @@ export class CategoryService {
       throw new BadRequestException('Category code is duplicated');
     }
 
-    return await this.categoryRepository.save(payload);
+    const highestOrderCategory = await this.categoryRepository
+      .createQueryBuilder('product_categories')
+      .orderBy('product_categories.order', 'DESC')
+      .getOne();
+
+    const order =
+      !highestOrderCategory || !highestOrderCategory.order
+        ? 1
+        : highestOrderCategory.order + 1;
+
+    return await this.categoryRepository.save({ ...payload, order });
   }
 
   async updateCategory(
@@ -113,5 +127,10 @@ export class CategoryService {
     }
 
     return await this.categoryRepository.save({ ...category, display });
+  }
+
+  async reorderCategory(payload: ReorderCategoryDto) {
+    // Should we check id must exists, order must be unique?
+    return await this.categoryRepository.save(payload.newOrder);
   }
 }

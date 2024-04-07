@@ -29,6 +29,7 @@ import { CreateCategoryPayload } from '../interfaces/create-category.interface';
 import { Protected } from '../../auth/auth.guard';
 import { ChangeCategoryDisplayDto } from '../dtos/change-category-status.dto';
 import { GetCategoryDetailResponse } from '../dtos/get-category-detail.dto';
+import { ReorderCategoryDto } from '../dtos/reorder-category.dto';
 
 @Protected()
 @Controller('categories')
@@ -93,6 +94,12 @@ export class CategoryController {
       id,
       payload.display,
     );
+  }
+
+  @Post('/reorder')
+  @ApiSuccessResponse({ status: 200 })
+  async reorderCategory(@Body() payload: ReorderCategoryDto) {
+    return await this.categoryService.reorderCategory(payload);
   }
 
   @Post('import')

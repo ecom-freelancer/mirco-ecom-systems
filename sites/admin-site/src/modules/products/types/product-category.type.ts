@@ -23,3 +23,7 @@ export type ICategoryBaseInfoFormValues = Omit<
   ICategoryBaseInfo,
   'parentId' | 'order' | 'image'
 >;
+
+export interface IReorderCategoryPayload {
+  newOrder: { id: number; order: number }[];
+}
