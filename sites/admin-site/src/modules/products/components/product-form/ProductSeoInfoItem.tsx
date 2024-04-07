@@ -2,6 +2,7 @@ import { FormBuilder } from '@packages/react-form-builder';
 import { FormInstance } from 'antd';
 import { SeoInfoForm } from 'modules/seo-info/components';
 import { ISeoInfo } from 'modules/seo-info/types';
+import React from 'react';
 
 export interface ProductSeoInfoItemProps {
   form: FormInstance;
