@@ -27,6 +27,9 @@ export class CategoryService {
           items: true,
         },
       },
+      order: {
+        order: 'desc',
+      },
     });
   }
 
