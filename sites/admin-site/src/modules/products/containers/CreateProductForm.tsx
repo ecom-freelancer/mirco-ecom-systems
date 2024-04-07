@@ -1,10 +1,8 @@
 import { useForm } from 'antd/es/form/Form';
-import { styled } from '@packages/ds-core';
 import { Button, Col, Form, Row } from 'antd';
 import { useCategories } from 'modules/products/hooks';
 
 import {
-  FormSection,
   ProductAdvanceForm,
   ProductAttributesForm,
   ProductBaseInfoForm,
@@ -12,6 +10,9 @@ import {
 } from '../components/product-form';
 import { ProductImagesForm } from '../components/product-form/ProductImagesForm';
 import { IProductInfoFormType } from '../types';
+import React from 'react';
+import { FormSection } from '../components/_shared';
+import { FloatingWrapper } from 'modules/_shared/components';
 
 export interface ProductInfoFormFormProps {
   initialValues?: Partial<IProductInfoFormType>;
@@ -66,7 +67,7 @@ export const ProductInfoForm: React.FC<ProductInfoFormFormProps> = ({
             </FormSection>
           </Col>
         </Row>
-        <ButtonSubmitWrapper>
+        <FloatingWrapper>
           <Form.Item>
             <Button
               type="primary"
@@ -77,14 +78,8 @@ export const ProductInfoForm: React.FC<ProductInfoFormFormProps> = ({
               Submit
             </Button>
           </Form.Item>
-        </ButtonSubmitWrapper>
+        </FloatingWrapper>
       </Form>
     </div>
   );
 };
-
-const ButtonSubmitWrapper = styled.div`
-  position: fixed;
-  bottom: -10px;
-  right: 30px;
-`;

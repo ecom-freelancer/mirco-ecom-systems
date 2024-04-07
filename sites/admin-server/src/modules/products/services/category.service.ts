@@ -30,6 +30,19 @@ export class CategoryService {
     });
   }
 
+  async getCategoryDetail(id: number): Promise<ProductCategoryEntity> {
+    const category = await this.categoryRepository.findOne({
+      where: { id },
+      relations: { seoInfo: true },
+    });
+
+    if (!category) {
+      throw new NotFoundException('Category not found');
+    }
+
+    return category;
+  }
+
   async importCategories(categories: CategoryPayloadDto[]) {
     await this.categoryRepository.upsert(categories, ['code']);
   }

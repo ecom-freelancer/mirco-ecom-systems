@@ -7,6 +7,7 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
+import { SeoInfoDto } from '../../seo-info';
 
 export class ProductCategoryDto {
   @ApiProperty()
@@ -43,6 +44,11 @@ export class ProductCategoryDto {
   @ApiProperty()
   @Expose()
   parentId: number;
+
+  @ApiProperty()
+  @Expose()
+  @Type(() => SeoInfoDto)
+  seoInfo: SeoInfoDto;
 }
 // API
 // getCategories

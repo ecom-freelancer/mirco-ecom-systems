@@ -4,5 +4,7 @@
   "products": "Sản phẩm",
   "productList": "Danh sách sản phẩm",
   "addProduct": "Tạo sản phẩm",
-  "categories": "Danh mục ngành hàng"
+  "categories": "Danh mục ngành hàng",
+  "categoryDetail": "Chi tiết ngành hàng",
+  "categoryAdd": "Thêm ngành hàng mới"
 }

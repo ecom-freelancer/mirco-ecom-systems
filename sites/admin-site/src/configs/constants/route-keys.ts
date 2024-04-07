@@ -9,6 +9,8 @@ export const routeKeys = {
    */
   products: '/products',
   category: '/products/categories',
+  categoryDetails: '/products/categories/:id',
+  categoryAdd: '/products/categories/add',
   importProducts: '/products/import',
   createProduct: '/products/create-a-product',
   productDetail: '/products/:id',

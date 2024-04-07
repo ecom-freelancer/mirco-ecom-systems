@@ -4,6 +4,7 @@ import { Page } from 'modules/_shared/components/Page';
 import { ProductInfoForm, useProductAction } from 'modules/products';
 import { IProductInfoFormType } from 'modules/products/types';
 import { useNavigate } from 'react-router';
+import React from 'react';
 
 const AddProductPage: React.FC = () => {
   const navigate = useNavigate();

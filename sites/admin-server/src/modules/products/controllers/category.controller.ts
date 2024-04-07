@@ -28,6 +28,7 @@ import { UpdateCategoryPayload } from '../interfaces/update-category.interface';
 import { CreateCategoryPayload } from '../interfaces/create-category.interface';
 import { Protected } from '../../auth/auth.guard';
 import { ChangeCategoryDisplayDto } from '../dtos/change-category-status.dto';
+import { GetCategoryDetailResponse } from '../dtos/get-category-detail.dto';
 
 @Protected()
 @Controller('categories')
@@ -50,6 +51,17 @@ export class CategoryController {
         excludeExtraneousValues: true,
       },
     );
+  }
+
+  @Get(':id')
+  @ApiSuccessResponse({ status: 200, type: ProductCategoryEntity })
+  async getCategoryDetail(
+    @Param('id', ParseIntPipe) id: number,
+  ): Promise<GetCategoryDetailResponse> {
+    const category = await this.categoryService.getCategoryDetail(id);
+    return plainToInstance(GetCategoryDetailResponse, category, {
+      excludeExtraneousValues: true,
+    });
   }
 
   @Post()

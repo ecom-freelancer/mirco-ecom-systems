@@ -4,5 +4,7 @@
   "products": "Products",
   "productList": "List Products",
   "addProduct": "Add Product",
-  "categories": "Categories"
+  "categories": "Categories",
+  "categoryDetail": "Category Detail",
+  "categoryAdd": "Add new category"
 }

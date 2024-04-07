@@ -51,6 +51,26 @@ export const workspacesRoutes: IRoute[] = [
       {
         path: routeKeys.category,
         label: t('categories'),
+        lazy: () =>
+          import('pages/product/CategoryListPage').then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
+        path: routeKeys.categoryAdd,
+        label: t('categoryAdd'),
+        lazy: () =>
+          import('pages/product/CategoryAddPage').then((module) => ({
+            Component: module.default,
+          })),
+      },
+      {
+        path: routeKeys.categoryDetails,
+        label: t('categoryDetail'),
+        lazy: () =>
+          import('pages/product/CategoryDetailPage').then((module) => ({
+            Component: module.default,
+          })),
       },
     ],
     icon: <MdGridView />,

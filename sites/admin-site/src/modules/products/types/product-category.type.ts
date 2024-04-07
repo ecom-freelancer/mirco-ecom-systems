@@ -1,9 +1,25 @@
-export interface IProductCategory {
+import { ISeoInfo } from '../../seo-info/types.ts';
+
+export interface ICategoryBaseInfo {
   id: number;
   name: string;
-  parentId?: number;
   code: string;
-  image?: string;
-  display?: boolean;
-  order?: number;
+  display: boolean;
+  parentId: number | null;
+  image: string | null;
+  order: number | null;
 }
+
+export interface IProductCategory extends ICategoryBaseInfo {
+  seoInfo: ISeoInfo | null;
+}
+
+export interface IUpsertCategoryFormValues
+  extends Omit<IProductCategory, 'id' | 'parentId'> {
+  id?: number;
+}
+
+export type ICategoryBaseInfoFormValues = Omit<
+  ICategoryBaseInfo,
+  'parentId' | 'order' | 'image'
+>;
