@@ -65,7 +65,17 @@ export class CategoryService {
       throw new BadRequestException('Category code is duplicated');
     }
 
-    return await this.categoryRepository.save(payload);
+    const highestOrderCategory = await this.categoryRepository
+      .createQueryBuilder('product_categories')
+      .orderBy('product_categories.order', 'DESC')
+      .getOne();
+
+    const order =
+      !highestOrderCategory || !highestOrderCategory.order
+        ? 1
+        : highestOrderCategory.order + 1;
+
+    return await this.categoryRepository.save({ ...payload, order });
   }
 
   async updateCategory(

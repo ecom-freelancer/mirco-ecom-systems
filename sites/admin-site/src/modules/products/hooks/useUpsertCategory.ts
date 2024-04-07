@@ -11,7 +11,6 @@ export const useUpsertCategory = () => {
   const upsertCategory = async (payload: IUpsertCategoryFormValues) => {
     try {
       setLoading(true);
-      console.log(payload);
       await categoryService.upsertCategory(payload);
       message.success(
         `${payload.id ? 'Update' : 'Create new'} category successfully.`,
