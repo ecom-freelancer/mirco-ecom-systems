@@ -3,6 +3,7 @@ import { ILoginResponse, IUser } from '../types';
 import { authService } from '../auth-service';
 import { ACCESS_TOKEN_KEY, REFRESH_TOKEN_KEY } from 'configs/constants';
 import { useInterval } from 'modules/_shared/hooks/useInterval';
+import { IApiError } from 'modules/_shared/types';
 
 export interface IUseUserInfoReturn {
   user?: IUser;
@@ -16,14 +17,18 @@ export const useUserInfo = () => {
   } = useSWR(
     'user-info',
     () => {
-      const accessToken = localStorage.getItem(ACCESS_TOKEN_KEY);
-      if (accessToken) {
+      if (localStorage.getItem(ACCESS_TOKEN_KEY)) {
         return authService.getUserInfo();
       }
-      return undefined;
     },
     {
+      onError: async (error) => {
+        if ((error as IApiError).status === 401) {
+          await refreshToken().then(() => mutate());
+        }
+      },
       revalidateOnFocus: false,
+      revalidateOnReconnect: true,
     },
   );
 

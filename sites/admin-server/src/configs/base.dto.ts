@@ -12,3 +12,9 @@ export class BaseDto {
   })
   updatedAt?: Date;
 }
+
+export class UpsertDto {
+  @ApiPropertyOptional()
+  @Expose()
+  id?: number;
+}

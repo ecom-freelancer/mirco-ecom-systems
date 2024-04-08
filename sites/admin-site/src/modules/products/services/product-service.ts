@@ -8,7 +8,4 @@ export const productService = {
       .post<IUpsertResponse>('/products', product)
       .then((res) => res.data);
   },
-  getProductDetail: async (id: string | number) => {
-    return appApi.get(`/products/${id}`).then((res) => res.data);
-  },
 };

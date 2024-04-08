@@ -1,7 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 
-export class ProductAttributeDto {
+export class AttributeDto {
   @Expose()
   @ApiProperty()
   id: number;
@@ -17,7 +17,9 @@ export class ProductAttributeDto {
   @Expose()
   @ApiProperty()
   order: number;
+}
 
+export class ProductAttributeDto extends AttributeDto {
   @Expose()
   @ApiPropertyOptional()
   productId?: number;

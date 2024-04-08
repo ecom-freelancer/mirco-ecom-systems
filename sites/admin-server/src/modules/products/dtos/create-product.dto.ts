@@ -159,8 +159,4 @@ export class CreateProductDto extends UpsertProductDto {
   id?: number;
 }
 
-export class UpdateProductDto extends UpsertProductDto {
-  @ApiProperty()
-  @IsNumber()
-  id: number;
-}
+export class UpdateProductDto extends UpsertProductDto {}

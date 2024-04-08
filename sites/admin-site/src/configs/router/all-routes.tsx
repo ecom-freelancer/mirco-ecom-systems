@@ -31,7 +31,7 @@ export const workspacesRoutes: IRoute[] = [
           })),
       },
       {
-        path: routeKeys.productDetail,
+        path: routeKeys.productDetailGroup,
         hiddenOnMenu: true,
         lazy: () =>
           import('pages/product/product-detail/ProductDetailPage').then(
