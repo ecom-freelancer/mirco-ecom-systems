@@ -11,10 +11,11 @@ export function IsSlug(validationOptions?: ValidationOptions) {
       target: object.constructor,
       propertyName: propertyName,
       options: validationOptions,
+
       validator: {
         validate(value: any, args: ValidationArguments) {
-          const partern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
-          return typeof value === 'string' && partern.test(value);
+          const pattern = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+          return typeof value === 'string' && pattern.test(value);
         },
         defaultMessage(args: ValidationArguments) {
           return `${args.property} must be a valid slug`;

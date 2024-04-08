@@ -11,12 +11,18 @@ export interface PageProps {
   breadcrumbs?: IBreadcrumb[];
   title?: React.ReactNode;
   children: React.ReactNode;
+  className?: string;
 }
 
-export const Page: React.FC<PageProps> = ({ breadcrumbs, children, title }) => {
+export const Page: React.FC<PageProps> = ({
+  breadcrumbs,
+  children,
+  title,
+  className,
+}) => {
   const ref = useRef<HTMLDivElement>(null);
   return (
-    <Wrapper ref={ref}>
+    <Wrapper ref={ref} className={className}>
       {breadcrumbs && <StyledBreadcrumbs breadcrumbs={breadcrumbs} />}
       {title && <Heading type="h3">{title}</Heading>}
       {children}
@@ -26,6 +32,7 @@ export const Page: React.FC<PageProps> = ({ breadcrumbs, children, title }) => {
 
 const Wrapper = styled(Box)`
   padding: 1rem;
+  height: 100%;
 `;
 
 const StyledBreadcrumbs = styled(BreadCrumbs)`

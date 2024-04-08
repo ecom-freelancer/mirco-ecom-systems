@@ -13,6 +13,7 @@ export interface SeoInfoFormProps {
   form?: FormInstance;
   asChild?: boolean;
   onChange?: (value: ISeoInfo) => void;
+  onSubmit?: (value: ISeoInfo) => void;
 }
 
 export const SeoInfoForm: React.FC<SeoInfoFormProps> = ({
@@ -20,6 +21,7 @@ export const SeoInfoForm: React.FC<SeoInfoFormProps> = ({
   asChild,
   form,
   onChange,
+  onSubmit,
 }) => {
   const { fileService } = useServices();
   return (
@@ -28,8 +30,11 @@ export const SeoInfoForm: React.FC<SeoInfoFormProps> = ({
       asChild={asChild}
       form={form}
       gutter={[16, 16]}
-      onValuesChange={onChange}
+      onValuesChange={
+        onChange ? (_, values) => onChange?.({ ...values }) : undefined
+      }
       formLayout="vertical"
+      onSubmit={onSubmit}
       configs={{
         id: {
           formType: 'input-number',

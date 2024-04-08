@@ -1,49 +1,64 @@
 import React from 'react';
 import { IVariant } from '../types.ts/variant';
-import { Flex, styled } from '@packages/ds-core';
-import { Checkbox, Tag, Tooltip } from 'antd';
-import { BiPencil, BiPlus, BiTrash } from 'react-icons/bi';
+import { Box, Flex, Text, styled } from '@packages/ds-core';
+import { Col, Row, Tag } from 'antd';
+import { BiPencil, BiTrash } from 'react-icons/bi';
 import { Color } from '@packages/ds-core/dist/theme/token';
 
 export interface VariantLineItemProps {
   variant: IVariant;
   onEdit?: () => void;
+  index?: number;
 }
 
 export const VariantLineItem: React.FC<VariantLineItemProps> = ({
   variant,
   onEdit,
+  index,
 }) => {
   return (
-    <Wrapper gapX={'s16'} justify="space-between">
-      <Flex gapX={'s16'}>
-        <Checkbox />
-        <Flex align="center">
-          {variant.items?.map((item) => (
-            <Tag key={item.id} color="gold">
-              {item.attributeOption?.name}
-            </Tag>
-          ))}
-        </Flex>
-      </Flex>
-      <Flex gap="s8">
-        <Tooltip title="Add SKU">
-          <ButtonIcon color="primary300">
-            <BiPlus />
-          </ButtonIcon>
-        </Tooltip>
-        <ButtonIcon color="primary300" onClick={onEdit}>
-          <BiPencil />
-        </ButtonIcon>
-        <ButtonIcon color="error300">
-          <BiTrash />
-        </ButtonIcon>
-      </Flex>
+    <Wrapper>
+      <Row gutter={[16, 16]}>
+        <Col span={1}>
+          <Text>{index}</Text>
+        </Col>
+        <Col span={8}>
+          <Flex align="center" gapX="s8">
+            {variant.items?.map((item, index) => (
+              <React.Fragment key={item.id}>
+                {index > 0 && <Text> + </Text>}
+                <Tag key={item.id} color="gold" style={{ marginRight: 0 }}>
+                  {item.attributeOption?.name}
+                </Tag>
+              </React.Fragment>
+            ))}
+          </Flex>
+        </Col>
+        <Col span={4}>
+          <Box style={{ minWidth: 120, textAlign: 'right' }}>
+            {variant.sku ? (
+              <Tag color="success">{variant.sku}</Tag>
+            ) : (
+              <Tag>No SKU</Tag>
+            )}
+          </Box>
+        </Col>
+        <Col span={3}>
+          <Flex gap="s8">
+            <ButtonIcon color="primary300" onClick={onEdit}>
+              <BiPencil />
+            </ButtonIcon>
+            <ButtonIcon color="error300">
+              <BiTrash />
+            </ButtonIcon>
+          </Flex>
+        </Col>
+      </Row>
     </Wrapper>
   );
 };
 
-const Wrapper = styled(Flex)`
+const Wrapper = styled(Box)`
   padding: 0.75rem 0.25rem;
   border-bottom: 1px solid ${({ theme }) => theme.colors.grayA50};
 `;

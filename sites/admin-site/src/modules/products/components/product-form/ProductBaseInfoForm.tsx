@@ -8,23 +8,13 @@ import {
   FormDescriptionInputProps,
 } from './ProductDescription';
 import { IProductBaseInfo, IProductCategory } from 'modules/products/types';
+import { stringToSlug } from 'modules/_shared/helper';
 
 export interface ProductBaseInfoFormProps {
   form: FormInstance;
   initialValue?: Partial<IProductBaseInfo>;
   allCategories?: IProductCategory[];
   asChild?: boolean;
-}
-
-function stringToSlug(str: string) {
-  return str
-    .normalize('NFD') // split an accented letter in the base letter and the acent
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace('đ', 'd') // remove all previously split accents
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9 ]/g, '') // remove all chars not letters, numbers and spaces (to be replaced)
-    .replace(/\s+/g, '-');
 }
 
 export const ProductBaseInfoForm: React.FC<ProductBaseInfoFormProps> = ({

@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useMemo } from 'react';
 import { Box, Flex, Heading, Text, styled } from '@packages/ds-core';
 import { useCountdown } from '@packages/react-helper';
@@ -8,13 +6,13 @@ import { FaHome } from 'react-icons/fa';
 
 const now = Date.now();
 
-export const FeatureCommingSoon: React.FC = ({}) => {
-  const releseDiff = useMemo(() => {
+export const FeatureComingSoon: React.FC = () => {
+  const releaseDiff = useMemo(() => {
     const releaseDate = new Date(2024, 6, 1).getTime();
     return releaseDate - now > 0 ? Math.floor((releaseDate - now) / 1000) : 0;
   }, []);
 
-  const [time] = useCountdown(releseDiff);
+  const [time] = useCountdown(releaseDiff);
   const days = Math.floor(time / (24 * 60 * 60));
   const hours = Math.floor((time - days * 86400) / 3600);
   const minutes = Math.floor((time - days * 86400 - hours * 3600) / 60);
@@ -23,7 +21,7 @@ export const FeatureCommingSoon: React.FC = ({}) => {
   return (
     <Wrapper padding={['s48', 's16']} suppressHydrationWarning={true}>
       <Heading type="h1" color="secondary">
-        Comming Soon
+        Coming Soon
       </Heading>
       <Box>
         <Text color="textSecondary" fontSize="xs">
@@ -57,7 +55,7 @@ export const FeatureCommingSoon: React.FC = ({}) => {
               {seconds.toString().padStart(2, '0')}
             </CountdownValue>
             <Text color="textSecondary" fontSize="s" transform="uppercase">
-              Sconds
+              Seconds
             </Text>
           </Flex>
         </Flex>
@@ -94,11 +92,12 @@ const CountdownValue = styled(Box)`
 const Wrapper = styled(Box)`
   display: flex;
   flex: 1;
-  height: 100%;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  width: 100%;
-  background: radial-gradient(white 0%, ${(p) => p.theme.colors.primary} 100%);
+  background: radial-gradient(
+    white 0%,
+    ${(p) => p.theme.colors.primaryA100} 100%
+  );
   box-sizing: border-box;
 `;

@@ -62,6 +62,8 @@ export type BaseFormItem<
   labelAlign?: FormLabelAlign;
   labelCol?: ColProps;
   validateFirst?: boolean;
+  hasFeedback?: boolean;
+  validateDebounce?: number;
 };
 
 export type ValueKey<K, T> = K extends keyof T ? T[K] : never;

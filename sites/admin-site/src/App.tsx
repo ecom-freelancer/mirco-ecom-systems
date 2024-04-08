@@ -28,6 +28,11 @@ function App() {
                 itemPaddingInline: 20,
                 iconSize: 20,
               },
+              Table: {
+                headerBg: 'transparent',
+                fontWeightStrong: 500,
+                padding: 12,
+              },
             },
           }}
         >

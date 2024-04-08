@@ -63,12 +63,12 @@ export class ProductDetailDto extends BaseDto {
   seoInfo?: SeoInfoDto;
 
   @Expose()
-  @Type(() => SeoInfoDto)
+  @Type(() => ProductSkuDto)
   @ApiPropertyOptional({
-    type: SeoInfoDto,
+    type: ProductSkuDto,
     isArray: true,
   })
-  skus?: ProductSkuDto[];
+  productSkus?: ProductSkuDto[];
 
   @Expose()
   @Type(() => ProductAttributeDto)

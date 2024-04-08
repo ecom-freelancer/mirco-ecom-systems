@@ -1,12 +1,16 @@
-import { Box, Flex, styled } from '@packages/ds-core';
-import { VariantLineItem } from '../components';
+import { Box, Flex, Text, styled } from '@packages/ds-core';
 import { IVariant } from '../types.ts/variant';
+import { Popconfirm, Table, Tag } from 'antd';
+import { ButtonIcon } from 'modules/_shared/components';
+import { BiPencil, BiTrash } from 'react-icons/bi';
+import React from 'react';
 
 export interface ListVariantsProps {
   className?: string;
   variants?: IVariant[];
   loading?: boolean;
   onClickEdit?: (variant: IVariant) => void;
+  onDelete?: (variantId: number) => void;
 }
 
 export const ListVariants: React.FC<ListVariantsProps> = ({
@@ -14,6 +18,7 @@ export const ListVariants: React.FC<ListVariantsProps> = ({
   variants,
   loading,
   onClickEdit,
+  onDelete,
 }) => {
   if (loading) {
     return <div className={className}>Loading...</div>;
@@ -25,15 +30,63 @@ export const ListVariants: React.FC<ListVariantsProps> = ({
 
   return (
     <Wrapper className={className}>
-      <Flex direction="column">
-        {variants.map((variant) => (
-          <VariantLineItem
-            variant={variant}
-            key={variant.id}
-            onEdit={() => onClickEdit?.(variant)}
-          />
-        ))}
-      </Flex>
+      <Table
+        pagination={false}
+        dataSource={variants}
+        columns={[
+          {
+            title: '#',
+            key: 'id',
+            render: (_, __, index: number) => index + 1,
+          },
+          {
+            title: 'Variant Attributes',
+            dataIndex: 'name',
+            key: 'name',
+            render: (_, variant) => (
+              <Flex align="center" gapX="s8">
+                {variant.items?.map((item, index) => (
+                  <React.Fragment key={item.id}>
+                    {index > 0 && <Text> + </Text>}
+                    <Tag key={item.id} color="gold" style={{ marginRight: 0 }}>
+                      {item.attributeOption?.name}
+                    </Tag>
+                  </React.Fragment>
+                ))}
+              </Flex>
+            ),
+          },
+          {
+            title: 'Linked to',
+            dataIndex: 'sku',
+            key: 'sku',
+            render: (sku) =>
+              sku ? <Tag color="success">{sku}</Tag> : <Tag>No SKU</Tag>,
+          },
+          {
+            key: 'action',
+            render: (_, variant) => (
+              <Flex gap="s8" justify="end">
+                <ButtonIcon
+                  iconColor="primary300"
+                  onClick={() => onClickEdit?.(variant)}
+                >
+                  <BiPencil />
+                </ButtonIcon>
+                <Popconfirm
+                  title="Are you sure delete this variant?"
+                  description="This can be change data in consumer website"
+                  onConfirm={() => onDelete?.(variant.id!)}
+                >
+                  <ButtonIcon iconColor="error300">
+                    <BiTrash />
+                  </ButtonIcon>
+                </Popconfirm>
+              </Flex>
+            ),
+          },
+        ]}
+      />
     </Wrapper>
   );
 };

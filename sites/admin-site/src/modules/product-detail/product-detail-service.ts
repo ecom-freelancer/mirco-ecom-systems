@@ -5,6 +5,11 @@ import {
   IGetListVariantsResponse,
   IUpsertVariantPayload,
 } from './types.ts/variant';
+import {
+  IGetListSkusResponse,
+  IUpsertSkuFormType,
+} from './types.ts/product-skus';
+import { ISeoInfo } from 'modules/seo-info/types';
 
 export const productDetailService = {
   getProductDetail: async (id: ID) => {
@@ -23,6 +28,34 @@ export const productDetailService = {
   getAllVariants: async (productId: ID) => {
     return appApi
       .get<IGetListVariantsResponse>(`/products/${productId}/variants`)
+      .then((res) => res.data);
+  },
+
+  deleteVariant: async (productId: ID, variantId: ID) => {
+    return appApi
+      .delete(`/products/${productId}/variants/${variantId}`)
+      .then((res) => res.data);
+  },
+  getAllSkus: async (productId: ID) => {
+    return appApi
+      .get<IGetListSkusResponse>(`/products/${productId}/skus`)
+      .then((res) => res.data);
+  },
+
+  createSku: async (productId: ID, skus: IUpsertSkuFormType) => {
+    return appApi
+      .post(`/products/${productId}/skus`, { ...skus })
+      .then((res) => res.data);
+  },
+  updateSku: async (productId: ID, sku: ID, skus: IUpsertSkuFormType) => {
+    return appApi
+      .put(`/products/${productId}/skus/${sku}`, { ...skus })
+      .then((res) => res.data);
+  },
+
+  updateSkuSeo: async (productId: ID, sku: ID, seoInfo: ISeoInfo) => {
+    return appApi
+      .post(`/products/${productId}/skus/${sku}/seo`, seoInfo)
       .then((res) => res.data);
   },
 };

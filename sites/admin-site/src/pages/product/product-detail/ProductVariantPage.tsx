@@ -2,14 +2,24 @@ import { styled } from '@packages/ds-core';
 import { Button, Col, Row } from 'antd';
 import { Section } from 'modules/_shared/components';
 import { Page } from 'modules/_shared/components/Page';
-import { ListVariants, UpsertVariantModal } from 'modules/product-detail';
-import { UpsertSkuModal } from 'modules/product-detail/containers/UpsertSkuModal';
-import { useVariants } from 'modules/product-detail/hooks';
+import {
+  ListVariants,
+  UpsertVariantModal,
+  ListProductSku,
+  UpsertSkuModal,
+} from 'modules/product-detail';
+import { useProductSkus, useVariants } from 'modules/product-detail/hooks';
 import { IVariant } from 'modules/product-detail/types.ts/variant';
 import React from 'react';
 
 const ProductVariantPage: React.FC = () => {
-  const { variants, loading: variantLoading, refresh } = useVariants();
+  const {
+    variants,
+    loading: variantLoading,
+    refresh,
+    deleteVariant,
+  } = useVariants();
+  const { productSkus, actionLoading, createSku } = useProductSkus();
 
   const [openVariantModal, setOpenVariantModal] = React.useState<
     | false
@@ -24,7 +34,7 @@ const ProductVariantPage: React.FC = () => {
   return (
     <Page>
       <Row gutter={[16, 16]}>
-        <Col span={24} lg={15}>
+        <Col span={24} lg={24}>
           <StyledSection
             title="SKU"
             extra={[
@@ -36,9 +46,11 @@ const ProductVariantPage: React.FC = () => {
                 Add SKU
               </Button>,
             ]}
-          ></StyledSection>
+          >
+            <ListProductSku items={productSkus} />
+          </StyledSection>
         </Col>
-        <Col span={24} lg={9}>
+        <Col span={24} lg={24}>
           <StyledSection
             title="Variants"
             extra={[
@@ -54,6 +66,7 @@ const ProductVariantPage: React.FC = () => {
             <ListVariants
               variants={variants}
               loading={variantLoading}
+              onDelete={deleteVariant}
               onClickEdit={(v) =>
                 setOpenVariantModal({
                   variant: v,
@@ -74,6 +87,9 @@ const ProductVariantPage: React.FC = () => {
         open={openSkuModal}
         onClose={() => setOpenSkuModal(false)}
         title="Add SKU"
+        allVariants={variants}
+        onSubmit={createSku}
+        loading={actionLoading}
       />
     </Page>
   );

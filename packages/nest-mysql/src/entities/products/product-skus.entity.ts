@@ -10,6 +10,7 @@ import { BaseEntity } from '../../base.entity';
 import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductEntity } from './products.entity';
 import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
+import { ArrayStringTransformer } from '../../helpers/array-string-transformer';
 
 @Entity('product_skus')
 export class ProductSkuEntity extends BaseEntity {
@@ -22,6 +23,13 @@ export class ProductSkuEntity extends BaseEntity {
     type: 'nvarchar',
   })
   name: string;
+
+  @Column({
+    nullable: true,
+    type: 'text',
+    transformer: ArrayStringTransformer,
+  })
+  images?: string[];
 
   @Column({
     unique: true,

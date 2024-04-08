@@ -42,6 +42,7 @@ export class ProductAttributeGroupEntity {
   @OneToOne(() => ProductSkuEntity, (s) => s.variant, {
     onDelete: 'SET NULL',
     nullable: true,
+    onUpdate: 'CASCADE',
   })
   @JoinColumn({
     name: 'sku',

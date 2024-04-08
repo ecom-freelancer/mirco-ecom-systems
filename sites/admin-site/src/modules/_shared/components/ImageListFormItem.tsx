@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react';
 import { Box, styled } from '@packages/ds-core';
-import { Col, Image, Row } from 'antd';
+import { Col, Image, Row, ColProps } from 'antd';
 import { MdOutlineFileUpload } from 'react-icons/md';
 import { IoCloseOutline } from 'react-icons/io5';
 
@@ -8,6 +8,7 @@ export interface UploadImagesProps {
   value?: string[];
   onChange?: (value: string[]) => void;
   onUpload?: (file: File) => Promise<string>;
+  span?: ColProps['span'];
 }
 
 export interface IImageFile {
@@ -20,6 +21,7 @@ export const UploadImages: React.FC<UploadImagesProps> = ({
   value: imageUrls,
   onUpload: upload,
   onChange,
+  span = 8,
 }) => {
   const [images, setImages] = useState<Array<IImageFile>>(
     imageUrls?.map((url) => ({ url, id: url, loading: false })) || [],
@@ -73,13 +75,13 @@ export const UploadImages: React.FC<UploadImagesProps> = ({
         />
       </label>
       <Row gutter={[8, 8]}>
-        <Col span={8}>
+        <Col span={span}>
           <ButtonImage onClick={() => ref.current?.click()}>
             <MdOutlineFileUpload size={30} />
           </ButtonImage>
         </Col>
         {images.map((image) => (
-          <Col span={8}>
+          <Col span={span}>
             <ImageWrapper loading={image.loading} key={image.id}>
               {!image.loading && (
                 <React.Fragment>
