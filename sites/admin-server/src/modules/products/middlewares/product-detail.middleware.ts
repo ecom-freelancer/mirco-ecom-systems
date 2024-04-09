@@ -11,13 +11,14 @@ import { isNumber } from 'class-validator';
 export class ProductDetailMiddleware implements NestMiddleware {
   constructor(private readonly productService: ProductService) {}
 
-  use(req: Request, _, next: NextFunction) {
+  async use(req: Request, _, next: NextFunction) {
     const productId = req.params['productId'];
+
     if (isNumber(productId)) {
       throw new BadRequestException('Product id must be a number');
     }
 
-    const productIsExits = this.productService.isExitProductById(
+    const productIsExits = await this.productService.isExitProductById(
       Number(productId),
     );
 

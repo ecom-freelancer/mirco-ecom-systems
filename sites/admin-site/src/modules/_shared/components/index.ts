@@ -7,3 +7,5 @@ export * from './KeywordsFormInput';
 export { default as FloatingWrapper } from './FloatingWrapper';
 export * from './LoadingScreen';
 export * from './Section';
+export * from './FeatureComingSoon';
+export * from './ButtonIcon';

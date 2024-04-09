@@ -1,18 +1,17 @@
 import { styled } from '@packages/ds-core';
-import { t } from 'i18next';
+import { FeatureComingSoon } from 'modules/_shared/components';
+import { Page } from 'modules/_shared/components/Page';
 
 export const DashboardPage = () => {
   return (
-    <div>
-      <Box />
-
-      {t('dashboard')}
-    </div>
+    <StyledPage>
+      <FeatureComingSoon />
+    </StyledPage>
   );
 };
 
-const Box = styled.div`
-  width: 100px;
-  height: 100px;
-  background-color: ${({ theme }) => theme.colors?.primary || 'red'};
+const StyledPage = styled(Page)`
+  padding: 0;
+  margin: auto;
+  display: flex;
 `;

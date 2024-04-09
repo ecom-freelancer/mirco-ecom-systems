@@ -1,4 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { AllowEmpty } from '@packages/nest-helper';
 import { Expose } from 'class-transformer';
 import {
   IsArray,
@@ -28,6 +29,7 @@ export class UpsertSeoInfoDto {
   @ApiProperty()
   @IsOptional()
   @IsUrl()
+  @AllowEmpty()
   image?: string;
 
   @ApiPropertyOptional()
@@ -41,10 +43,10 @@ export class UpsertSeoInfoDto {
   @IsBoolean()
   noIndex?: boolean;
 
-  @ApiProperty()
-  @IsOptional()
-  @IsString()
+  @ApiPropertyOptional()
+  @IsOptional({})
   @IsUrl()
+  @AllowEmpty()
   canonical?: string;
 }
 

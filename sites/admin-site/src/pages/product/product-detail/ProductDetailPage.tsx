@@ -2,9 +2,11 @@ import React, { Suspense } from 'react';
 import { RouteObject, useParams, useRoutes } from 'react-router';
 
 import { IRoute } from 'configs/router';
-import { ProductDetailProvider } from 'modules/product-detail';
 import { ID } from 'modules/_shared/types';
-import { ProductDetailPageLayout } from 'modules/product-detail/containers';
+import {
+  ProductDetailPageLayout,
+  ProductDetailProvider,
+} from 'modules/product-detail';
 
 const ProductInfoPage = React.lazy(() => import('./ProductInfoPage'));
 const ProductVariantPage = React.lazy(() => import('./ProductVariantPage'));

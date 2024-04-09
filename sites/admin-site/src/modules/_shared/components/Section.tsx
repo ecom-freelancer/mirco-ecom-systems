@@ -29,9 +29,7 @@ export const Section: React.FC<SectionProps> = ({
           {extra}
         </Flex>
       </Title>
-      <Box padding="s8" style={{ minHeight: 100 }}>
-        {children}
-      </Box>
+      <Box style={{ minHeight: 100 }}>{children}</Box>
     </Wrapper>
   );
 };

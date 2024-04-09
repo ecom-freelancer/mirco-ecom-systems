@@ -166,7 +166,6 @@ export class ProductService {
         },
       ],
       relations: {
-        skus: true,
         seoInfo: true,
         attributes: {
           options: true,
@@ -194,10 +193,4 @@ export class ProductService {
       where: { id },
     });
   }
-
-  // get all skus of product
-
-  // upsert a variant of product
-
-  // delete a variant of product
 }

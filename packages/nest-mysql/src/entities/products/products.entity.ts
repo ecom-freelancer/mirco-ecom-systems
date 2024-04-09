@@ -125,7 +125,7 @@ export class ProductEntity extends BaseEntity {
   attributes?: Array<ProductAttributeEntity>;
 
   @OneToMany(() => ProductSkuEntity, (sku) => sku.product)
-  skus?: Array<ProductSkuEntity>;
+  productSkus?: Array<ProductSkuEntity>;
 
   @OneToMany(() => ProductAttributeGroupEntity, (variant) => variant.product)
   variants?: Array<ProductAttributeGroupEntity>;

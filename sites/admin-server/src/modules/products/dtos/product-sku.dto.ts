@@ -1,10 +1,11 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { BaseDto } from 'configs/base.dto';
+import { SeoInfoDto } from 'modules/seo-info';
 
 // update product sku dto
 
-export class ProductSkuDto {
+export class ProductSkuDto extends BaseDto {
   @Expose()
   @ApiProperty()
   sku: string;
@@ -16,6 +17,12 @@ export class ProductSkuDto {
   @Expose()
   @ApiProperty()
   slug: string;
+
+  @Expose()
+  @ApiPropertyOptional({
+    isArray: true,
+  })
+  images?: Array<string>;
 
   @Expose()
   @ApiPropertyOptional()
@@ -32,6 +39,23 @@ export class ProductSkuDto {
   @Expose()
   @ApiPropertyOptional()
   variantId?: number;
+
+  @Expose()
+  @ApiPropertyOptional()
+  seoInfoId?: number;
+
+  @Expose()
+  @ApiPropertyOptional({
+    type: SeoInfoDto,
+  })
+  @Type(() => SeoInfoDto)
+  seoInfo?: SeoInfoDto;
 }
 
 export class ProductSkuDetailDto extends BaseDto {}
+
+export class GetListProductSkuDto {
+  @Expose()
+  @Type(() => ProductSkuDto)
+  items: ProductSkuDto[];
+}

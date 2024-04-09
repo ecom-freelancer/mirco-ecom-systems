@@ -2,6 +2,8 @@ import { ID } from 'modules/_shared/types';
 import { useProductDetail } from './hooks/useProductDetail';
 import { LoadingScreen } from 'modules/_shared/components/LoadingScreen';
 import { ProductDetailContext } from './product-detail-context';
+import { Alert } from 'antd';
+import { Box } from '@packages/ds-core';
 
 export interface IProductDetailProviderProps {
   children: React.ReactNode;
@@ -16,6 +18,13 @@ export const ProductDetailProvider: React.FC<IProductDetailProviderProps> = ({
     useProductDetail(productId);
 
   if (isLoading) return <LoadingScreen />;
+
+  if (!product)
+    return (
+      <Box padding="s16">
+        <Alert message="Product not found" type="error" />
+      </Box>
+    );
 
   return (
     <ProductDetailContext.Provider

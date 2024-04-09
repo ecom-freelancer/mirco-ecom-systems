@@ -6,7 +6,7 @@ import {
   ProductAttributeGroupEntity,
   ProductAttributeGroupItemEntity,
 } from '@packages/nest-mysql';
-import { And, DataSource, Equal, In, Not, Repository } from 'typeorm';
+import { And, DataSource, Equal, In, IsNull, Not, Repository } from 'typeorm';
 
 @Injectable()
 export class ProductVariantService {
@@ -169,5 +169,18 @@ export class ProductVariantService {
     } finally {
       await queryRunner.release();
     }
+  }
+
+  async deleteVariant(id: number) {
+    return this.productVariantRepository.delete(id);
+  }
+
+  async existVariant(variantId: number, productId?: number) {
+    return this.productVariantRepository.findOne({
+      where: {
+        id: variantId,
+        productId: productId ? productId : Not(IsNull()),
+      },
+    });
   }
 }
