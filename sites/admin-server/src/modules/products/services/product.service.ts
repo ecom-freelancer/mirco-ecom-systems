@@ -13,7 +13,16 @@ import {
   SeoInfoEntity,
 } from '@packages/nest-mysql';
 import { UpsertProductDto } from '../dtos';
-import { DataSource, IsNull, Not, Repository } from 'typeorm';
+import {
+  DataSource,
+  IsNull,
+  LessThanOrEqual,
+  Like,
+  MoreThanOrEqual,
+  Not,
+  Repository,
+} from 'typeorm';
+import { GetProductListParams } from '../dtos/get-product.dto';
 
 @Injectable()
 export class ProductService {
@@ -192,5 +201,46 @@ export class ProductService {
     return await this.productRepository.exists({
       where: { id },
     });
+  }
+
+  async getProductList(params: GetProductListParams) {
+    const { page, pageSize, endDate, startDate, searchText, categoryId } =
+      params;
+    let condition: any = {};
+    if (!!startDate) {
+      condition.createdAt = MoreThanOrEqual(startDate);
+    }
+
+    if (!!endDate) {
+      condition.createdAt = LessThanOrEqual(endDate);
+    }
+
+    if (!!categoryId) {
+      condition.categoryId = categoryId;
+    }
+
+    const [productList, total] = await this.productRepository.findAndCount({
+      take: pageSize,
+      skip: (page - 1) * pageSize,
+      where: !!searchText
+        ? [
+            { ...condition, name: Like(`%${searchText}%`) },
+            { ...condition, slug: Like(`%${searchText}%`) },
+            { ...condition, brand: Like(`%${searchText}%`) },
+          ]
+        : condition,
+      order: {
+        createdAt: 'DESC',
+      },
+    });
+
+    return {
+      dataList: productList,
+      totalRecord: total,
+      totalPage:
+        total % pageSize === 0
+          ? total / pageSize
+          : Math.floor(total / pageSize) + 1,
+    };
   }
 }
