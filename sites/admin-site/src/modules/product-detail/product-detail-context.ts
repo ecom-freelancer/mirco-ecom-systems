@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProductDetail, IUpdateProductPayload } from './types.ts';
+import { IProductDetail, IUpdateProductPayload } from './types/index.ts';
 
 export interface IProductDetailContext {
   product: IProductDetail;

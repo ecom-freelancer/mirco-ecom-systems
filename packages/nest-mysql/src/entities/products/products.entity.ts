@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -88,6 +89,7 @@ export class ProductEntity extends BaseEntity {
     type: 'enum',
     enum: ProductStatus,
   })
+  @Index()
   productStatus?: ProductStatus;
 
   @Column({

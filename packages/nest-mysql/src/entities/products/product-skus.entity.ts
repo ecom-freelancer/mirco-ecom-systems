@@ -1,6 +1,7 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToOne,
@@ -11,6 +12,7 @@ import { SeoInfoEntity } from '../seo-info.entity';
 import { ProductEntity } from './products.entity';
 import { ProductAttributeGroupEntity } from '../product-attributes/product-attribute-groups.entity';
 import { ArrayStringTransformer } from '../../helpers/array-string-transformer';
+import { SkuInventoriesEntity } from '../inventories/sku-inventories.entity';
 
 @Entity('product_skus')
 export class ProductSkuEntity extends BaseEntity {
@@ -49,6 +51,7 @@ export class ProductSkuEntity extends BaseEntity {
     default: false,
     type: 'boolean',
   })
+  @Index()
   sellable?: boolean;
 
   @Column({
@@ -111,4 +114,20 @@ export class ProductSkuEntity extends BaseEntity {
     name: 'variant_id',
   })
   variant?: ProductAttributeGroupEntity;
+
+  @Column({
+    name: 'inventory_id',
+    type: 'int',
+    nullable: true,
+  })
+  inventoryId?: number;
+
+  @OneToOne(() => SkuInventoriesEntity, (i) => i.productSku, {
+    nullable: true,
+    onDelete: 'CASCADE',
+  })
+  @JoinColumn({
+    name: 'inventory_id',
+  })
+  inventory?: SkuInventoriesEntity;
 }

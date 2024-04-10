@@ -32,6 +32,7 @@ function App() {
                 headerBg: 'transparent',
                 fontWeightStrong: 500,
                 padding: 12,
+                headerSplitColor: 'transparent',
               },
             },
           }}

@@ -30,7 +30,7 @@ export const fontWeights = {
   '700': 700,
   normal: 400,
   bold: 500,
-  booler: 600,
+  bolder: 600,
 };
 export type FontWeight = keyof typeof fontWeights;
 

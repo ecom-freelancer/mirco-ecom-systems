@@ -4,12 +4,13 @@ import { IProductInfoFormType } from 'modules/products/types';
 import {
   IGetListVariantsResponse,
   IUpsertVariantPayload,
-} from './types.ts/variant';
-import {
-  IGetListSkusResponse,
-  IUpsertSkuFormType,
-} from './types.ts/product-skus';
+} from './types/variant';
+import { IGetListSkusResponse, IUpsertSkuFormType } from './types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
+import {
+  IGetListInventoryQueries,
+  IGetListInventoryResponse,
+} from './types/get-inventories';
 
 export const productDetailService = {
   getProductDetail: async (id: ID) => {
@@ -56,6 +57,18 @@ export const productDetailService = {
   updateSkuSeo: async (productId: ID, sku: ID, seoInfo: ISeoInfo) => {
     return appApi
       .post(`/products/${productId}/skus/${sku}/seo`, seoInfo)
+      .then((res) => res.data);
+  },
+
+  getInventorySku: async (
+    productId: ID,
+    sku: ID,
+    query?: IGetListInventoryQueries,
+  ) => {
+    return appApi
+      .get<IGetListInventoryResponse>(`/products/${productId}/inventory`, {
+        params: { ...query, sku },
+      })
       .then((res) => res.data);
   },
 };

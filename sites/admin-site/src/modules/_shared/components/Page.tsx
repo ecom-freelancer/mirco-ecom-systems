@@ -5,6 +5,7 @@ import {
   IBreadcrumb,
   styled,
 } from '@packages/ds-core';
+import { Flex } from 'antd';
 import React, { useRef } from 'react';
 
 export interface PageProps {
@@ -12,6 +13,7 @@ export interface PageProps {
   title?: React.ReactNode;
   children: React.ReactNode;
   className?: string;
+  extra?: React.ReactNode[];
 }
 
 export const Page: React.FC<PageProps> = ({
@@ -19,12 +21,16 @@ export const Page: React.FC<PageProps> = ({
   children,
   title,
   className,
+  extra,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   return (
     <Wrapper ref={ref} className={className}>
       {breadcrumbs && <StyledBreadcrumbs breadcrumbs={breadcrumbs} />}
-      {title && <Heading type="h3">{title}</Heading>}
+      <Flex align="center" justify="space-between">
+        <Box>{title && <Heading type="h3">{title}</Heading>}</Box>
+        <Flex gap={'s8'}>{extra}</Flex>
+      </Flex>
       {children}
     </Wrapper>
   );

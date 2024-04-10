@@ -23,4 +23,14 @@ export const Text = styled.span<TextProps>`
   ${({ block }) => block && `display: block;`}
   ${({ transform }) => transform && `text-transform: ${transform};`}
   ${({ whiteSpace }) => whiteSpace && `white-space: ${whiteSpace};`}
+
+  ${({ maxLines }) =>
+    maxLines &&
+    `
+    display: -webkit-box;
+    -webkit-line-clamp: ${maxLines};
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  `}
+  text-overflow: ${({ textOverflow }) => textOverflow || 'clip'};
 `;

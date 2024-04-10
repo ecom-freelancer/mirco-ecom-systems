@@ -1,5 +1,5 @@
 import { Box, Flex, Text, styled } from '@packages/ds-core';
-import { IVariant } from '../types.ts/variant';
+import { IVariant } from '../types/variant';
 import { Popconfirm, Table, Tag } from 'antd';
 import { ButtonIcon } from 'modules/_shared/components';
 import { BiPencil, BiTrash } from 'react-icons/bi';

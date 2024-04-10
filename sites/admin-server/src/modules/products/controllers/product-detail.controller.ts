@@ -8,13 +8,13 @@ import {
   Param,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { ProductService } from '../services/product.service';
 import { ApiSuccessResponse } from '@packages/nest-helper';
 import { ProductDetailDto, UpdateProductDto } from '../dtos';
 import { plainToInstance } from 'class-transformer';
-import { Protected } from 'modules/auth/auth.guard';
 import { UpsertDto } from 'configs/base.dto';
 import { UpsertVariantDto } from '../dtos/upsert-variant.dto';
 import { ProductVariantService } from '../services/product-variant.service';
@@ -23,16 +23,25 @@ import { UpsertSKUDto } from '../dtos/upsert-sku.dto';
 import { GetListProductSkuDto } from '../dtos/product-sku.dto';
 import { ProductSkuService } from '../services/product-sku.service';
 import { SeoInfoDto } from 'modules/seo-info';
+import { SkuInventoryService } from '../services/sku-inventory.service';
+import {
+  GetInventoryQueries,
+  ImportInventorySkuPayload,
+} from '../dtos/inventory.dto';
+import { ProductProtected } from '../guards/product-detail.guard';
+// import { Protected } from 'modules/auth/auth.guard';
 
 @Controller('products/:productId')
 @ApiTags('Product Detail')
 @ApiBearerAuth('Authorization')
-@Protected()
+// @Protected()
+@ProductProtected()
 export class ProductDetailController {
   constructor(
     private readonly productService: ProductService,
     private readonly productVariantService: ProductVariantService,
     private readonly productSkuService: ProductSkuService,
+    private readonly inventoryService: SkuInventoryService,
   ) {}
 
   @Get()
@@ -183,5 +192,40 @@ export class ProductDetailController {
       throw new NotFoundException('Sku not found in this product.');
     }
     await this.productSkuService.updateSeoForSku(sku, payload);
+  }
+
+  @Post('inventory/import')
+  async importInventoryForSku(
+    @Param('productId') productId: number,
+    @Body() payload: ImportInventorySkuPayload,
+  ) {
+    if (!(await this.productSkuService.isExistSku(payload.sku, productId))) {
+      throw new NotFoundException('Sku not found in this product.');
+    }
+    await this.inventoryService.importEntitiesForSku(
+      payload.sku,
+      payload.googleSheetUrl,
+    );
+  }
+
+  @Get('inventory')
+  async getInventoryForSku(
+    @Param('productId') productId: number,
+    @Query() queries: GetInventoryQueries,
+  ) {
+    if (!(await this.productSkuService.isExistSku(queries.sku, productId))) {
+      throw new NotFoundException('Sku not found in this product.');
+    }
+
+    const [[inventories, total], statistic] = await Promise.all([
+      this.inventoryService.getAllInventories(queries),
+      this.inventoryService.statisticInventory(queries.sku),
+    ]);
+
+    return {
+      total: total,
+      items: inventories,
+      statistic: statistic,
+    };
   }
 }

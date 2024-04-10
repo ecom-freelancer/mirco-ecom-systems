@@ -5,9 +5,9 @@ import { ProductDetailController } from './controllers/product-detail.controller
 import { CategoryService } from './services/category.service';
 import { ProductService } from './services/product.service';
 import { CategoryController } from './controllers/category.controller';
-import { ProductDetailMiddleware } from './middlewares';
 import { ProductVariantService } from './services/product-variant.service';
 import { ProductSkuService } from './services/product-sku.service';
+import { SkuInventoryService } from './services/sku-inventory.service';
 
 @Module({
   imports: [MysqlModule.getMysqlModule()],
@@ -16,11 +16,10 @@ import { ProductSkuService } from './services/product-sku.service';
     CategoryService,
     ProductVariantService,
     ProductSkuService,
+    SkuInventoryService,
   ],
   controllers: [ProductController, ProductDetailController, CategoryController],
 })
 export class ProductModule implements NestModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(ProductDetailMiddleware).forRoutes(ProductDetailController);
-  }
+  configure(consumer: MiddlewareConsumer) {}
 }

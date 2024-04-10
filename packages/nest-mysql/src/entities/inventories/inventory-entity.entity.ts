@@ -1,12 +1,14 @@
 import {
   Column,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 import { SkuInventoriesEntity } from './sku-inventories.entity';
+import { JobEntity } from '../jobs/jobs.entity';
 
 export enum InventoryStatus {
   enable = 'enable',
@@ -21,6 +23,10 @@ export class InventoryEntityEntity extends BaseEntity {
 
   @Column({
     type: 'text',
+    transformer: {
+      to: (value: string) => value,
+      from: (value: string) => value,
+    },
   })
   barCode: string;
 
@@ -36,6 +42,7 @@ export class InventoryEntityEntity extends BaseEntity {
     enum: InventoryStatus,
     default: InventoryStatus.draft,
   })
+  @Index()
   status: InventoryStatus;
 
   @Column({
@@ -44,9 +51,24 @@ export class InventoryEntityEntity extends BaseEntity {
   })
   skuInventoryId: number;
 
+  @Column({
+    name: 'job_id',
+    type: 'int',
+    nullable: true,
+  })
+  jobId: number;
+
   @ManyToOne(() => SkuInventoriesEntity, {
     cascade: true,
   })
   @JoinColumn({ name: 'sku_inventory_id' })
   skuInventory?: SkuInventoriesEntity;
+
+  @ManyToOne(() => JobEntity, {
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+    nullable: true,
+  })
+  @JoinColumn({ name: 'job_id' })
+  job?: JobEntity;
 }

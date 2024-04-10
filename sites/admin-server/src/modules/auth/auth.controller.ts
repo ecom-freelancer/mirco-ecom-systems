@@ -30,12 +30,16 @@ import { UpdateAccountDto } from './dtos/update-account.dto';
 import { LoginWithGoogleDto } from './dtos/login-with-google.dto';
 // import { FacebookAuthGuard } from '@packages/nest-facebook';
 import { LoginWithFacebookDto } from './dtos/login-with-facebook.dto';
+import { GoogleSpreadSheetService } from '@packages/nest-google';
 
 @Controller()
 @ApiTags('auth')
 @ApiBearerAuth('Authorization')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly spreadsheetService: GoogleSpreadSheetService,
+  ) {}
 
   @Get('me')
   @Protected()
@@ -165,5 +169,13 @@ export class AuthController {
     @Body() payload: UpdateAccountDto,
   ) {
     return await this.authService.updateAccount(userId, payload);
+  }
+
+  @Get('sheet')
+  async getSheet() {
+    return this.spreadsheetService.getSpreadsheet(
+      '18ri-ClGX3o3bYqPN6xRkpAY6YvFlHzltL04-TePCl0s',
+      '996304417',
+    );
   }
 }

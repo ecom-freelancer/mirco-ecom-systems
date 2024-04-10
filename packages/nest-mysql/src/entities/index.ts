@@ -8,9 +8,6 @@ import { CustomerEntity } from './customer.entity';
 export * from './jobs/jobs.entity';
 import { JobEntity } from './jobs/jobs.entity';
 
-export * from './jobs/job-tasks.entity';
-import { JobTasksEntity } from './jobs/job-tasks.entity';
-
 // product
 export * from './products/products.entity';
 export * from './products/product-skus.entity';
@@ -50,7 +47,7 @@ export const entities = [
   UserEntity,
   CustomerEntity,
   JobEntity,
-  JobTasksEntity,
+
   ProductCategoryEntity,
   ProductEntity,
   ProductSkuEntity,

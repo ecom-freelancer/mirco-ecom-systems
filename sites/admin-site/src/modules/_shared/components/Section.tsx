@@ -18,7 +18,7 @@ export const Section: React.FC<SectionProps> = ({
     <Wrapper className={className}>
       <Title gapX="s16" justify="space-between">
         <Heading
-          type="h6"
+          type="h5"
           style={{
             marginBottom: 0,
           }}
@@ -35,11 +35,9 @@ export const Section: React.FC<SectionProps> = ({
 };
 
 const Wrapper = styled.section`
-  background-color: ${({ theme }) => theme.colors.light};
   border-radius: ${({ theme }) => theme.radius.r4};
 `;
 
 const Title = styled(Flex)`
-  border-bottom: 1px solid ${({ theme }) => theme.colors.greyA100};
-  padding: 0.625rem 0.75rem;
+  padding: 0.625rem 0;
 `;

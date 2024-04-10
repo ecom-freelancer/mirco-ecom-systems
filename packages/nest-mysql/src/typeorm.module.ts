@@ -30,7 +30,7 @@ export class TypeOrmModule implements OnApplicationShutdown {
       useValue: options,
     };
 
-    const datasoureProvider: Provider = {
+    const dataSourceProvider: Provider = {
       provide: DATA_SOURCE,
       useFactory: (options: MysqlModuleOptions) => {
         const dataSource = new DataSource({
@@ -62,8 +62,12 @@ export class TypeOrmModule implements OnApplicationShutdown {
 
     return {
       module: TypeOrmModule,
-      providers: [connectionProvider, datasoureProvider, entityManagerProvider],
-      exports: [datasoureProvider, entityManagerProvider],
+      providers: [
+        connectionProvider,
+        dataSourceProvider,
+        entityManagerProvider,
+      ],
+      exports: [dataSourceProvider, entityManagerProvider],
     };
   }
 }

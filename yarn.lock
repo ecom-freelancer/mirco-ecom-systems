@@ -2780,6 +2780,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@googleapis/sheets@npm:^5.0.5":
+  version: 5.0.5
+  resolution: "@googleapis/sheets@npm:5.0.5"
+  dependencies:
+    googleapis-common: "npm:^7.0.0"
+  checksum: 10/89eef37a9cfef0df0db8f3e51e922bb4405b39065dd21dcaa09ab9553ba90d9bc7daf4ac11a2a57697428229dcb784a73ff3fe4b4834541575c9ff16186375f2
+  languageName: node
+  linkType: hard
+
 "@humanwhocodes/config-array@npm:^0.11.14":
   version: 0.11.14
   resolution: "@humanwhocodes/config-array@npm:0.11.14"
@@ -3455,6 +3464,48 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-arm64@npm:3.0.2"
+  conditions: os=darwin & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-darwin-x64@npm:3.0.2"
+  conditions: os=darwin & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm64@npm:3.0.2"
+  conditions: os=linux & cpu=arm64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-arm@npm:3.0.2"
+  conditions: os=linux & cpu=arm
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-linux-x64@npm:3.0.2"
+  conditions: os=linux & cpu=x64
+  languageName: node
+  linkType: hard
+
+"@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.2":
+  version: 3.0.2
+  resolution: "@msgpackr-extract/msgpackr-extract-win32-x64@npm:3.0.2"
+  conditions: os=win32 & cpu=x64
+  languageName: node
+  linkType: hard
+
 "@ndelangen/get-tarball@npm:^3.0.7":
   version: 3.0.9
   resolution: "@ndelangen/get-tarball@npm:3.0.9"
@@ -3500,6 +3551,32 @@ __metadata:
     pug:
       optional: true
   checksum: 10/73ab357f3f2a3083f4806c4bced247004b7e16d4cfad358bc3e9115562e1e9bcf22e950a8cb1a6733c7f1947d9506f7a5a1de1de9bfaefb69ca2dde2ad16fef9
+  languageName: node
+  linkType: hard
+
+"@nestjs/bull-shared@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "@nestjs/bull-shared@npm:10.1.1"
+  dependencies:
+    tslib: "npm:2.6.2"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
+  checksum: 10/d8eb7747e6e5d0e8cc7ebd1c9824fc6a99bdf5798ab3b192a60643a4fb6bf3c352d336990b52c7437a00265724e7fb1449a57aec6e9d82bb35bdb898e2fe10c1
+  languageName: node
+  linkType: hard
+
+"@nestjs/bullmq@npm:^10.1.1":
+  version: 10.1.1
+  resolution: "@nestjs/bullmq@npm:10.1.1"
+  dependencies:
+    "@nestjs/bull-shared": "npm:^10.1.1"
+    tslib: "npm:2.6.2"
+  peerDependencies:
+    "@nestjs/common": ^8.0.0 || ^9.0.0 || ^10.0.0
+    "@nestjs/core": ^8.0.0 || ^9.0.0 || ^10.0.0
+    bullmq: ^3.0.0 || ^4.0.0 || ^5.0.0
+  checksum: 10/92224ca6aa9bbfffa8c800871235791f8e03bbf8ce6be721a0ecc57183012f051de898608981550f94dfec0203c2edc67b856115210bb0b833e235cdf7ef51e1
   languageName: node
   linkType: hard
 
@@ -4041,6 +4118,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@packages/nest-google@workspace:packages/nest-google"
   dependencies:
+    "@googleapis/sheets": "npm:^5.0.5"
     "@nestjs/common": "npm:^10.0.0"
     "@nestjs/core": "npm:^10.0.0"
     "@packages/kit": "npm:^1.0.0"
@@ -5233,6 +5311,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@sites/admin-server@workspace:sites/admin-server"
   dependencies:
+    "@nestjs/bullmq": "npm:^10.1.1"
     "@nestjs/cli": "npm:^10.0.0"
     "@nestjs/common": "npm:^10.0.0"
     "@nestjs/config": "npm:^3.2.0"
@@ -5259,6 +5338,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": "npm:^6.0.0"
     "@typescript-eslint/parser": "npm:^6.0.0"
     bcryptjs: "npm:^2.4.3"
+    bullmq: "npm:^5.7.1"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.1"
     dayjs: "npm:^1.11.10"
@@ -9270,6 +9350,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"bullmq@npm:^5.7.1":
+  version: 5.7.1
+  resolution: "bullmq@npm:5.7.1"
+  dependencies:
+    cron-parser: "npm:^4.6.0"
+    ioredis: "npm:^5.3.2"
+    msgpackr: "npm:^1.10.1"
+    node-abort-controller: "npm:^3.1.1"
+    semver: "npm:^7.5.4"
+    tslib: "npm:^2.0.0"
+    uuid: "npm:^9.0.0"
+  checksum: 10/b8be8074a102602c35610fa39b080ff18a4743b57d0fbb540fb02da6b35cdfb9fb79cbb1df2a2dc5d382fd1b4d9a95c2ffbe50a6bfcea6ebc024a046e8f71c8d
+  languageName: node
+  linkType: hard
+
 "busboy@npm:1.6.0, busboy@npm:^1.0.0":
   version: 1.6.0
   resolution: "busboy@npm:1.6.0"
@@ -10243,6 +10338,15 @@ __metadata:
   version: 1.1.1
   resolution: "create-require@npm:1.1.1"
   checksum: 10/a9a1503d4390d8b59ad86f4607de7870b39cad43d929813599a23714831e81c520bddf61bcdd1f8e30f05fd3a2b71ae8538e946eb2786dc65c2bbc520f692eff
+  languageName: node
+  linkType: hard
+
+"cron-parser@npm:^4.6.0":
+  version: 4.9.0
+  resolution: "cron-parser@npm:4.9.0"
+  dependencies:
+    luxon: "npm:^3.2.1"
+  checksum: 10/ffca5e532a5ee0923412ee6e4c7f9bbceacc6ddf8810c16d3e9fb4fe5ec7e2de1b6896d7956f304bb6bc96b0ce37ad7e3935304179d52951c18d84107184faa7
   languageName: node
   linkType: hard
 
@@ -17287,6 +17391,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"luxon@npm:^3.2.1":
+  version: 3.4.4
+  resolution: "luxon@npm:3.4.4"
+  checksum: 10/c14164bc338987349075a08e63ea3ff902866735f7f5553a355b27be22667919765ff96fde4d3413d0e9a0edc4ff9e2e74ebcb8f86eae0ce8b14b27330d87d6e
+  languageName: node
+  linkType: hard
+
 "lz-string@npm:^1.5.0":
   version: 1.5.0
   resolution: "lz-string@npm:1.5.0"
@@ -18235,6 +18346,49 @@ __metadata:
   languageName: node
   linkType: hard
 
+"msgpackr-extract@npm:^3.0.2":
+  version: 3.0.2
+  resolution: "msgpackr-extract@npm:3.0.2"
+  dependencies:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64": "npm:3.0.2"
+    "@msgpackr-extract/msgpackr-extract-darwin-x64": "npm:3.0.2"
+    "@msgpackr-extract/msgpackr-extract-linux-arm": "npm:3.0.2"
+    "@msgpackr-extract/msgpackr-extract-linux-arm64": "npm:3.0.2"
+    "@msgpackr-extract/msgpackr-extract-linux-x64": "npm:3.0.2"
+    "@msgpackr-extract/msgpackr-extract-win32-x64": "npm:3.0.2"
+    node-gyp: "npm:latest"
+    node-gyp-build-optional-packages: "npm:5.0.7"
+  dependenciesMeta:
+    "@msgpackr-extract/msgpackr-extract-darwin-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-darwin-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-arm64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-linux-x64":
+      optional: true
+    "@msgpackr-extract/msgpackr-extract-win32-x64":
+      optional: true
+  bin:
+    download-msgpackr-prebuilds: bin/download-prebuilds.js
+  checksum: 10/c37ff5f098aea43ad441df32b810c603d84f2c775132e5919a20dacdbd003995cbead794c80e8d2f1d673539fac9b90c621842391a868d5055be857ae30763b9
+  languageName: node
+  linkType: hard
+
+"msgpackr@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "msgpackr@npm:1.10.1"
+  dependencies:
+    msgpackr-extract: "npm:^3.0.2"
+  dependenciesMeta:
+    msgpackr-extract:
+      optional: true
+  checksum: 10/9fc78c78435a773ed919720ab4f276f6781c6feac0e88233783d00deb64ef1c1caf75781f4a5c675bb535292bb9a67f2262ffc15b64cdc16b176b5220997d564
+  languageName: node
+  linkType: hard
+
 "multer@npm:1.4.4-lts.1":
   version: 1.4.4-lts.1
   resolution: "multer@npm:1.4.4-lts.1"
@@ -18430,7 +18584,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-abort-controller@npm:^3.0.1":
+"node-abort-controller@npm:^3.0.1, node-abort-controller@npm:^3.1.1":
   version: 3.1.1
   resolution: "node-abort-controller@npm:3.1.1"
   checksum: 10/0a2cdb7ec0aeaf3cb31e1ca0e192f5add48f1c5c9c9ed822129f9dddbd9432f69b7425982f94ce803c56a2104884530aa67cd57696e5774b2e5b8ec2f58de042
@@ -18489,6 +18643,17 @@ __metadata:
   version: 1.3.1
   resolution: "node-forge@npm:1.3.1"
   checksum: 10/05bab6868633bf9ad4c3b1dd50ec501c22ffd69f556cdf169a00998ca1d03e8107a6032ba013852f202035372021b845603aeccd7dfcb58cdb7430013b3daa8d
+  languageName: node
+  linkType: hard
+
+"node-gyp-build-optional-packages@npm:5.0.7":
+  version: 5.0.7
+  resolution: "node-gyp-build-optional-packages@npm:5.0.7"
+  bin:
+    node-gyp-build-optional-packages: bin.js
+    node-gyp-build-optional-packages-optional: optional.js
+    node-gyp-build-optional-packages-test: build-test.js
+  checksum: 10/f61780b83ee665d88a1b2d0f5375d3455fabed1af4a009fd4396ed0b19ed6ad2215d4adbc76bd6eea0aafde0c72990e2cee9c888eeb28d6da2c8e5f8bce3ca0f
   languageName: node
   linkType: hard
 

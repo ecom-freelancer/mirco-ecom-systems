@@ -1,7 +1,7 @@
 import { StyledModal } from 'modules/_shared/components';
 import React from 'react';
 import VariantForm from './VariantForm';
-import { IVariant } from '../types.ts/variant';
+import { IVariant } from '../types/variant';
 import { useVariants } from '../hooks/useVariants';
 
 export interface UpsertVariantModalProps {

@@ -15,6 +15,7 @@ export const ButtonIcon = styled(Box)<{
   display: inline-flex;
   justify-items: center;
   align-items: center;
+  text-align: center;
   :hover {
     background-color: ${({ theme }) => theme.colors.greyA100};
   }

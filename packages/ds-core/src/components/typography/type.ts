@@ -10,4 +10,6 @@ export interface TypographyProps {
   block?: boolean;
   transform?: 'capitalize' | 'uppercase' | 'lowercase' | 'none';
   whiteSpace?: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap';
+  maxLines?: number;
+  textOverflow?: 'clip' | 'ellipsis';
 }

@@ -7,9 +7,9 @@ import {
   UpsertVariantModal,
   ListProductSku,
   UpsertSkuModal,
-} from 'modules/product-detail';
+} from 'modules/product-detail/containers';
 import { useProductSkus, useVariants } from 'modules/product-detail/hooks';
-import { IVariant } from 'modules/product-detail/types.ts/variant';
+import { IVariant } from 'modules/product-detail/types/variant';
 import React from 'react';
 
 const ProductVariantPage: React.FC = () => {
@@ -40,7 +40,7 @@ const ProductVariantPage: React.FC = () => {
             extra={[
               <Button
                 key="add-sku"
-                type="link"
+                type="primary"
                 onClick={() => setOpenSkuModal(true)}
               >
                 Add SKU
@@ -56,8 +56,9 @@ const ProductVariantPage: React.FC = () => {
             extra={[
               <Button
                 key="add-variant"
-                type="link"
                 onClick={() => setOpenVariantModal(true)}
+                type="primary"
+                ghost
               >
                 Add Variant
               </Button>,

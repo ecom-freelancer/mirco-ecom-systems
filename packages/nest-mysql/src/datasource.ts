@@ -14,6 +14,8 @@ export const getDataSourceOption = (
   database: options.database,
   synchronize: false,
   logging: options.logging || false,
+  timezone: 'Z',
+  bigNumberStrings: false,
   entities: [...entities],
   migrations: [...options.migrations],
   namingStrategy: new SnakeNamingStrategy(),

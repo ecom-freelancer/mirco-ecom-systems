@@ -4,7 +4,7 @@ import { productDetailService } from '../product-detail-service';
 import { useProductContext } from './useProductContext';
 import { message } from 'antd';
 import useSWR from 'swr';
-import { IUpsertSkuFormType } from '../types.ts/product-skus';
+import { IUpsertSkuFormType } from '../types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
 
 export const useProductSkus = () => {

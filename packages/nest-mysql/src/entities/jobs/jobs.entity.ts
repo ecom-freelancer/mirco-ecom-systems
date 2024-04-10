@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, Index, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../base.entity';
 
 export enum JobAction {
@@ -10,6 +10,7 @@ export enum JbStatus {
   processing = 'processing',
   completed = 'completed',
   failed = 'failed',
+  canceled = 'canceled',
 }
 
 @Entity('jobs')
@@ -40,10 +41,12 @@ export class JobEntity extends BaseEntity {
 
   @Column({
     nullable: true,
-    unique: true,
     type: 'varchar',
   })
-  jobKey?: string;
+  @Index({
+    nullFiltered: true,
+  })
+  target?: string;
 
   @Column({
     nullable: true,
@@ -71,4 +74,16 @@ export class JobEntity extends BaseEntity {
     default: 0,
   })
   failedTask?: number;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  executedAt?: number;
+
+  @Column({
+    type: 'timestamp',
+    nullable: true,
+  })
+  completedAt?: number;
 }

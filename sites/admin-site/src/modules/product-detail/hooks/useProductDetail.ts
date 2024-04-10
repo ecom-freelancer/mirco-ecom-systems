@@ -3,7 +3,7 @@ import { productDetailService } from '../product-detail-service';
 import { useErrorHandler } from 'modules/_shared/hooks';
 import { message } from 'antd';
 import { useState } from 'react';
-import { IUpdateProductPayload } from '../types.ts';
+import { IUpdateProductPayload } from '../types/index.ts';
 
 export const useProductDetail = (id: string | number) => {
   const { handleActionError } = useErrorHandler();
