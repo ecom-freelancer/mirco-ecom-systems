@@ -3,6 +3,7 @@ import { Page } from '../../modules/_shared/components/Page.tsx';
 import { useState } from 'react';
 import { GetListProductParams } from '../../modules/products/types';
 import { useGetListProduct } from '../../modules/products/hooks/useGetListProduct.ts';
+import { ProductList } from '../../modules/products/components/product-list';
 
 export const ProductListPage = () => {
   const [params, setParams] = useState<GetListProductParams>({
@@ -23,7 +24,14 @@ export const ProductListPage = () => {
       ]}
       title={t('productList')}
     >
-      <h1>Hello</h1>
+      <ProductList
+        loading={loading}
+        products={products}
+        params={params}
+        setParams={setParams}
+        totalPage={totalPage}
+        totalRecord={totalRecord}
+      />
     </Page>
   );
 };

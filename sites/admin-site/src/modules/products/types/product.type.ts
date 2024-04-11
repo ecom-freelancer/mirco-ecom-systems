@@ -65,9 +65,11 @@ export interface GetListProductParams {
   productStatus?: ProductStatus[];
 }
 
+// I'm too lazy to redefine the interface :)
+export type IProductInfo = IProductInfoFormType;
+
 export interface GetListProductResponse {
   totalPage: number;
   totalRecord: number;
-  // I'm too lazy to redefine the interface :)
-  dataList: Array<IProductInfoFormType>;
+  dataList: Array<IProductInfo>;
 }
