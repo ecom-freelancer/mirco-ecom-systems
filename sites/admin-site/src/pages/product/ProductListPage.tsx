@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { GetListProductParams } from '../../modules/products/types';
 import { useGetListProduct } from '../../modules/products/hooks/useGetListProduct.ts';
 import { ProductList } from '../../modules/products/components/product-list';
+import { useCategories } from '../../modules/products';
 
 export const ProductListPage = () => {
   const [params, setParams] = useState<GetListProductParams>({
@@ -13,6 +14,7 @@ export const ProductListPage = () => {
 
   const { products, loading, totalPage, totalRecord } =
     useGetListProduct(params);
+  const { categories, loading: loadingCategories } = useCategories();
 
   return (
     <Page
@@ -25,12 +27,13 @@ export const ProductListPage = () => {
       title={t('productList')}
     >
       <ProductList
-        loading={loading}
+        loading={loading || loadingCategories}
         products={products}
         params={params}
         setParams={setParams}
         totalPage={totalPage}
         totalRecord={totalRecord}
+        categories={categories}
       />
     </Page>
   );

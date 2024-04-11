@@ -58,8 +58,8 @@ export type ICreateProductPayload = IProductInfoFormType;
 export interface GetListProductParams {
   page: number;
   pageSize: number;
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   categoryId?: number;
   searchText?: string;
   productStatus?: ProductStatus[];
