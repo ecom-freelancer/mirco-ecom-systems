@@ -5,6 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ProductSkuEntity } from '../products/product-skus.entity';
 
 @Entity('sku_inventories')
 export class SkuInventoriesEntity {
@@ -40,9 +41,9 @@ export class SkuInventoriesEntity {
   })
   soldQuantity: number;
 
-  @OneToOne(() => SkuInventoriesEntity)
+  @OneToOne(() => ProductSkuEntity)
   @JoinColumn({
     name: 'sku',
   })
-  skuInventory?: SkuInventoriesEntity;
+  productSku?: ProductSkuEntity;
 }
