@@ -13,6 +13,7 @@ import {
   Select,
   DatePicker,
   Button,
+  Tag,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { styled, Box } from '@packages/ds-core';
@@ -54,16 +55,35 @@ const ProductList: React.FC<ProductListProps> = ({
         dataIndex: 'slug',
       },
       { title: 'Brand', key: 'brand', dataIndex: 'brand' },
-      { title: 'Keywords', key: 'keywords', dataIndex: 'keywords' },
-      { title: 'Status', key: 'productStatus', dataIndex: 'productStatus' },
+      {
+        title: 'Keywords',
+        key: 'keywords',
+        dataIndex: 'keywords',
+        render: (_, product: IProductInfo) => (
+          <>
+            {product?.keywords?.map((item, index) => (
+              <Tag key={index}>{item}</Tag>
+            ))}
+          </>
+        ),
+      },
+      {
+        title: 'Status',
+        key: 'productStatus',
+        dataIndex: 'productStatus',
+        render: (_, product: IProductInfo) => {
+          const statusInfo = productStatuses.find(
+            (status) => status.value === product.productStatus,
+          ) as Option;
+          return <Tag color={statusInfo.color}>{statusInfo.value}</Tag>;
+        },
+      },
       {
         title: 'Action',
         key: 'action',
         render: (_, product: IProductInfo) => (
           <Space size="middle">
-            <Link to={`/products/${product.id}`}>
-              <a>Edit</a>
-            </Link>
+            <Link to={`/products/${product.id}`}>Detail</Link>
           </Space>
         ),
       },
@@ -144,7 +164,11 @@ const ProductList: React.FC<ProductListProps> = ({
             />
           </Col>
           <Col span={24} md={2}>
-            <Button type="primary" onClick={handleClickFilter}>
+            <Button
+              type="primary"
+              onClick={handleClickFilter}
+              loading={loading}
+            >
               Filter
             </Button>
           </Col>
@@ -164,11 +188,11 @@ const ProductList: React.FC<ProductListProps> = ({
             await onSearchProducts({ page: value });
           },
         }}
-        expandable={{
-          expandedRowRender: (record) => (
-            <p style={{ margin: 0 }}>{record.description}</p>
-          ),
-        }}
+        // expandable={{
+        //   expandedRowRender: (record) => (
+        //     <p style={{ margin: 0 }}>{record.description}</p>
+        //   ),
+        // }}
       />
     </>
   );
