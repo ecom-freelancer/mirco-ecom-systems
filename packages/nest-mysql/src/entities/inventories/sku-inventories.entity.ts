@@ -24,6 +24,22 @@ export class SkuInventoriesEntity {
   })
   totalVolume: number;
 
+  // I don't know we should config a job to auto update this value
+  // or let user config these by handed
+  @Column({
+    default: 0,
+    nullable: true,
+    type: 'int',
+  })
+  totalAvailable: number;
+
+  @Column({
+    default: 0,
+    nullable: true,
+    type: 'int',
+  })
+  soldQuantity: number;
+
   @OneToOne(() => SkuInventoriesEntity)
   @JoinColumn({
     name: 'sku',
