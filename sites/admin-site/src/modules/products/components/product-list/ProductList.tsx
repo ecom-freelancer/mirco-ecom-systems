@@ -16,10 +16,7 @@ import {
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { styled, Box } from '@packages/ds-core';
-import {
-  ProductStatus,
-  productStatuses,
-} from '../../../../configs/constants/product.ts';
+import { ProductStatus, productStatuses } from 'configs/constants/product.ts';
 import { Dayjs } from 'dayjs';
 
 export interface ProductListProps {
@@ -87,13 +84,21 @@ const ProductList: React.FC<ProductListProps> = ({
     });
   };
 
+  const handleKeywordChange = async (value: string) =>
+    await onSearchProducts({ searchText: value });
+
   return (
     <>
       <FilterWrapper>
         <SearchBarWrapper>
-          <Row>
+          <Row gutter={[16, 16]}>
             <Col span={24} md={8}>
-              <Input placeholder="Type to search by name, slug, brand..." />
+              <Input.Search
+                enterButton
+                onSearch={(value) => handleKeywordChange(value.trim())}
+                loading={loading}
+                placeholder="Search by name, slug, brand..."
+              />
             </Col>
           </Row>
         </SearchBarWrapper>
