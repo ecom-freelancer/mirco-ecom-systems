@@ -54,3 +54,22 @@ export interface IProductInfoFormType
 }
 
 export type ICreateProductPayload = IProductInfoFormType;
+
+export interface GetListProductParams {
+  page: number;
+  pageSize: number;
+  startDate?: string;
+  endDate?: string;
+  categoryId?: number;
+  searchText?: string;
+  productStatus?: ProductStatus[];
+}
+
+// I'm too lazy to redefine the interface :)
+export type IProductInfo = IProductInfoFormType;
+
+export interface GetListProductResponse {
+  totalPage: number;
+  totalRecord: number;
+  dataList: Array<IProductInfo>;
+}

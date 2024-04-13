@@ -15,6 +15,7 @@ import {
 import { UpsertProductDto } from '../dtos';
 import {
   DataSource,
+  In,
   IsNull,
   LessThanOrEqual,
   Like,
@@ -204,8 +205,15 @@ export class ProductService {
   }
 
   async getProductList(params: GetProductListParams) {
-    const { page, pageSize, endDate, startDate, searchText, categoryId } =
-      params;
+    const {
+      page,
+      pageSize,
+      endDate,
+      startDate,
+      searchText,
+      categoryId,
+      productStatus,
+    } = params;
     let condition: any = {};
     if (!!startDate) {
       condition.createdAt = MoreThanOrEqual(startDate);
@@ -217,6 +225,10 @@ export class ProductService {
 
     if (!!categoryId) {
       condition.categoryId = categoryId;
+    }
+
+    if (!!productStatus && productStatus.length > 0) {
+      condition.productStatus = In(productStatus);
     }
 
     const [productList, total] = await this.productRepository.findAndCount({

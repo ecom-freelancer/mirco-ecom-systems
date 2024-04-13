@@ -6,8 +6,8 @@ import React from 'react';
 import { MdOutlineDashboard, MdGridView } from 'react-icons/md';
 import { Outlet, Navigate } from 'react-router';
 
-const ListProductPage = React.lazy(
-  () => import('pages/product/ListProductPage'),
+const ProductListPage = React.lazy(
+  () => import('pages/product/ProductListPage.tsx'),
 );
 
 const CreateProductPage = React.lazy(
@@ -38,7 +38,7 @@ export const workspacesRoutes: IRoute[] = [
         path: routeKeys.products,
         index: true,
         label: t('productList'),
-        element: <ListProductPage />,
+        element: <ProductListPage />,
       },
       {
         path: routeKeys.createProduct,

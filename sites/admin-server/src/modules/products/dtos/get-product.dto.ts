@@ -7,6 +7,7 @@ import {
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
+import { ProductStatus } from '@packages/nest-mysql';
 
 export class GetProductListParams {
   @ApiPropertyOptional()
@@ -38,6 +39,11 @@ export class GetProductListParams {
   @IsNumber()
   @IsOptional()
   categoryId?: number;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsArray()
+  productStatus?: ProductStatus[];
 }
 
 export class GetProductListResponse {
@@ -90,7 +96,10 @@ export class ProductDto {
 
   @ApiProperty()
   @Expose()
-  productStatus: string;
+  productStatus: ProductStatus;
+
+  @ApiProperty()
+  description: string;
 
   @ApiProperty()
   @Expose()
