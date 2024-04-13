@@ -18,6 +18,7 @@ import { ProductSkuService } from './services/product-sku.service';
     ProductSkuService,
   ],
   controllers: [ProductController, ProductDetailController, CategoryController],
+  exports: [ProductSkuService],
 })
 export class ProductModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
