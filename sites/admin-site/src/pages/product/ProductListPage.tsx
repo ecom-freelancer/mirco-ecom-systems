@@ -12,9 +12,12 @@ export const ProductListPage = () => {
     pageSize: 10,
   });
 
-  const { products, loading, totalPage, totalRecord } =
-    useGetListProduct(params);
+  const { products, loading, totalRecord } = useGetListProduct(params);
   const { categories, loading: loadingCategories } = useCategories();
+
+  const onSearchProducts = async (payload?: Partial<GetListProductParams>) => {
+    setParams({ ...params, ...payload });
+  };
 
   return (
     <Page
@@ -29,11 +32,10 @@ export const ProductListPage = () => {
       <ProductList
         loading={loading || loadingCategories}
         products={products}
-        params={params}
-        setParams={setParams}
-        totalPage={totalPage}
         totalRecord={totalRecord}
         categories={categories}
+        onSearchProducts={onSearchProducts}
+        pageSize={params.pageSize}
       />
     </Page>
   );

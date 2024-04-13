@@ -1,6 +1,7 @@
 import { productService } from '../services';
 import { useEffect, useState } from 'react';
 import { GetListProductParams, IProductInfo } from '../types';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useGetListProduct = (params: GetListProductParams) => {
   const [loading, setLoading] = useState(false);
@@ -16,7 +17,8 @@ export const useGetListProduct = (params: GetListProductParams) => {
         setProducts(response.dataList);
         setTotalPage(response.totalPage);
         setTotalRecord(response.totalRecord);
-      } catch (_) {
+      } catch (e) {
+        handleActionError(e);
       } finally {
         setLoading(false);
       }

@@ -23,23 +23,21 @@ import {
 import { Dayjs } from 'dayjs';
 
 export interface ProductListProps {
-  params: GetListProductParams;
-  setParams: (payload: GetListProductParams) => void;
   products: IProductInfo[];
   loading: boolean;
-  totalPage: number;
   totalRecord: number;
   categories: IProductCategory[];
+  onSearchProducts: (params?: Partial<GetListProductParams>) => Promise<void>;
+  pageSize: number;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
-  params,
-  setParams,
   products,
   loading,
-  totalPage,
   totalRecord,
   categories,
+  onSearchProducts,
+  pageSize,
 }) => {
   const columns = useMemo(() => {
     return [
@@ -80,9 +78,8 @@ const ProductList: React.FC<ProductListProps> = ({
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
 
   // when filter is changed, should set back to page 1
-  const handleClickFilter = () => {
-    setParams({
-      ...params,
+  const handleClickFilter = async () => {
+    await onSearchProducts({
       categoryId: categoryId || undefined,
       productStatus: statuses,
       startDate: startDate?.format('YYYY-MM-DD') || undefined,
@@ -155,11 +152,11 @@ const ProductList: React.FC<ProductListProps> = ({
         rowKey="id"
         pagination={{
           defaultCurrent: 1,
-          pageSize: params.pageSize,
+          pageSize: pageSize,
           total: totalRecord,
           position: ['bottomCenter'],
-          onChange: (value) => {
-            setParams({ ...params, page: value });
+          onChange: async (value) => {
+            await onSearchProducts({ page: value });
           },
         }}
         expandable={{

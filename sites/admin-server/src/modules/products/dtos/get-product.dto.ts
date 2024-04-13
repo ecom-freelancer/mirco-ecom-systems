@@ -4,7 +4,6 @@ import {
   IsNumber,
   IsOptional,
   IsString,
-  ValidateNested,
 } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
@@ -44,7 +43,6 @@ export class GetProductListParams {
   @ApiPropertyOptional()
   @IsOptional()
   @IsArray()
-  @ValidateNested({ each: true })
   productStatus?: ProductStatus[];
 }
 
