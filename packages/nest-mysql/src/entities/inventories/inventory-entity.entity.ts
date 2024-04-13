@@ -10,6 +10,7 @@ import { SkuInventoriesEntity } from './sku-inventories.entity';
 
 export enum InventoryStatus {
   enable = 'enable',
+  disable = 'disable',
   draft = 'draft',
   sold = 'sold',
 }
@@ -19,17 +20,19 @@ export class InventoryEntityEntity extends BaseEntity {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
+  // The encoded value of card
   @Column({
     type: 'text',
   })
   barCode: string;
 
+  // The hashKey that auto-generated in Backend service
   @Column({
     nullable: true,
     default: '',
     type: 'varchar',
   })
-  hasKey: string;
+  hashKey: string;
 
   @Column({
     type: 'enum',

@@ -16,6 +16,8 @@ import { getGoogleConfigOptions } from './configs/google.config';
 import { getFacebookConfigOptions } from './configs/facebook.config';
 import { ProductModule } from './modules/products/product.module';
 import { FileModule } from './modules/files/file.module';
+import { SkuInventoryModule } from './modules/sku-inventory/sku-inventory.module';
+import { InventoryEntityModule } from './modules/inventory-entity/inventory-entity.module';
 
 @Module({
   imports: [
@@ -34,6 +36,8 @@ import { FileModule } from './modules/files/file.module';
     UserModule,
     ProductModule,
     FileModule,
+    SkuInventoryModule,
+    InventoryEntityModule,
   ],
   controllers: [],
 })

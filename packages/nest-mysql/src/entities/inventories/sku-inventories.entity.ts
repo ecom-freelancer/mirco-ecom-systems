@@ -5,6 +5,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { ProductSkuEntity } from '../products/product-skus.entity';
 
 @Entity('sku_inventories')
 export class SkuInventoriesEntity {
@@ -24,9 +25,25 @@ export class SkuInventoriesEntity {
   })
   totalVolume: number;
 
-  @OneToOne(() => SkuInventoriesEntity)
+  // I don't know we should config a job to auto update this value
+  // or let user config these by handed
+  @Column({
+    default: 0,
+    nullable: true,
+    type: 'int',
+  })
+  totalAvailable: number;
+
+  @Column({
+    default: 0,
+    nullable: true,
+    type: 'int',
+  })
+  soldQuantity: number;
+
+  @OneToOne(() => ProductSkuEntity)
   @JoinColumn({
     name: 'sku',
   })
-  skuInventory?: SkuInventoriesEntity;
+  productSku?: ProductSkuEntity;
 }
