@@ -7,6 +7,7 @@ import { InjectRepository, SkuInventoriesEntity } from '@packages/nest-mysql';
 import { Repository } from 'typeorm';
 import { CreateSkuInventoryDto } from './dto/create-sku-inventory.dto';
 import { ProductSkuService } from '../products/services/product-sku.service';
+import { UpdateSkuInventoryDto } from './dto/update-sku-inventory.dto';
 
 @Injectable()
 export class SkuInventoryService {
@@ -28,5 +29,18 @@ export class SkuInventoryService {
     }
 
     await this.skuInventoriesRepository.save(payload);
+  }
+
+  async updateSkuInventory(id: number, payload: UpdateSkuInventoryDto) {
+    const skuInventory = await this.skuInventoriesRepository.findOneBy({ id });
+
+    if (!skuInventory) {
+      throw new NotFoundException('Inventory SKU not found');
+    }
+
+    await this.skuInventoriesRepository.save({
+      ...skuInventory,
+      totalAvailable: payload.totalAvailable,
+    });
   }
 }
