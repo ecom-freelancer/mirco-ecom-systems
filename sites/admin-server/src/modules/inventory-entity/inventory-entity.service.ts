@@ -7,7 +7,13 @@ import {
   InventoryEntityEntity as InventoryEntity,
   SkuInventoriesEntity,
 } from '@packages/nest-mysql';
-import { DataSource, Repository } from 'typeorm';
+import {
+  DataSource,
+  In,
+  LessThanOrEqual,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import {
   generateSessionId,
@@ -18,6 +24,8 @@ import {
 } from '@packages/nest-helper';
 import { SkuInventoryService } from '../sku-inventory/sku-inventory.service';
 import { UpdateInventoryEntityDto } from './dtos/update-inventory-entity.dto';
+import { GetInventoryEntityListQuery } from './dtos/get-inventory-entity-list.dto';
+import { ProductSkuService } from '../products/services/product-sku.service';
 
 @Injectable()
 export class InventoryEntityService {
@@ -30,6 +38,7 @@ export class InventoryEntityService {
     private readonly inventoryEntityRepository: Repository<InventoryEntity>,
     private readonly configService: ConfigService,
     private readonly skuInventoryService: SkuInventoryService,
+    private readonly productSkuService: ProductSkuService,
   ) {
     const secretIV = this.configService.get('SECRET_FOUR');
     this.encIv = encodeIv(secretIV);
@@ -45,7 +54,7 @@ export class InventoryEntityService {
     try {
       const { barCode, status, skuInventoryId } = payload;
       const skuInventory =
-        await this.skuInventoryService.getSkuInventory(skuInventoryId);
+        await this.skuInventoryService.getSkuInventoryById(skuInventoryId);
 
       if (!skuInventory) {
         throw new NotFoundException('Inventory SKU not found');
@@ -81,6 +90,9 @@ export class InventoryEntityService {
   async getInventoryEntityById(id: number) {
     const inventoryEntity = await this.inventoryEntityRepository.findOne({
       where: { id },
+      relations: {
+        skuInventory: true,
+      },
     });
 
     if (!inventoryEntity) {
@@ -94,22 +106,97 @@ export class InventoryEntityService {
         inventoryEntity.hashKey,
         this.encIv,
       ),
+      sku: inventoryEntity.skuInventory.sku,
     };
   }
 
   async updateInventoryEntityStatus(
     id: number,
     payload: UpdateInventoryEntityDto,
-  ): Promise<InventoryEntity> {
-    const inventoryEntity = await this.inventoryEntityRepository.findOneBy({
-      id,
+  ) {
+    const inventoryEntity = await this.inventoryEntityRepository.findOne({
+      where: { id },
+      relations: {
+        skuInventory: true,
+      },
     });
     if (!inventoryEntity) {
       throw new NotFoundException('Inventory Entity not found');
     }
-    return await this.inventoryEntityRepository.save({
+
+    const updatedInventoryEntity = await this.inventoryEntityRepository.save({
       ...inventoryEntity,
       status: payload.status,
     });
+
+    return {
+      ...updatedInventoryEntity,
+      barCode: decryptData(
+        updatedInventoryEntity.barCode,
+        updatedInventoryEntity.hashKey,
+        this.encIv,
+      ),
+      sku: inventoryEntity.skuInventory.sku,
+    };
+  }
+
+  async getInventoryEntityList(query: GetInventoryEntityListQuery) {
+    const { sku, page, pageSize, status, startDate, endDate } = query;
+
+    let skuInventory = null;
+    if (!!sku) {
+      const existedSkuInventory =
+        (await this.productSkuService.isExistSku(sku)) &&
+        (await this.skuInventoryService.getSkuInventoryBySku(sku));
+
+      if (!existedSkuInventory) {
+        throw new NotFoundException('SKU Inventory not found');
+      }
+
+      skuInventory = existedSkuInventory;
+    }
+
+    let condition: any = {};
+    if (!!skuInventory) {
+      condition.skuInventoryId = skuInventory.id;
+    }
+
+    if (!!status && status.length > 0) {
+      condition.status = In(status);
+    }
+
+    if (!!startDate) {
+      condition.createdAt = MoreThanOrEqual(startDate);
+    }
+
+    if (!!endDate) {
+      condition.createdAt = LessThanOrEqual(endDate);
+    }
+
+    const [inventoryEntityList, total] =
+      await this.inventoryEntityRepository.findAndCount({
+        take: pageSize,
+        skip: (page - 1) * pageSize,
+        where: condition,
+        order: {
+          createdAt: 'DESC',
+        },
+        relations: {
+          skuInventory: true,
+        },
+      });
+
+    return {
+      dataList: inventoryEntityList.map((entity) => ({
+        ...entity,
+        barCode: decryptData(entity.barCode, entity.hashKey, this.encIv),
+        sku: entity.skuInventory.sku,
+      })),
+      totalRecord: total,
+      totalPage:
+        total % pageSize === 0
+          ? total / pageSize
+          : Math.floor(total / pageSize) + 1,
+    };
   }
 }

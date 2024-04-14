@@ -6,6 +6,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
 } from '@nestjs/common';
 import { Protected } from '../auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -17,6 +18,12 @@ import {
   UpdateInventoryEntityDto,
   UpdateInventoryEntityResponse,
 } from './dtos/update-inventory-entity.dto';
+import { ApiSuccessResponse } from '@packages/nest-helper';
+import {
+  GetInventoryEntityListQuery,
+  GetInventoryEntityListResponse,
+} from './dtos/get-inventory-entity-list.dto';
+import { InventoryEntityDto } from './dtos/inventory-entity.dto';
 
 @Protected()
 @ApiTags('Inventory Entity')
@@ -25,7 +32,29 @@ import {
 export class InventoryEntityController {
   constructor(private inventoryEntityService: InventoryEntityService) {}
 
+  @Get()
+  @ApiSuccessResponse({
+    status: 200,
+    type: GetInventoryEntityListResponse,
+  })
+  async getInventoryEntityList(
+    @Query() query: GetInventoryEntityListQuery,
+  ): Promise<GetInventoryEntityListResponse> {
+    const res = await this.inventoryEntityService.getInventoryEntityList(query);
+    return {
+      dataList: plainToInstance(InventoryEntityDto, res.dataList, {
+        excludeExtraneousValues: true,
+      }),
+      totalPage: res.totalPage,
+      totalRecord: res.totalRecord,
+    };
+  }
+
   @Post()
+  @ApiSuccessResponse({
+    status: 200,
+    type: null,
+  })
   async createInventoryEntity(
     @Body() payload: CreateInventoryEntityDto,
   ): Promise<void> {
@@ -33,6 +62,10 @@ export class InventoryEntityController {
   }
 
   @Put(':id/status')
+  @ApiSuccessResponse({
+    status: 201,
+    type: UpdateInventoryEntityResponse,
+  })
   async updateInventoryEntity(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateInventoryEntityDto,
@@ -49,6 +82,10 @@ export class InventoryEntityController {
   }
 
   @Get(':id')
+  @ApiSuccessResponse({
+    status: 200,
+    type: GetInventoryEntityDetailResponse,
+  })
   async getInventoryEntityDetail(
     @Param('id', ParseIntPipe) id: number,
   ): Promise<GetInventoryEntityDetailResponse> {

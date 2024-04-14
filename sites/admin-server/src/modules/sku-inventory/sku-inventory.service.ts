@@ -44,7 +44,11 @@ export class SkuInventoryService {
     });
   }
 
-  async getSkuInventory(id: number) {
+  async getSkuInventoryById(id: number) {
     return await this.skuInventoriesRepository.findOneBy({ id });
+  }
+
+  async getSkuInventoryBySku(sku: string) {
+    return await this.skuInventoriesRepository.findOneBy({ sku });
   }
 }

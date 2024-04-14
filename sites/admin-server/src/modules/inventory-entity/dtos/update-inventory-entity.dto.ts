@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
 import { InventoryStatus } from '@packages/nest-mysql';
-import { GetInventoryEntityDetailResponse } from './get-inventory-entity-detail.dto';
+import { InventoryEntityDto } from './inventory-entity.dto';
 
 export class UpdateInventoryEntityDto {
   @ApiProperty()
@@ -9,4 +9,4 @@ export class UpdateInventoryEntityDto {
   status: InventoryStatus;
 }
 
-export class UpdateInventoryEntityResponse extends GetInventoryEntityDetailResponse {}
+export class UpdateInventoryEntityResponse extends InventoryEntityDto {}
