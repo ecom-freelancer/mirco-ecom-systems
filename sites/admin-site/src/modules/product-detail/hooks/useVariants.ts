@@ -2,7 +2,7 @@ import { useErrorHandler } from 'modules/_shared/hooks';
 import { useState } from 'react';
 import { productDetailService } from '../product-detail-service';
 import { useProductContext } from './useProductContext';
-import { IVariant } from '../types.ts/variant';
+import { IVariant } from '../types/variant';
 import { message } from 'antd';
 import useSWR from 'swr';
 

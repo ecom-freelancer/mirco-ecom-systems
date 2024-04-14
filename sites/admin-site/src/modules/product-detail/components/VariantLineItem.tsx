@@ -1,5 +1,5 @@
 import React from 'react';
-import { IVariant } from '../types.ts/variant';
+import { IVariant } from '../types/variant';
 import { Box, Flex, Text, styled } from '@packages/ds-core';
 import { Col, Row, Tag } from 'antd';
 import { BiPencil, BiTrash } from 'react-icons/bi';

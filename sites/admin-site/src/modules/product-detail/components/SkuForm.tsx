@@ -1,11 +1,11 @@
 import { FormBuilder } from '@packages/react-form-builder';
 import React from 'react';
-import { IUpsertSkuFormType } from '../types.ts/product-skus';
+import { IUpsertSkuFormType } from '../types/product-skus';
 import { UploadImages } from 'modules/_shared/components';
 import { useServices } from 'modules/_shared/hooks';
 import { Box, Flex } from '@packages/ds-core';
 import { Button, Form, Tag, Tooltip } from 'antd';
-import { IVariant } from '../types.ts/variant';
+import { IVariant } from '../types/variant';
 import { useForm } from 'antd/es/form/Form';
 import { RiAiGenerate } from 'react-icons/ri';
 import { generateSku } from '../helpers/sku-helper';
