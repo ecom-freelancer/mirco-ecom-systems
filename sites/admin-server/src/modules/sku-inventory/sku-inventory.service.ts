@@ -3,11 +3,17 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { InjectRepository, SkuInventoriesEntity } from '@packages/nest-mysql';
-import { Repository } from 'typeorm';
+import {
+  InjectRepository,
+  InventoryEntityEntity as InventoryEntity,
+  InventoryStatus,
+  SkuInventoriesEntity,
+} from '@packages/nest-mysql';
+import { In, Repository } from 'typeorm';
 import { CreateSkuInventoryDto } from './dto/create-sku-inventory.dto';
 import { ProductSkuService } from '../products/services/product-sku.service';
 import { UpdateSkuInventoryDto } from './dto/update-sku-inventory.dto';
+import { GetSkuInventoryListQuery } from './dto/get-sku-inventory-list.dto';
 
 @Injectable()
 export class SkuInventoryService {
@@ -50,5 +56,42 @@ export class SkuInventoryService {
 
   async getSkuInventoryBySku(sku: string) {
     return await this.skuInventoriesRepository.findOneBy({ sku });
+  }
+
+  async getSkuInventoryList(query: GetSkuInventoryListQuery) {
+    const { productId } = query;
+    const condition: any = {};
+
+    if (!!productId) {
+      const skuList = (
+        await this.productSkuService.getAllSkusByProductId(productId)
+      ).map(({ sku }) => sku);
+
+      condition.sku = In(skuList);
+    }
+
+    return await this.skuInventoriesRepository.find({ where: condition });
+  }
+
+  async getSkuInventoryDetail(id: number) {
+    const skuInventory = await this.skuInventoriesRepository.findOne({
+      where: { id },
+      relations: {
+        inventoryEntities: true,
+      },
+    });
+
+    const countDetail: Record<InventoryStatus, number> = {
+      [InventoryStatus.draft]: 0,
+      [InventoryStatus.disable]: 0,
+      [InventoryStatus.enable]: 0,
+      [InventoryStatus.sold]: 0,
+    };
+
+    skuInventory.inventoryEntities.forEach((entity: InventoryEntity) => {
+      countDetail[entity.status] = countDetail[entity.status] + 1;
+    });
+
+    return { ...skuInventory, countDetail };
   }
 }

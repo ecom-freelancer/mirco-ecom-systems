@@ -131,7 +131,6 @@ export class ProductSkuService {
   }
 
   // get all skus of product
-
   async getAllSkusByProductId(productId: number) {
     return await this.skuRepository.find({
       where: { productId },
