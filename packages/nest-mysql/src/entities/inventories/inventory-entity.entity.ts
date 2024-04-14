@@ -47,9 +47,13 @@ export class InventoryEntityEntity extends BaseEntity {
   })
   skuInventoryId: number;
 
-  @ManyToOne(() => SkuInventoriesEntity, {
-    cascade: true,
-  })
+  @ManyToOne(
+    () => SkuInventoriesEntity,
+    (skuInventory) => skuInventory.inventoryEntities,
+    {
+      cascade: true,
+    },
+  )
   @JoinColumn({ name: 'sku_inventory_id' })
   skuInventory?: SkuInventoriesEntity;
 }
