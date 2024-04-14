@@ -6,7 +6,7 @@ import { useGetListProduct } from '../../modules/products/hooks/useGetListProduc
 import { ProductList } from '../../modules/products/components/product-list';
 import { useCategories } from '../../modules/products';
 
-export const ProductListPage = () => {
+const ProductListPage = () => {
   const [params, setParams] = useState<GetListProductParams>({
     page: 1,
     pageSize: 10,
@@ -40,3 +40,5 @@ export const ProductListPage = () => {
     </Page>
   );
 };
+
+export default ProductListPage;

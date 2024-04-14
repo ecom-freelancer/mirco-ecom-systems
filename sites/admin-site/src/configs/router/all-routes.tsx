@@ -26,8 +26,8 @@ export const workspacesRoutes: IRoute[] = [
         index: true,
         label: t('productList'),
         lazy: () =>
-          import('pages/product/ProductListPage.tsx').then((module) => ({
-            Component: module.ProductListPage,
+          import('pages/product/ProductListPage').then((module) => ({
+            Component: module.default,
           })),
       },
       {

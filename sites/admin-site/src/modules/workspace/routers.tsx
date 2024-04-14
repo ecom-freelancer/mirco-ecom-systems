@@ -7,7 +7,7 @@ import { MdOutlineDashboard, MdGridView } from 'react-icons/md';
 import { Outlet, Navigate } from 'react-router';
 
 const ProductListPage = React.lazy(
-  () => import('pages/product/ProductListPage.tsx'),
+  () => import('pages/product/ProductListPage'),
 );
 
 const CreateProductPage = React.lazy(
