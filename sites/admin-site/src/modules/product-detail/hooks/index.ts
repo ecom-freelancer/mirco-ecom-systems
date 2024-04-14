@@ -4,3 +4,4 @@ export * from './useProductDetail';
 export * from './useProductSkus';
 export * from './useSkuInventoryList';
 export * from './useSkuInventoryDetail';
+export * from './useInventoryEntityList.ts';

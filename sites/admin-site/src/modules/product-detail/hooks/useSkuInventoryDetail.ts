@@ -6,7 +6,6 @@ export const useSkuInventoryDetail = (sku: string | undefined) => {
     [sku, 'sku-inventory-detail'],
     ([sku]) => {
       if (!sku) return null;
-
       return productDetailService.getSkuInventoryDetail(sku);
     },
     {

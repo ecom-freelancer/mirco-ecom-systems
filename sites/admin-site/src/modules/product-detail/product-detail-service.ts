@@ -8,7 +8,8 @@ import {
 import { IGetListSkusResponse, IUpsertSkuFormType } from './types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
 import {
-  IGetSkuInventoryListResponse,
+  IGetInventoryEntityListParams,
+  IGetInventoryEntityListResponse,
   ISkuInventoryDetail,
   ISkuInventoryDto,
 } from './types';
@@ -72,6 +73,14 @@ export const productDetailService = {
   getSkuInventoryDetail: async (sku: string): Promise<ISkuInventoryDetail> => {
     return appApi
       .get<ISkuInventoryDetail>(`/sku-inventory/${sku}`)
+      .then((res) => res.data);
+  },
+
+  getInventoryEntityList: async (
+    params: IGetInventoryEntityListParams,
+  ): Promise<IGetInventoryEntityListResponse> => {
+    return appApi
+      .get(`/inventory-entity`, { params: params })
       .then((res) => res.data);
   },
 };
