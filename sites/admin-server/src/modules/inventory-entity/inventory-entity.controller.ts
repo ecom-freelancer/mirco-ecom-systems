@@ -5,6 +5,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
 } from '@nestjs/common';
 import { Protected } from '../auth/auth.guard';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
@@ -31,7 +32,7 @@ export class InventoryEntityController {
     return await this.inventoryEntityService.createInventoryEntity(payload);
   }
 
-  @Post(':id/status')
+  @Put(':id/status')
   async updateInventoryEntity(
     @Param('id', ParseIntPipe) id: number,
     @Body() payload: UpdateInventoryEntityDto,

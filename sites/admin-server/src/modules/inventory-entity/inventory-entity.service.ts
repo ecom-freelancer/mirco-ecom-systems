@@ -1,5 +1,4 @@
 // https://blog.anjalbam.com.np/how-to-encrypt-and-decrypt-data-in-nodejs-using-aes-256
-
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateInventoryEntityDto } from './dtos/create-inventory-entity.dto';
 import {
@@ -9,13 +8,16 @@ import {
   SkuInventoriesEntity,
 } from '@packages/nest-mysql';
 import { DataSource, Repository } from 'typeorm';
-import * as crypto from 'node:crypto';
 import { ConfigService } from '@nestjs/config';
-import { generateSessionId } from '@packages/nest-helper';
+import {
+  generateSessionId,
+  encryptData,
+  decryptData,
+  encodeKey,
+  encodeIv,
+} from '@packages/nest-helper';
 import { SkuInventoryService } from '../sku-inventory/sku-inventory.service';
 import { UpdateInventoryEntityDto } from './dtos/update-inventory-entity.dto';
-
-const encMethod = 'aes-256-cbc';
 
 @Injectable()
 export class InventoryEntityService {
@@ -29,12 +31,8 @@ export class InventoryEntityService {
     private readonly configService: ConfigService,
     private readonly skuInventoryService: SkuInventoryService,
   ) {
-    const secretIV = this.configService.get('FOUR');
-    this.encIv = crypto
-      .createHash('sha512')
-      .update(secretIV)
-      .digest('hex')
-      .substring(0, 16);
+    const secretIV = this.configService.get('SECRET_FOUR');
+    this.encIv = encodeIv(secretIV);
   }
 
   async createInventoryEntity(
@@ -55,15 +53,11 @@ export class InventoryEntityService {
 
       // I use the sessionId to generate a unique key, don't mind it :)
       const secretKey = generateSessionId();
-      const hashKey = crypto
-        .createHash('sha512')
-        .update(secretKey)
-        .digest('hex')
-        .substring(0, 32);
+      const hashKey = encodeKey(secretKey);
 
       // Save entity to DB
       await queryRunner.manager.save(InventoryEntity, {
-        barCode: this.encryptData(barCode, hashKey, this.encIv),
+        barCode: encryptData(barCode, hashKey, this.encIv),
         hashKey,
         status,
         skuInventoryId,
@@ -95,7 +89,7 @@ export class InventoryEntityService {
 
     return {
       ...inventoryEntity,
-      barCode: this.decryptData(
+      barCode: decryptData(
         inventoryEntity.barCode,
         inventoryEntity.hashKey,
         this.encIv,
@@ -117,20 +111,5 @@ export class InventoryEntityService {
       ...inventoryEntity,
       status: payload.status,
     });
-  }
-
-  encryptData(data: string, key: string, encIv: string) {
-    const cipher = crypto.createCipheriv(encMethod, key, encIv);
-    const encrypted = cipher.update(data, 'utf8', 'hex') + cipher.final('hex');
-    return Buffer.from(encrypted).toString('base64');
-  }
-
-  decryptData(encryptedData: string, key: string, encIv: string) {
-    const buff = Buffer.from(encryptedData, 'base64');
-    encryptedData = buff.toString('utf-8');
-    const decipher = crypto.createDecipheriv(encMethod, key, encIv);
-    return (
-      decipher.update(encryptedData, 'hex', 'utf8') + decipher.final('utf8')
-    );
   }
 }
