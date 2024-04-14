@@ -2,10 +2,12 @@ import {
   Column,
   Entity,
   JoinColumn,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProductSkuEntity } from '../products/product-skus.entity';
+import { InventoryEntityEntity } from './inventory-entity.entity';
 
 @Entity('sku_inventories')
 export class SkuInventoriesEntity {
@@ -46,4 +48,10 @@ export class SkuInventoriesEntity {
     name: 'sku',
   })
   productSku?: ProductSkuEntity;
+
+  @OneToMany(
+    () => InventoryEntityEntity,
+    (inventoryEntity) => inventoryEntity.skuInventory,
+  )
+  inventoryEntities: InventoryEntityEntity[];
 }
