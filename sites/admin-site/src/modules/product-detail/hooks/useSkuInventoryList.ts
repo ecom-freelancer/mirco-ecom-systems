@@ -5,7 +5,7 @@ import { productDetailService } from '../product-detail-service.ts';
 
 export const useSkuInventory = () => {
   const { product } = useProductContext();
-  const [loading, setLoading] = useState<boolean>(false);
+  const [actionLoading, setLoading] = useState<boolean>(false);
 
   const { data, isLoading, mutate } = useSWR(
     [product.id, 'sku-inventory'],
@@ -22,7 +22,8 @@ export const useSkuInventory = () => {
   return {
     skuInventoryList: data,
     refresh: mutate,
-    loading: isLoading || loading,
-    setLoading: setLoading,
+    loading: isLoading,
+    actionLoading,
+    setLoading,
   };
 };

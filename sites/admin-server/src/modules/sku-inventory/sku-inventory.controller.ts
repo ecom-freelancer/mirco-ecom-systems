@@ -64,7 +64,7 @@ export class SkuInventoryController {
     type: GetSkuInventoryDetailResponse,
   })
   async getSkuInventoryDetail(
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id') id: string,
   ): Promise<GetSkuInventoryDetailResponse> {
     const res = await this.skuInventoryService.getSkuInventoryDetail(id);
     return plainToInstance(GetSkuInventoryDetailResponse, res, {
