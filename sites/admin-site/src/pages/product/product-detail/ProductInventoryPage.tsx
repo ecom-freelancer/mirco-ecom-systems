@@ -1,14 +1,12 @@
 import React from 'react';
-import { useSkuInventory } from '../../../modules/product-detail/hooks/useSkuInventory.ts';
+import { useProductSkus } from '../../../modules/product-detail/hooks';
+import ProductSkuInventoryList from '../../../modules/product-detail/components/ProductSkuInventoryList.tsx';
 
-export interface ProductInventoryPageProps {
-  className?: string;
-}
+export interface ProductInventoryPageProps {}
 
 const ProductInventoryPage: React.FC<ProductInventoryPageProps> = () => {
-  const { skuInventoryList } = useSkuInventory();
-  console.log(skuInventoryList);
-  return <div>ProductInventoryPage</div>;
+  const { productSkus } = useProductSkus();
+  return <ProductSkuInventoryList productSkus={productSkus} />;
 };
 
 export default ProductInventoryPage;

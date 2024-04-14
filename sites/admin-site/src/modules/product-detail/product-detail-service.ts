@@ -7,7 +7,11 @@ import {
 } from './types/variant';
 import { IGetListSkusResponse, IUpsertSkuFormType } from './types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
-import { IGetSkuInventoryListResponse } from './types';
+import {
+  IGetSkuInventoryListResponse,
+  ISkuInventoryDetail,
+  ISkuInventoryDto,
+} from './types';
 
 export const productDetailService = {
   getProductDetail: async (id: ID) => {
@@ -57,11 +61,17 @@ export const productDetailService = {
       .then((res) => res.data);
   },
 
-  getAllSkuInventory: async (productId: ID) => {
+  getAllSkuInventory: async (productId: ID): Promise<ISkuInventoryDto[]> => {
     return appApi
-      .get<IGetSkuInventoryListResponse>(`/sku-inventory`, {
+      .get<ISkuInventoryDto[]>(`/sku-inventory`, {
         params: { productId },
       })
+      .then((res) => res.data);
+  },
+
+  getSkuInventoryDetail: async (sku: string): Promise<ISkuInventoryDetail> => {
+    return appApi
+      .get<ISkuInventoryDetail>(`/sku-inventory/${sku}`)
       .then((res) => res.data);
   },
 };

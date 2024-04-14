@@ -3,7 +3,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import { productDetailService } from '../product-detail-service.ts';
 
-export const useSkuInventory = () => {
+export const useSkuInventoryList = () => {
   const { product } = useProductContext();
   const [actionLoading, setLoading] = useState<boolean>(false);
 
