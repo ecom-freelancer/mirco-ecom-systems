@@ -43,4 +43,12 @@ export class SkuInventoryService {
       totalAvailable: payload.totalAvailable,
     });
   }
+
+  async getSkuInventoryById(id: number) {
+    return await this.skuInventoriesRepository.findOneBy({ id });
+  }
+
+  async getSkuInventoryBySku(sku: string) {
+    return await this.skuInventoriesRepository.findOneBy({ sku });
+  }
 }
