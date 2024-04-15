@@ -1,16 +1,16 @@
 import React, { useMemo, useState } from 'react';
 import { Box, styled } from '@packages/ds-core';
 import { Col, Row, Select, Table, Tag } from 'antd';
-import { IProductSku } from '../types/product-skus.ts';
+import { IProductSku } from '../types/product-skus';
 import { useInventoryEntityList, useSkuInventoryDetail } from '../hooks';
 import { IGetInventoryEntityListParams, IInventoryEntity } from '../types';
-import { inventoryStatuses } from 'configs/constants/inventory.ts';
+import { inventoryStatuses } from 'configs/constants/inventory';
 
 interface ProductInventoryListProps {
   productSkus: IProductSku[];
 }
 
-const ProductInventoryList: React.FC<ProductInventoryListProps> = ({
+export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   productSkus,
 }) => {
   const columns = useMemo(() => {
@@ -33,7 +33,7 @@ const ProductInventoryList: React.FC<ProductInventoryListProps> = ({
           const statusInfo = inventoryStatuses.find(
             (status) => status.value === entity.status,
           ) as Option;
-          return <Tag color={statusInfo.color}>{statusInfo.value}</Tag>;
+          return <Tag color={statusInfo.color}>{entity.status}</Tag>;
         },
       },
     ];
@@ -109,5 +109,3 @@ const Wrapper = styled(Box)`
 const FilterWrapper = styled(Box)`
   margin-bottom: ${({ theme }) => theme.spaces.s32};
 `;
-
-export default ProductInventoryList;

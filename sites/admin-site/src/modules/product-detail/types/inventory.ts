@@ -1,5 +1,5 @@
 // From get list
-import { InventoryStatus } from '@packages/nest-mysql';
+import { InventoryStatus } from 'configs/constants/inventory';
 
 export interface ISkuInventoryDto {
   id: number;

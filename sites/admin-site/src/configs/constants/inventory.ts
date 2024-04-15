@@ -1,5 +1,11 @@
 import { t } from 'i18next';
-import { InventoryStatus } from '@packages/nest-mysql';
+
+export enum InventoryStatus {
+  draft = 'draft',
+  disable = 'disable',
+  enable = 'enable',
+  sold = 'sold',
+}
 
 export const inventoryStatuses: Option[] = [
   {
