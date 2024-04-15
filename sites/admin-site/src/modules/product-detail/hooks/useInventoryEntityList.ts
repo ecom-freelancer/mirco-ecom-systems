@@ -1,33 +1,44 @@
-import { IGetInventoryEntityListParams } from '../types';
-import useSWR from 'swr';
+import { IGetInventoryEntityListParams, IInventoryEntity } from '../types';
 import { productDetailService } from '../product-detail-service.ts';
+import { useEffect, useState } from 'react';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useInventoryEntityList = (
-  sku: string | undefined,
   params: IGetInventoryEntityListParams,
 ) => {
-  const { data, isLoading, mutate } = useSWR(
-    [sku, 'inventory-entity-list'],
-    ([sku]) => {
-      if (!sku)
-        return {
-          dataList: [],
-          totalPage: 0,
-          totalRecord: 0,
-        };
+  const [loading, setLoading] = useState(false);
+  const [inventoryEntityList, setInventoryEntityList] = useState<
+    IInventoryEntity[]
+  >([]);
+  const [totalRecord, setTotalRecord] = useState<number>(0);
 
-      return productDetailService.getInventoryEntityList({ ...params, sku });
-    },
-    {
-      revalidateOnMount: true,
-    },
-  );
+  useEffect(() => {
+    const fetchInventoryEntityList = async () => {
+      try {
+        if (!params.sku) {
+          setInventoryEntityList([]);
+          setTotalRecord(0);
+        }
+
+        setLoading(true);
+        const response = await productDetailService.getInventoryEntityList(
+          params,
+        );
+        setInventoryEntityList(response.dataList);
+        setTotalRecord(response.totalRecord);
+      } catch (e) {
+        handleActionError(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchInventoryEntityList().then();
+  }, [params]);
 
   return {
-    inventoryEntityList: data?.dataList || [],
-    totalPage: data?.totalPage || 0,
-    totalRecord: data?.totalRecord || 0,
-    isLoading,
-    refresh: mutate,
+    loading,
+    inventoryEntityList,
+    totalRecord,
   };
 };

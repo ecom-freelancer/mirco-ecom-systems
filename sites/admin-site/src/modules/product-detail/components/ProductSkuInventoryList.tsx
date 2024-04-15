@@ -1,17 +1,40 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import { Box, styled } from '@packages/ds-core';
 import { Col, Row, Select, Table, Tag } from 'antd';
 import { IProductSku } from '../types/product-skus';
-import { useInventoryEntityList, useSkuInventoryDetail } from '../hooks';
-import { IGetInventoryEntityListParams, IInventoryEntity } from '../types';
-import { inventoryStatuses } from 'configs/constants/inventory';
+import {
+  IGetInventoryEntityListParams,
+  IInventoryEntity,
+  ISkuInventoryDetail,
+} from '../types';
+import {
+  InventoryStatus,
+  inventoryStatuses,
+} from 'configs/constants/inventory';
+import dayjs from 'dayjs';
 
 interface ProductInventoryListProps {
+  loading: boolean;
+  pageSize: number;
+  totalRecord: number;
   productSkus: IProductSku[];
+  skuInventoryDetail: ISkuInventoryDetail | null | undefined;
+  selectedSku: string;
+  inventoryEntityList: IInventoryEntity[];
+  onSearchInventoryEntity: (
+    params: Partial<IGetInventoryEntityListParams>,
+  ) => void;
 }
 
 export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
+  loading,
+  pageSize,
+  totalRecord,
   productSkus,
+  skuInventoryDetail,
+  selectedSku,
+  inventoryEntityList,
+  onSearchInventoryEntity,
 }) => {
   const columns = useMemo(() => {
     return [
@@ -29,40 +52,23 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
         title: 'Status',
         key: 'status',
         dataIndex: 'status',
-        render: (_, entity: IInventoryEntity) => {
+        render: (value: InventoryStatus) => {
           const statusInfo = inventoryStatuses.find(
-            (status) => status.value === entity.status,
+            (status) => status.value === value,
           ) as Option;
-          return <Tag color={statusInfo.color}>{entity.status}</Tag>;
+          return <Tag color={statusInfo.color}>{value}</Tag>;
         },
+      },
+      {
+        title: 'Created Date',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
+        render: (value: Date) => (
+          <span>{dayjs(value).locale('vi').format('DD-MM-YYYY HH:mm:ss')}</span>
+        ),
       },
     ];
   }, []);
-
-  const [selectedSku, setSelectedSku] = useState<string>();
-  const [params, setParams] = useState<Partial<IGetInventoryEntityListParams>>({
-    page: 1,
-    pageSize: 10,
-  });
-  const [pageSize, setPageSize] = useState<number>(10);
-
-  const {
-    skuInventoryDetail,
-    isLoading: isLoadingSkuInventory,
-    refresh,
-  } = useSkuInventoryDetail(selectedSku);
-
-  const {
-    inventoryEntityList,
-    totalRecord,
-    isLoading: isLoadingInventoryEntityList,
-  } = useInventoryEntityList(selectedSku, params);
-
-  const onSearchInventoryEntity = (
-    payload: Partial<IGetInventoryEntityListParams>,
-  ) => {
-    setParams(payload);
-  };
 
   return (
     <Wrapper>
@@ -76,7 +82,9 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
                 label: e.name,
                 value: e.sku,
               }))}
-              onChange={setSelectedSku}
+              onChange={(value: string) => {
+                onSearchInventoryEntity({ sku: value, page: 1 });
+              }}
               allowClear
               style={{ width: '100%' }}
             />
@@ -84,17 +92,17 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
         </Row>
       </FilterWrapper>
       <Table
-        loading={isLoadingSkuInventory || isLoadingInventoryEntityList}
+        loading={loading}
         columns={columns}
         dataSource={inventoryEntityList}
         rowKey="id"
         pagination={{
           defaultCurrent: 1,
-          pageSize: params.pageSize,
+          pageSize: pageSize,
           total: totalRecord,
           position: ['bottomCenter'],
-          onChange: async (value) => {
-            await onSearchInventoryEntity({ page: value });
+          onChange: (value) => {
+            onSearchInventoryEntity({ page: value });
           },
         }}
       />
