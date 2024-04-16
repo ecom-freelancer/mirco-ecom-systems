@@ -1,4 +1,3 @@
-export * from './useInventoryEntityList';
 export * from './useProductContext';
 export * from './useProductDetail';
 export * from './useProductSkus';

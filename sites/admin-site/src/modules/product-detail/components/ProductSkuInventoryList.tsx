@@ -1,6 +1,6 @@
-import React, { useMemo } from 'react';
-import { Box, styled } from '@packages/ds-core';
-import { Col, Row, Select, Table, Tag } from 'antd';
+import React, { useMemo, useState } from 'react';
+import { Box, Heading, styled } from '@packages/ds-core';
+import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
 import { IProductSku } from '../types/product-skus';
 import {
   IGetInventoryEntityListParams,
@@ -11,7 +11,7 @@ import {
   InventoryStatus,
   inventoryStatuses,
 } from 'configs/constants/inventory';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface ProductInventoryListProps {
   loading: boolean;
@@ -36,6 +36,21 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   inventoryEntityList,
   onSearchInventoryEntity,
 }) => {
+  const [statuses, setStatuses] = useState<InventoryStatus[]>([]);
+  const [startDate, setStartDate] = useState<Dayjs | null>(null);
+  const [endDate, setEndDate] = useState<Dayjs | null>(null);
+
+  const handleClickFilter = () => {
+    onSearchInventoryEntity({
+      page: 1,
+      pageSize,
+      sku: selectedSku,
+      status: statuses,
+      startDate: startDate?.format('YYYY-MM-DD') || undefined,
+      endDate: endDate?.format('YYYY-MM-DD') || undefined,
+    });
+  };
+
   const columns = useMemo(() => {
     return [
       {
@@ -59,6 +74,7 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
           return <Tag color={statusInfo.color}>{value}</Tag>;
         },
       },
+      { title: 'SKU', key: 'sku', dataIndex: 'sku' },
       {
         title: 'Created Date',
         key: 'createdAt',
@@ -73,23 +89,111 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   return (
     <Wrapper>
       <FilterWrapper>
+        <SearchBarWrapper>
+          <Row gutter={[16, 16]}>
+            <Col span={24} md={8}>
+              <Select
+                placeholder="Choose a sku"
+                value={selectedSku}
+                options={(productSkus || []).map((e) => ({
+                  label: `${e.name} - SKU: ${e.sku}`,
+                  value: e.sku,
+                }))}
+                onChange={(value: string) => {
+                  onSearchInventoryEntity({ sku: value, page: 1 });
+                }}
+                allowClear
+                style={{ width: '100%' }}
+              />
+            </Col>
+          </Row>
+        </SearchBarWrapper>
         <Row gutter={[16, 16]}>
-          <Col span={24} md={8}>
+          <Col span={24} md={4}>
             <Select
-              placeholder="Choose a sku"
-              value={selectedSku}
-              options={(productSkus || []).map((e) => ({
-                label: e.name,
-                value: e.sku,
-              }))}
-              onChange={(value: string) => {
-                onSearchInventoryEntity({ sku: value, page: 1 });
-              }}
-              allowClear
+              value={statuses}
+              placeholder="Select status"
+              mode="tags"
               style={{ width: '100%' }}
+              options={inventoryStatuses}
+              allowClear
+              onChange={setStatuses}
             />
           </Col>
+          <Col span={24} md={4}>
+            <DatePicker
+              placeholder="Created date from"
+              style={{ width: '100%' }}
+              value={startDate}
+              onChange={setStartDate}
+            />
+          </Col>
+          <Col span={24} md={4}>
+            <DatePicker
+              placeholder="Created date to"
+              style={{ width: '100%' }}
+              value={endDate}
+              onChange={setEndDate}
+            />
+          </Col>
+          <Col span={24} md={4}>
+            <Button
+              type="primary"
+              onClick={handleClickFilter}
+              loading={loading}
+            >
+              Filter
+            </Button>
+          </Col>
         </Row>
+        {!!skuInventoryDetail && (
+          <CountWrapper gutter={[16, 16]}>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox>
+                <span>Available</span>
+                <Heading type="h3">{skuInventoryDetail.totalAvailable}</Heading>
+              </CountNumberBox>
+            </Col>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox>
+                <span>Volume</span>
+                <Heading type="h3">{skuInventoryDetail.totalVolume}</Heading>
+              </CountNumberBox>
+            </Col>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox color="#c97521">
+                <span>Draft</span>
+                <Heading type="h3">
+                  {skuInventoryDetail.countDetail.draft}
+                </Heading>
+              </CountNumberBox>
+            </Col>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox color="#fc3f48">
+                <span>Disable</span>
+                <Heading type="h3">
+                  {skuInventoryDetail.countDetail.disable}
+                </Heading>
+              </CountNumberBox>
+            </Col>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox color="#000cf8">
+                <span>Enable</span>
+                <Heading type="h3">
+                  {skuInventoryDetail.countDetail.enable}
+                </Heading>
+              </CountNumberBox>
+            </Col>
+            <Col span={12} sm={6} md={2}>
+              <CountNumberBox color="#cdcdcd">
+                <span>Sold</span>
+                <Heading type="h3">
+                  {skuInventoryDetail.countDetail.sold}
+                </Heading>
+              </CountNumberBox>
+            </Col>
+          </CountWrapper>
+        )}
       </FilterWrapper>
       <Table
         loading={loading}
@@ -115,5 +219,27 @@ const Wrapper = styled(Box)`
 `;
 
 const FilterWrapper = styled(Box)`
-  margin-bottom: ${({ theme }) => theme.spaces.s32};
+  margin-bottom: ${({ theme }) => theme.spaces.s8};
 `;
+
+const SearchBarWrapper = styled(Box)`
+  margin-bottom: ${({ theme }) => theme.spaces.s8};
+`;
+
+const CountWrapper = styled(Row)`
+  margin-top: ${({ theme }) => theme.spaces.s16};
+  margin-bottom: ${({ theme }) => theme.spaces.s16};
+`;
+
+const CountNumberBox = styled(Box)(
+  ({ color }) => `
+  background-color: white;
+  border-radius: ${({ theme }) => theme.radius.r16};
+  display: flex;
+  flex-direction: column;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  color: ${color ? color : 'black'}
+`,
+);

@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import {
-  useInventoryEntityList,
   useProductSkus,
   useSkuInventoryDetail,
 } from 'modules/product-detail/hooks';
-import { ProductSkuInventoryList } from 'modules/product-detail/components/ProductSkuInventoryList.tsx';
+
+import useInventoryEntityList from 'modules/product-detail/hooks/useInventoryEntityList.ts';
+import { ProductSkuInventoryList } from 'modules/product-detail/components/ProductSkuInventoryList';
 import { IGetInventoryEntityListParams } from '../../../modules/product-detail/types';
 
 const ProductInventoryPage: React.FC = () => {
@@ -39,7 +40,7 @@ const ProductInventoryPage: React.FC = () => {
       pageSize={params.pageSize || 0}
       totalRecord={totalRecord}
       productSkus={productSkus || []}
-      selectedSku={params.sku || ''}
+      selectedSku={params.sku || null}
       skuInventoryDetail={skuInventoryDetail}
       inventoryEntityList={inventoryEntityList || []}
       onSearchInventoryEntity={onSearchInventoryEntity}

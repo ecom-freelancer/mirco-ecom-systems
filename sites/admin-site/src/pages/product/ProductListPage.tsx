@@ -15,7 +15,7 @@ const ProductListPage = () => {
   const { products, loading, totalRecord } = useGetListProduct(params);
   const { categories, loading: loadingCategories } = useCategories();
 
-  const onSearchProducts = async (payload?: Partial<GetListProductParams>) => {
+  const onSearchProducts = (payload?: Partial<GetListProductParams>) => {
     setParams({ ...params, ...payload });
   };
 

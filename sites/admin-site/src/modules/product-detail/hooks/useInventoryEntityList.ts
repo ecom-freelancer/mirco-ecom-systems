@@ -3,9 +3,7 @@ import { productDetailService } from '../product-detail-service.ts';
 import { useEffect, useState } from 'react';
 import { handleActionError } from '../../_shared/helper.ts';
 
-export const useInventoryEntityList = (
-  params: IGetInventoryEntityListParams,
-) => {
+const useInventoryEntityList = (params: IGetInventoryEntityListParams) => {
   const [loading, setLoading] = useState(false);
   const [inventoryEntityList, setInventoryEntityList] = useState<
     IInventoryEntity[]
@@ -42,3 +40,5 @@ export const useInventoryEntityList = (
     totalRecord,
   };
 };
+
+export default useInventoryEntityList;

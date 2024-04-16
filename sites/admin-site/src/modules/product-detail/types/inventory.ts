@@ -20,6 +20,8 @@ export interface IGetInventoryEntityListParams {
   page?: number;
   pageSize?: number;
   status?: InventoryStatus[];
+  startDate?: string;
+  endDate?: string;
 }
 
 export interface IInventoryEntity {
