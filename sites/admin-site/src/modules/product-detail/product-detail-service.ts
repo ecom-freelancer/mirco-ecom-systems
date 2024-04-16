@@ -4,12 +4,15 @@ import { IProductInfoFormType } from 'modules/products/types';
 import {
   IGetListVariantsResponse,
   IUpsertVariantPayload,
-} from './types.ts/variant';
-import {
-  IGetListSkusResponse,
-  IUpsertSkuFormType,
-} from './types.ts/product-skus';
+} from './types/variant';
+import { IGetListSkusResponse, IUpsertSkuFormType } from './types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
+import {
+  IGetInventoryEntityListParams,
+  IGetInventoryEntityListResponse,
+  ISkuInventoryDetail,
+  ISkuInventoryDto,
+} from './types';
 
 export const productDetailService = {
   getProductDetail: async (id: ID) => {
@@ -56,6 +59,28 @@ export const productDetailService = {
   updateSkuSeo: async (productId: ID, sku: ID, seoInfo: ISeoInfo) => {
     return appApi
       .post(`/products/${productId}/skus/${sku}/seo`, seoInfo)
+      .then((res) => res.data);
+  },
+
+  getAllSkuInventory: async (productId: ID): Promise<ISkuInventoryDto[]> => {
+    return appApi
+      .get<ISkuInventoryDto[]>(`/sku-inventory`, {
+        params: { productId },
+      })
+      .then((res) => res.data);
+  },
+
+  getSkuInventoryDetail: async (sku: string): Promise<ISkuInventoryDetail> => {
+    return appApi
+      .get<ISkuInventoryDetail>(`/sku-inventory/${sku}`)
+      .then((res) => res.data);
+  },
+
+  getInventoryEntityList: async (
+    params: IGetInventoryEntityListParams,
+  ): Promise<IGetInventoryEntityListResponse> => {
+    return appApi
+      .get(`/inventory-entity`, { params: params })
       .then((res) => res.data);
   },
 };

@@ -25,7 +25,7 @@ export interface ProductListProps {
   loading: boolean;
   totalRecord: number;
   categories: IProductCategory[];
-  onSearchProducts: (params?: Partial<GetListProductParams>) => Promise<void>;
+  onSearchProducts: (params?: Partial<GetListProductParams>) => void;
   pageSize: number;
 }
 
@@ -96,7 +96,9 @@ const ProductList: React.FC<ProductListProps> = ({
 
   // when filter is changed, should set back to page 1
   const handleClickFilter = async () => {
-    await onSearchProducts({
+    onSearchProducts({
+      page: 1,
+      pageSize,
       categoryId: categoryId || undefined,
       productStatus: statuses,
       startDate: startDate?.format('YYYY-MM-DD') || undefined,
@@ -188,24 +190,17 @@ const ProductList: React.FC<ProductListProps> = ({
             await onSearchProducts({ page: value });
           },
         }}
-        // expandable={{
-        //   expandedRowRender: (record) => (
-        //     <p style={{ margin: 0 }}>{record.description}</p>
-        //   ),
-        // }}
       />
     </>
   );
 };
 
 const FilterWrapper = styled(Box)`
-  margin-top: ${({ theme }) => theme.spaces.s32};
-  margin-bottom: ${({ theme }) => theme.spaces.s32};
+  margin-bottom: ${({ theme }) => theme.spaces.s8};
 `;
 
 const SearchBarWrapper = styled(Box)`
-  margin-top: ${({ theme }) => theme.spaces.s32};
-  margin-bottom: ${({ theme }) => theme.spaces.s32};
+  margin-bottom: ${({ theme }) => theme.spaces.s8};
 `;
 
 export default ProductList;

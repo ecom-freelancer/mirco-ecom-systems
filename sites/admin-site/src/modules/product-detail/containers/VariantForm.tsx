@@ -1,6 +1,6 @@
 import { FormBuilder } from '@packages/react-form-builder';
 import { useProductContext } from '../hooks/useProductContext';
-import { IVariant, IVariantOption } from '../types.ts/variant';
+import { IVariant, IVariantOption } from '../types/variant';
 import { Box, Flex } from '@packages/ds-core';
 import { Button, Form } from 'antd';
 import { useForm } from 'antd/es/form/Form';

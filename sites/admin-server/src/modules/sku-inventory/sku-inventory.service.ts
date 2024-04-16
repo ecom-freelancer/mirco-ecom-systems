@@ -73,9 +73,10 @@ export class SkuInventoryService {
     return await this.skuInventoriesRepository.find({ where: condition });
   }
 
-  async getSkuInventoryDetail(id: number) {
+  // get by id or sku
+  async getSkuInventoryDetail(id: string) {
     const skuInventory = await this.skuInventoriesRepository.findOne({
-      where: { id },
+      where: [{ id: parseInt(id as string) }, { sku: id }],
       relations: {
         inventoryEntities: true,
       },

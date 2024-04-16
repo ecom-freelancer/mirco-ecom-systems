@@ -1,8 +1,8 @@
 import { StyledModal } from 'modules/_shared/components';
 import React from 'react';
 import { SkuForm } from '../components';
-import { IVariant } from '../types.ts/variant';
-import { IUpsertSkuFormType } from '../types.ts/product-skus';
+import { IVariant } from '../types/variant';
+import { IUpsertSkuFormType } from '../types/product-skus';
 import { useVariants } from '../hooks';
 
 export interface UpsertSkuModalProps {

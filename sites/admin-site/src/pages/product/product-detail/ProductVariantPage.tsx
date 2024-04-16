@@ -9,7 +9,7 @@ import {
   UpsertSkuModal,
 } from 'modules/product-detail';
 import { useProductSkus, useVariants } from 'modules/product-detail/hooks';
-import { IVariant } from 'modules/product-detail/types.ts/variant';
+import { IVariant } from 'modules/product-detail/types/variant';
 import React from 'react';
 
 const ProductVariantPage: React.FC = () => {

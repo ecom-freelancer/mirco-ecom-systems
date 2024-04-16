@@ -1,5 +1,5 @@
 import React from 'react';
-import { IProductSku } from '../types.ts/product-skus';
+import { IProductSku } from '../types/product-skus';
 import { Switch, Table } from 'antd';
 import { ButtonIcon } from 'modules/_shared/components';
 import { BiPencil } from 'react-icons/bi';
