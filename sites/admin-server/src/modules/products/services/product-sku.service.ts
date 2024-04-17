@@ -9,6 +9,7 @@ import {
   ProductAttributeGroupEntity,
   ProductSkuEntity,
   SeoInfoEntity,
+  SkuInventoriesEntity,
 } from '@packages/nest-mysql';
 import { DataSource, IsNull, Not, Repository } from 'typeorm';
 import { UpsertSKUDto } from '../dtos/upsert-sku.dto';
@@ -82,6 +83,18 @@ export class ProductSkuService {
             sku: payload.sku,
           },
         );
+      }
+
+      // Create sku inventory (if not have)
+      const skuInventory = await queryRunner.manager
+        .getRepository(SkuInventoriesEntity)
+        .findOne({ where: { sku: payload.sku } });
+
+      if (!skuInventory) {
+        await queryRunner.manager.save(SkuInventoriesEntity, {
+          sku: payload.sku,
+          totalVolume: 0,
+        });
       }
 
       await queryRunner.commitTransaction();
