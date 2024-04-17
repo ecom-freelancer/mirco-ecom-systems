@@ -234,7 +234,7 @@ const CountWrapper = styled(Row)`
 const CountNumberBox = styled(Box)(
   ({ color }) => `
   background-color: white;
-  border-radius: ${({ theme }) => theme.radius.r16};
+  border-radius: 16px;
   display: flex;
   flex-direction: column;
   aspect-ratio: 1;

@@ -6,7 +6,7 @@ import {
 
 import useInventoryEntityList from 'modules/product-detail/hooks/useInventoryEntityList.ts';
 import { ProductSkuInventoryList } from 'modules/product-detail/components/ProductSkuInventoryList';
-import { IGetInventoryEntityListParams } from '../../../modules/product-detail/types';
+import { IGetInventoryEntityListParams } from 'modules/product-detail/types';
 
 const ProductInventoryPage: React.FC = () => {
   const [params, setParams] = useState<IGetInventoryEntityListParams>({

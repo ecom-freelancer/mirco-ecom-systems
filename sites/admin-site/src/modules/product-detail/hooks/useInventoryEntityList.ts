@@ -16,6 +16,7 @@ const useInventoryEntityList = (params: IGetInventoryEntityListParams) => {
         if (!params.sku) {
           setInventoryEntityList([]);
           setTotalRecord(0);
+          return;
         }
 
         setLoading(true);
