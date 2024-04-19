@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { productService } from '../services';
 import { ICreateProductPayload } from '../types';
-import { useErrorHandler } from 'modules/_shared/hooks';
 import { message } from 'antd';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useProductAction = () => {
   const [loading, setLoading] = useState(false);
-  const { handleActionError } = useErrorHandler();
 
   const createProduct = async (
     payload: ICreateProductPayload,

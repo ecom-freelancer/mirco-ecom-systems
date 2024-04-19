@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { useErrorHandler } from '../../_shared/hooks';
 import { IUpsertCategoryFormValues, IReorderCategoryPayload } from '../types';
 import { categoryService } from '../services';
 import { message } from 'antd';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useUpsertCategory = () => {
   const [loading, setLoading] = useState(false);
-  const { handleActionError } = useErrorHandler();
 
   const upsertCategory = async (payload: IUpsertCategoryFormValues) => {
     try {

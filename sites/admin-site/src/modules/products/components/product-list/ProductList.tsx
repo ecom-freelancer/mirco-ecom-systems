@@ -34,6 +34,10 @@ export interface ProductListProps {
   categories: IProductCategory[];
   onSearchProducts: (params?: Partial<GetListProductParams>) => void;
   pageSize: number;
+  onBatchUpdateProductStatus: (
+    ids: number[],
+    status: ProductStatus,
+  ) => Promise<void>;
 }
 
 const WarningContent = () => (
@@ -52,6 +56,7 @@ const ProductList: React.FC<ProductListProps> = ({
   categories,
   onSearchProducts,
   pageSize,
+  onBatchUpdateProductStatus,
 }) => {
   const columns = useMemo(() => {
     return [
@@ -109,7 +114,7 @@ const ProductList: React.FC<ProductListProps> = ({
   const [statuses, setStatuses] = useState<ProductStatus[]>([]);
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
 
   // when filter is changed, should set back to page 1
   const handleClickFilter = async () => {
@@ -125,6 +130,13 @@ const ProductList: React.FC<ProductListProps> = ({
 
   const handleKeywordChange = (value: string) =>
     onSearchProducts({ searchText: value });
+
+  const handleClickStatusButton = async (status: ProductStatus) => {
+    await onBatchUpdateProductStatus(selectedRowKeys, status);
+    setSelectedRowKeys([]);
+    // trigger reload product list
+    onSearchProducts({});
+  };
 
   return (
     <>
@@ -200,16 +212,34 @@ const ProductList: React.FC<ProductListProps> = ({
               <Col span={24}>
                 <BatchUpdateStatusButtonGroups display="flex">
                   <Popover title="Set to draft?" content={WarningContent}>
-                    <Button icon={<EditOutlined />} type="default">
+                    <Button
+                      icon={<EditOutlined />}
+                      type="default"
+                      onClick={() =>
+                        handleClickStatusButton(ProductStatus.draft)
+                      }
+                    >
                       Set to draft
                     </Button>
                   </Popover>
                   <Popover title="Set hidden?" content={WarningContent}>
-                    <Button icon={<StopOutlined />} danger>
+                    <Button
+                      icon={<StopOutlined />}
+                      danger
+                      onClick={() =>
+                        handleClickStatusButton(ProductStatus.hide)
+                      }
+                    >
                       Set hidden
                     </Button>
                   </Popover>
-                  <Button icon={<CheckOutlined />} type="primary">
+                  <Button
+                    icon={<CheckOutlined />}
+                    type="primary"
+                    onClick={() =>
+                      handleClickStatusButton(ProductStatus.published)
+                    }
+                  >
                     Set published
                   </Button>
                 </BatchUpdateStatusButtonGroups>

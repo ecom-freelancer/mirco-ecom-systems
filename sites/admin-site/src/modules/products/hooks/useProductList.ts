@@ -1,9 +1,13 @@
 import { productService } from '../services';
 import { useEffect, useState } from 'react';
 import { GetListProductParams, IProductInfo } from '../types';
-import { handleActionError } from '../../_shared/helper.ts';
+import {
+  handleActionError,
+  handleActionSuccess,
+} from '../../_shared/helper.ts';
+import { ProductStatus } from 'configs/constants/product.ts';
 
-export const useGetListProduct = (params: GetListProductParams) => {
+export const useProductList = (params: GetListProductParams) => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<IProductInfo[]>([]);
   const [totalPage, setTotalPage] = useState(1);
@@ -27,10 +31,26 @@ export const useGetListProduct = (params: GetListProductParams) => {
     fetchProduct().then();
   }, [params]);
 
+  const batchUpdateProductStatus = async (
+    ids: number[],
+    status: ProductStatus,
+  ) => {
+    try {
+      setLoading(true);
+      await productService.batchUpdateProductStatus(ids, status);
+      handleActionSuccess('Update product status successfully!');
+    } catch (e) {
+      handleActionError(e);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     loading,
     products,
     totalPage,
     totalRecord,
+    batchUpdateProductStatus,
   };
 };
