@@ -14,5 +14,11 @@ export function stringToSlug(str: string) {
 
 export const handleActionError = (e: IApiError | every, msg?: string) => {
   console.log(e);
-  message.error(msg || e.message || 'Has error occurred, please try again');
+  message
+    .error(msg || e.message || 'Has error occurred, please try again')
+    .then();
+};
+
+export const handleActionSuccess = (msg?: string) => {
+  message.success(msg || 'Success').then();
 };

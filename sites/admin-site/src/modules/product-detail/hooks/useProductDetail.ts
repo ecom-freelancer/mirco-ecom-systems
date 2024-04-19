@@ -1,12 +1,11 @@
 import useSWR from 'swr';
 import { productDetailService } from '../product-detail-service';
-import { useErrorHandler } from 'modules/_shared/hooks';
 import { message } from 'antd';
 import { useState } from 'react';
 import { IUpdateProductPayload } from '../types';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useProductDetail = (id: string | number) => {
-  const { handleActionError } = useErrorHandler();
   const [actionLoading, setLoading] = useState(false);
   const {
     data: product,

@@ -130,7 +130,14 @@ export class CategoryService {
   }
 
   async reorderCategory(payload: ReorderCategoryDto) {
-    // Should we check id must exists, order must be unique?
-    return await this.categoryRepository.save(payload.newOrder);
+    // Should we check id must exist, order must be unique?
+    try {
+      return await this.categoryRepository.save(payload.newOrder);
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException(
+        'An error occurred while reordering category',
+      );
+    }
   }
 }

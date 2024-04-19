@@ -14,11 +14,18 @@ import {
   DatePicker,
   Button,
   Tag,
+  Popover,
 } from 'antd';
 import { Link } from 'react-router-dom';
 import { styled, Box } from '@packages/ds-core';
 import { ProductStatus, productStatuses } from 'configs/constants/product.ts';
 import { Dayjs } from 'dayjs';
+import {
+  EditOutlined,
+  StopOutlined,
+  CheckOutlined,
+  ExclamationCircleTwoTone,
+} from '@ant-design/icons';
 
 export interface ProductListProps {
   products: IProductInfo[];
@@ -27,7 +34,20 @@ export interface ProductListProps {
   categories: IProductCategory[];
   onSearchProducts: (params?: Partial<GetListProductParams>) => void;
   pageSize: number;
+  onBatchUpdateProductStatus: (
+    ids: number[],
+    status: ProductStatus,
+  ) => Promise<void>;
 }
+
+const WarningContent = () => (
+  <>
+    <ExclamationCircleTwoTone twoToneColor="#ff9966" />
+    <span style={{ marginLeft: '4px' }}>
+      Your customers cannot view these products after this action
+    </span>
+  </>
+);
 
 const ProductList: React.FC<ProductListProps> = ({
   products,
@@ -36,6 +56,7 @@ const ProductList: React.FC<ProductListProps> = ({
   categories,
   onSearchProducts,
   pageSize,
+  onBatchUpdateProductStatus,
 }) => {
   const columns = useMemo(() => {
     return [
@@ -93,6 +114,7 @@ const ProductList: React.FC<ProductListProps> = ({
   const [statuses, setStatuses] = useState<ProductStatus[]>([]);
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
 
   // when filter is changed, should set back to page 1
   const handleClickFilter = async () => {
@@ -106,13 +128,20 @@ const ProductList: React.FC<ProductListProps> = ({
     });
   };
 
-  const handleKeywordChange = async (value: string) =>
-    await onSearchProducts({ searchText: value });
+  const handleKeywordChange = (value: string) =>
+    onSearchProducts({ searchText: value });
+
+  const handleClickStatusButton = async (status: ProductStatus) => {
+    await onBatchUpdateProductStatus(selectedRowKeys, status);
+    setSelectedRowKeys([]);
+    // trigger reload product list
+    onSearchProducts({});
+  };
 
   return (
     <>
       <FilterWrapper>
-        <SearchBarWrapper>
+        <ActionRow>
           <Row gutter={[16, 16]}>
             <Col span={24} md={8}>
               <Input.Search
@@ -123,58 +152,101 @@ const ProductList: React.FC<ProductListProps> = ({
               />
             </Col>
           </Row>
-        </SearchBarWrapper>
-        <Row gutter={[16, 16]}>
-          <Col span={24} md={4}>
-            <Select
-              value={categoryId}
-              placeholder="Filter by category"
-              style={{ width: '100%' }}
-              options={categories.map((category) => ({
-                label: category.name,
-                value: category.id,
-              }))}
-              onChange={setCategoryId}
-              allowClear
-            />
-          </Col>
-          <Col span={24} md={4}>
-            <Select
-              value={statuses}
-              placeholder="Filter by product status"
-              mode="tags"
-              style={{ width: '100%' }}
-              options={productStatuses}
-              allowClear
-              onChange={setStatuses}
-            />
-          </Col>
-          <Col span={24} md={4}>
-            <DatePicker
-              placeholder="Filter by created date start"
-              style={{ width: '100%' }}
-              value={startDate}
-              onChange={setStartDate}
-            />
-          </Col>
-          <Col span={24} md={4}>
-            <DatePicker
-              placeholder="Filter by created date end"
-              style={{ width: '100%' }}
-              value={endDate}
-              onChange={setEndDate}
-            />
-          </Col>
-          <Col span={24} md={2}>
-            <Button
-              type="primary"
-              onClick={handleClickFilter}
-              loading={loading}
-            >
-              Filter
-            </Button>
-          </Col>
-        </Row>
+        </ActionRow>
+        <ActionRow>
+          <Row gutter={[16, 16]}>
+            <Col span={24} md={4}>
+              <Select
+                value={categoryId}
+                placeholder="Category"
+                style={{ width: '100%' }}
+                options={categories.map((category) => ({
+                  label: category.name,
+                  value: category.id,
+                }))}
+                onChange={setCategoryId}
+                allowClear
+              />
+            </Col>
+            <Col span={24} md={4}>
+              <Select
+                value={statuses}
+                placeholder="Product status"
+                mode="tags"
+                style={{ width: '100%' }}
+                options={productStatuses}
+                allowClear
+                onChange={setStatuses}
+              />
+            </Col>
+            <Col span={24} md={4}>
+              <DatePicker
+                placeholder="Created date from"
+                style={{ width: '100%' }}
+                value={startDate}
+                onChange={setStartDate}
+              />
+            </Col>
+            <Col span={24} md={4}>
+              <DatePicker
+                placeholder="Created date to"
+                style={{ width: '100%' }}
+                value={endDate}
+                onChange={setEndDate}
+              />
+            </Col>
+            <Col span={24} md={2}>
+              <Button
+                type="primary"
+                onClick={handleClickFilter}
+                loading={loading}
+              >
+                Filter
+              </Button>
+            </Col>
+          </Row>
+        </ActionRow>
+        {selectedRowKeys.length > 0 && (
+          <ActionRow>
+            <Row gutter={[16, 16]}>
+              <Col span={24}>
+                <BatchUpdateStatusButtonGroups display="flex">
+                  <Popover title="Set to draft?" content={WarningContent}>
+                    <Button
+                      icon={<EditOutlined />}
+                      type="default"
+                      onClick={() =>
+                        handleClickStatusButton(ProductStatus.draft)
+                      }
+                    >
+                      Set to draft
+                    </Button>
+                  </Popover>
+                  <Popover title="Set hidden?" content={WarningContent}>
+                    <Button
+                      icon={<StopOutlined />}
+                      danger
+                      onClick={() =>
+                        handleClickStatusButton(ProductStatus.hide)
+                      }
+                    >
+                      Set hidden
+                    </Button>
+                  </Popover>
+                  <Button
+                    icon={<CheckOutlined />}
+                    type="primary"
+                    onClick={() =>
+                      handleClickStatusButton(ProductStatus.published)
+                    }
+                  >
+                    Set published
+                  </Button>
+                </BatchUpdateStatusButtonGroups>
+              </Col>
+            </Row>
+          </ActionRow>
+        )}
       </FilterWrapper>
       <Table
         loading={loading}
@@ -190,6 +262,12 @@ const ProductList: React.FC<ProductListProps> = ({
             await onSearchProducts({ page: value });
           },
         }}
+        rowSelection={{
+          selectedRowKeys: selectedRowKeys,
+          onChange: (newSelectedRowKeys: React.Key[]) => {
+            setSelectedRowKeys(newSelectedRowKeys);
+          },
+        }}
       />
     </>
   );
@@ -199,8 +277,12 @@ const FilterWrapper = styled(Box)`
   margin-bottom: ${({ theme }) => theme.spaces.s8};
 `;
 
-const SearchBarWrapper = styled(Box)`
+const ActionRow = styled(Box)`
   margin-bottom: ${({ theme }) => theme.spaces.s8};
+`;
+
+const BatchUpdateStatusButtonGroups = styled(Box)`
+  column-gap: ${({ theme }) => theme.spaces.s8};
 `;
 
 export default ProductList;

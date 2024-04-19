@@ -24,6 +24,7 @@ import {
   Repository,
 } from 'typeorm';
 import { GetProductListParams } from '../dtos/get-product.dto';
+import { BatchUpdateStatusDto } from '../dtos/batch-update-status.dto';
 
 @Injectable()
 export class ProductService {
@@ -254,5 +255,17 @@ export class ProductService {
           ? total / pageSize
           : Math.floor(total / pageSize) + 1,
     };
+  }
+
+  async batchUpdateProductStatus(payload: BatchUpdateStatusDto) {
+    try {
+      const { ids, status } = payload;
+      return await this.productRepository.save(
+        ids.map((id) => ({ id, productStatus: status })),
+      );
+    } catch (error) {
+      console.error(error);
+      throw new BadRequestException('An error occurred');
+    }
   }
 }

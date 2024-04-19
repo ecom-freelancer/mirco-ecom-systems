@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { Page } from 'modules/_shared/components/Page.tsx';
 import { useState } from 'react';
 import { GetListProductParams } from 'modules/products/types';
-import { useGetListProduct } from 'modules/products/hooks/useGetListProduct.ts';
+import { useProductList } from 'modules/products/hooks/useProductList.ts';
 import { ProductList } from 'modules/products/components/product-list';
 import { useCategories } from 'modules/products';
 
@@ -12,7 +12,8 @@ const ProductListPage = () => {
     pageSize: 10,
   });
 
-  const { products, loading, totalRecord } = useGetListProduct(params);
+  const { products, loading, totalRecord, batchUpdateProductStatus } =
+    useProductList(params);
   const { categories, loading: loadingCategories } = useCategories();
 
   const onSearchProducts = (payload?: Partial<GetListProductParams>) => {
@@ -36,6 +37,7 @@ const ProductListPage = () => {
         categories={categories}
         onSearchProducts={onSearchProducts}
         pageSize={params.pageSize}
+        onBatchUpdateProductStatus={batchUpdateProductStatus}
       />
     </Page>
   );

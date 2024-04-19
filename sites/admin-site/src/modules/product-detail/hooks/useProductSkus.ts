@@ -1,4 +1,3 @@
-import { useErrorHandler } from 'modules/_shared/hooks';
 import { useState } from 'react';
 import { productDetailService } from '../product-detail-service';
 import { useProductContext } from './useProductContext';
@@ -6,9 +5,9 @@ import { message } from 'antd';
 import useSWR from 'swr';
 import { IUpsertSkuFormType } from '../types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useProductSkus = () => {
-  const { handleActionError } = useErrorHandler();
   const { product } = useProductContext();
   const [actionLoading, setLoading] = useState<boolean>(false);
 
