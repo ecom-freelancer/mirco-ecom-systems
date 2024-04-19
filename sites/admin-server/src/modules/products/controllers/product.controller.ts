@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { CreateProductDto } from '../dtos';
 import { ProductService } from '../services/product.service';
@@ -9,6 +9,8 @@ import {
   ProductDto,
 } from '../dtos/get-product.dto';
 import { plainToInstance } from 'class-transformer';
+import { ApiSuccessResponse } from '@packages/nest-helper';
+import { BatchUpdateStatusDto } from '../dtos/batch-update-status.dto';
 
 @Protected()
 @Controller('products')
@@ -18,6 +20,10 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
+  @ApiSuccessResponse({
+    status: 200,
+    type: GetProductListResponse,
+  })
   async getProductList(
     @Query() query: GetProductListParams,
   ): Promise<GetProductListResponse> {
@@ -36,5 +42,10 @@ export class ProductController {
   @Post()
   async createProduct(@Body() body: CreateProductDto) {
     return await this.productService.upsertProduct(body);
+  }
+
+  @Put('/status')
+  async batchUpdateStatus(@Body() body: BatchUpdateStatusDto) {
+    return await this.productService.batchUpdateProductStatus(body);
   }
 }
