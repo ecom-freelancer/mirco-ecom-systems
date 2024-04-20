@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Heading, styled } from '@packages/ds-core';
-import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
+import { Button, Col, DatePicker, Row, Select, Space, Table, Tag } from 'antd';
 import { IProductSku } from '../types/product-skus';
 import {
   IGetInventoryEntityListParams,
@@ -74,13 +74,20 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
           return <Tag color={statusInfo.color}>{value}</Tag>;
         },
       },
-      { title: 'SKU', key: 'sku', dataIndex: 'sku' },
+      // { title: 'SKU', key: 'sku', dataIndex: 'sku' },
       {
         title: 'Created Date',
         key: 'createdAt',
         dataIndex: 'createdAt',
         render: (value: Date) => (
           <span>{dayjs(value).locale('vi').format('DD-MM-YYYY HH:mm:ss')}</span>
+        ),
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (_, inventoryEntity: IInventoryEntity) => (
+          <Button type="link">Detail</Button>
         ),
       },
     ];

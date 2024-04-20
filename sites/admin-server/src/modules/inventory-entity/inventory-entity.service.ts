@@ -1,10 +1,15 @@
 // https://blog.anjalbam.com.np/how-to-encrypt-and-decrypt-data-in-nodejs-using-aes-256
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateInventoryEntityDto } from './dtos/create-inventory-entity.dto';
 import {
   InjectDataSource,
   InjectRepository,
   InventoryEntityEntity as InventoryEntity,
+  InventoryStatus,
   SkuInventoriesEntity,
 } from '@packages/nest-mysql';
 import {
@@ -16,11 +21,11 @@ import {
 } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import {
-  generateSessionId,
-  encryptData,
   decryptData,
-  encodeKey,
   encodeIv,
+  encodeKey,
+  encryptData,
+  generateSessionId,
 } from '@packages/nest-helper';
 import { SkuInventoryService } from '../sku-inventory/sku-inventory.service';
 import { UpdateInventoryEntityDto } from './dtos/update-inventory-entity.dto';
@@ -110,10 +115,7 @@ export class InventoryEntityService {
     };
   }
 
-  async updateInventoryEntityStatus(
-    id: number,
-    payload: UpdateInventoryEntityDto,
-  ) {
+  async updateInventoryEntity(id: number, payload: UpdateInventoryEntityDto) {
     const inventoryEntity = await this.inventoryEntityRepository.findOne({
       where: { id },
       relations: {
@@ -124,6 +126,11 @@ export class InventoryEntityService {
       throw new NotFoundException('Inventory Entity not found');
     }
 
+    if (inventoryEntity.status === InventoryStatus.sold) {
+      throw new BadRequestException(
+        'Cannot change inventory entity which is sold',
+      );
+    }
     const updatedInventoryEntity = await this.inventoryEntityRepository.save({
       ...inventoryEntity,
       status: payload.status,

@@ -46,7 +46,7 @@ const CategoryList = ({ categories, loading }: CategoryListProps) => {
         render: (_, category: IProductCategory) => (
           <Space size="middle">
             <Link to={`/products/categories/${category.id}`}>
-              <a>Edit</a>
+              <a>Detail</a>
             </Link>
           </Space>
         ),
