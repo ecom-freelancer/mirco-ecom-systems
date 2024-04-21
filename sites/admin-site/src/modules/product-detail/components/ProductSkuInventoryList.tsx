@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Heading, styled } from '@packages/ds-core';
-import { Button, Col, DatePicker, Row, Select, Space, Table, Tag } from 'antd';
+import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
 import { IProductSku } from '../types/product-skus';
 import {
   IGetInventoryEntityListParams,
   IInventoryEntity,
   ISkuInventoryDetail,
+  ISkuInventoryDto,
 } from '../types';
 import {
   InventoryStatus,
@@ -19,11 +20,13 @@ interface ProductInventoryListProps {
   totalRecord: number;
   productSkus: IProductSku[];
   skuInventoryDetail: ISkuInventoryDetail | null | undefined;
-  selectedSku: string;
+  selectedSku: string | undefined;
   inventoryEntityList: IInventoryEntity[];
   onSearchInventoryEntity: (
     params: Partial<IGetInventoryEntityListParams>,
   ) => void;
+  skuInventoryList: ISkuInventoryDto[] | undefined;
+  onClickDetail: (inventoryEntity: IInventoryEntity) => void;
 }
 
 export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
@@ -35,6 +38,8 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   selectedSku,
   inventoryEntityList,
   onSearchInventoryEntity,
+  skuInventoryList,
+  onClickDetail,
 }) => {
   const [statuses, setStatuses] = useState<InventoryStatus[]>([]);
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
@@ -87,7 +92,9 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
         title: 'Action',
         key: 'action',
         render: (_, inventoryEntity: IInventoryEntity) => (
-          <Button type="link">Detail</Button>
+          <Button type="link" onClick={() => onClickDetail(inventoryEntity)}>
+            Detail
+          </Button>
         ),
       },
     ];
