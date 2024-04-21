@@ -7,6 +7,10 @@ export interface ISkuInventoryDto {
   totalVolume: number;
   totalAvailable: number;
   soldQuantity: number;
+  productSku: {
+    sku: string;
+    name: string;
+  };
 }
 
 export interface ISkuInventoryDetail extends ISkuInventoryDto {
@@ -22,6 +26,7 @@ export interface IGetInventoryEntityListParams {
   status?: InventoryStatus[];
   startDate?: string;
   endDate?: string;
+  skuInventoryId?: number;
 }
 
 export interface IInventoryEntity {
@@ -39,3 +44,15 @@ export interface IGetInventoryEntityListResponse {
   totalPage: number;
   totalRecord: number;
 }
+
+export type IUpsertInventoryEntityFormType = Omit<
+  IInventoryEntity,
+  'createdAt' | 'updatedAt' | 'sku' | 'id'
+> & { id: number | null };
+
+export type ICreateInventoryEntityPayload = Omit<
+  IUpsertInventoryEntityFormType,
+  'id'
+>;
+
+export type IUpdateInventoryEntityPayload = IUpsertInventoryEntityFormType;

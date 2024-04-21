@@ -70,7 +70,10 @@ export class SkuInventoryService {
       condition.sku = In(skuList);
     }
 
-    return await this.skuInventoriesRepository.find({ where: condition });
+    return await this.skuInventoriesRepository.find({
+      where: condition,
+      relations: { productSku: true },
+    });
   }
 
   // get by id or sku

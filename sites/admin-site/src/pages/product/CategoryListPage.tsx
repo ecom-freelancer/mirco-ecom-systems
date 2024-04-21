@@ -7,15 +7,12 @@ import {
 } from 'modules/products/components/product-category';
 import { useCategories, useUpsertCategory } from 'modules/products/hooks';
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Flex } from 'antd';
 import React, { useState } from 'react';
 import { styled } from '@packages/ds-core';
 import { IReorderCategoryPayload } from 'modules/products/types';
 
-const ActionButtonsWrapper = styled.div`
-  display: flex;
-  justify-content: end;
-  column-gap: ${({ theme }) => theme.spaces.s8};
+const ActionButtonsWrapper = styled(Flex)`
   margin-bottom: ${({ theme }) => theme.spaces.s16};
 `;
 
@@ -46,7 +43,7 @@ const CategoryListPage: React.FC = () => {
       title={t('categories')}
     >
       {mode === Mode.VIEW_MODE && (
-        <ActionButtonsWrapper>
+        <ActionButtonsWrapper justify="end" gap="small">
           <Button onClick={() => setMode(Mode.REORDER_MODE)}>Reorder</Button>
           <Button
             type="primary"

@@ -7,3 +7,4 @@ export {
 export * from './ListProductSku';
 export * from './UpsertVariantModal';
 export * from './UpsertSkuModal';
+export * from './UpsertInventoryEntityModal';

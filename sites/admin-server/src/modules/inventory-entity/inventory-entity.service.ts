@@ -1,10 +1,15 @@
 // https://blog.anjalbam.com.np/how-to-encrypt-and-decrypt-data-in-nodejs-using-aes-256
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateInventoryEntityDto } from './dtos/create-inventory-entity.dto';
 import {
   InjectDataSource,
   InjectRepository,
   InventoryEntityEntity as InventoryEntity,
+  InventoryStatus,
   SkuInventoriesEntity,
 } from '@packages/nest-mysql';
 import {
@@ -16,16 +21,15 @@ import {
 } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import {
-  generateSessionId,
-  encryptData,
   decryptData,
-  encodeKey,
   encodeIv,
+  encodeKey,
+  encryptData,
+  generateSessionId,
 } from '@packages/nest-helper';
 import { SkuInventoryService } from '../sku-inventory/sku-inventory.service';
 import { UpdateInventoryEntityDto } from './dtos/update-inventory-entity.dto';
 import { GetInventoryEntityListQuery } from './dtos/get-inventory-entity-list.dto';
-import { ProductSkuService } from '../products/services/product-sku.service';
 
 @Injectable()
 export class InventoryEntityService {
@@ -38,7 +42,6 @@ export class InventoryEntityService {
     private readonly inventoryEntityRepository: Repository<InventoryEntity>,
     private readonly configService: ConfigService,
     private readonly skuInventoryService: SkuInventoryService,
-    private readonly productSkuService: ProductSkuService,
   ) {
     const secretIV = this.configService.get('SECRET_FOUR');
     this.encIv = encodeIv(secretIV);
@@ -110,10 +113,7 @@ export class InventoryEntityService {
     };
   }
 
-  async updateInventoryEntityStatus(
-    id: number,
-    payload: UpdateInventoryEntityDto,
-  ) {
+  async updateInventoryEntity(id: number, payload: UpdateInventoryEntityDto) {
     const inventoryEntity = await this.inventoryEntityRepository.findOne({
       where: { id },
       relations: {
@@ -124,9 +124,20 @@ export class InventoryEntityService {
       throw new NotFoundException('Inventory Entity not found');
     }
 
+    if (inventoryEntity.status === InventoryStatus.sold) {
+      throw new BadRequestException('Cannot update sold inventory entity');
+    }
+
+    // I use the sessionId to generate a unique key, don't mind it :)
+    const secretKey = generateSessionId();
+    const hashKey = encodeKey(secretKey);
+
     const updatedInventoryEntity = await this.inventoryEntityRepository.save({
       ...inventoryEntity,
       status: payload.status,
+      skuInventoryId: payload.skuInventoryId,
+      barCode: encryptData(payload.barCode, hashKey, this.encIv),
+      hashKey,
     });
 
     return {
@@ -141,24 +152,12 @@ export class InventoryEntityService {
   }
 
   async getInventoryEntityList(query: GetInventoryEntityListQuery) {
-    const { sku, page, pageSize, status, startDate, endDate } = query;
-
-    let skuInventory = null;
-    if (!!sku) {
-      const existedSkuInventory =
-        (await this.productSkuService.isExistSku(sku)) &&
-        (await this.skuInventoryService.getSkuInventoryBySku(sku));
-
-      if (!existedSkuInventory) {
-        throw new NotFoundException('SKU Inventory not found');
-      }
-
-      skuInventory = existedSkuInventory;
-    }
+    const { page, pageSize, status, startDate, endDate, skuInventoryId } =
+      query;
 
     let condition: any = {};
-    if (!!skuInventory) {
-      condition.skuInventoryId = skuInventory.id;
+    if (!!skuInventoryId) {
+      condition.skuInventoryId = skuInventoryId;
     }
 
     if (!!status && status.length > 0) {

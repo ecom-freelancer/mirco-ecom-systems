@@ -1,16 +1,19 @@
 import { useProductContext } from './useProductContext.ts';
-import { useState } from 'react';
 import useSWR from 'swr';
 import { productDetailService } from '../product-detail-service.ts';
+import { handleActionError } from '../../_shared/helper.ts';
 
 export const useSkuInventoryList = () => {
   const { product } = useProductContext();
-  const [actionLoading, setLoading] = useState<boolean>(false);
 
   const { data, isLoading, mutate } = useSWR(
     [product.id, 'sku-inventory'],
     async ([productId]) => {
-      return await productDetailService.getAllSkuInventory(productId);
+      try {
+        return await productDetailService.getAllSkuInventory(productId);
+      } catch (error) {
+        handleActionError(error);
+      }
     },
     {
       revalidateIfStale: false,
@@ -22,8 +25,6 @@ export const useSkuInventoryList = () => {
   return {
     skuInventoryList: data,
     refresh: mutate,
-    loading: isLoading,
-    actionLoading,
-    setLoading,
+    isLoading,
   };
 };

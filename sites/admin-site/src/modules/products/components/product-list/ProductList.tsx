@@ -265,7 +265,7 @@ const ProductList: React.FC<ProductListProps> = ({
         rowSelection={{
           selectedRowKeys: selectedRowKeys,
           onChange: (newSelectedRowKeys: React.Key[]) => {
-            setSelectedRowKeys(newSelectedRowKeys);
+            setSelectedRowKeys(newSelectedRowKeys as number[]);
           },
         }}
       />

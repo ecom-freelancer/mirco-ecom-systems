@@ -61,7 +61,7 @@ export class InventoryEntityController {
     return await this.inventoryEntityService.createInventoryEntity(payload);
   }
 
-  @Put(':id/status')
+  @Put(':id')
   @ApiSuccessResponse({
     status: 201,
     type: UpdateInventoryEntityResponse,
@@ -71,10 +71,7 @@ export class InventoryEntityController {
     @Body() payload: UpdateInventoryEntityDto,
   ): Promise<UpdateInventoryEntityResponse> {
     const inventoryEntity =
-      await this.inventoryEntityService.updateInventoryEntityStatus(
-        id,
-        payload,
-      );
+      await this.inventoryEntityService.updateInventoryEntity(id, payload);
 
     return plainToInstance(UpdateInventoryEntityResponse, inventoryEntity, {
       excludeExtraneousValues: true,

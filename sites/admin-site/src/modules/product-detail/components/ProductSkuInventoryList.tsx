@@ -1,11 +1,20 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Heading, styled } from '@packages/ds-core';
-import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
-import { IProductSku } from '../types/product-skus';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Row,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from 'antd';
 import {
   IGetInventoryEntityListParams,
   IInventoryEntity,
   ISkuInventoryDetail,
+  ISkuInventoryDto,
 } from '../types';
 import {
   InventoryStatus,
@@ -17,24 +26,26 @@ interface ProductInventoryListProps {
   loading: boolean;
   pageSize: number;
   totalRecord: number;
-  productSkus: IProductSku[];
   skuInventoryDetail: ISkuInventoryDetail | null | undefined;
-  selectedSku: string;
+  selectedSkuInventoryId: number | undefined;
   inventoryEntityList: IInventoryEntity[];
   onSearchInventoryEntity: (
     params: Partial<IGetInventoryEntityListParams>,
   ) => void;
+  skuInventoryList: ISkuInventoryDto[] | undefined;
+  onClickDetail: (inventoryEntity: IInventoryEntity) => void;
 }
 
 export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   loading,
   pageSize,
   totalRecord,
-  productSkus,
   skuInventoryDetail,
-  selectedSku,
+  selectedSkuInventoryId,
   inventoryEntityList,
   onSearchInventoryEntity,
+  skuInventoryList,
+  onClickDetail,
 }) => {
   const [statuses, setStatuses] = useState<InventoryStatus[]>([]);
   const [startDate, setStartDate] = useState<Dayjs | null>(null);
@@ -44,7 +55,7 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
     onSearchInventoryEntity({
       page: 1,
       pageSize,
-      sku: selectedSku,
+      skuInventoryId: selectedSkuInventoryId,
       status: statuses,
       startDate: startDate?.format('YYYY-MM-DD') || undefined,
       endDate: endDate?.format('YYYY-MM-DD') || undefined,
@@ -74,7 +85,6 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
           return <Tag color={statusInfo.color}>{value}</Tag>;
         },
       },
-      { title: 'SKU', key: 'sku', dataIndex: 'sku' },
       {
         title: 'Created Date',
         key: 'createdAt',
@@ -82,6 +92,27 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
         render: (value: Date) => (
           <span>{dayjs(value).locale('vi').format('DD-MM-YYYY HH:mm:ss')}</span>
         ),
+      },
+      {
+        title: 'Action',
+        key: 'action',
+        render: (_, inventoryEntity: IInventoryEntity) => {
+          if (inventoryEntity.status === InventoryStatus.sold) {
+            return (
+              <Tooltip title="Cannot manually update sold entity">
+                <Button type="link" disabled>
+                  Detail
+                </Button>
+              </Tooltip>
+            );
+          }
+
+          return (
+            <Button type="link" onClick={() => onClickDetail(inventoryEntity)}>
+              Detail
+            </Button>
+          );
+        },
       },
     ];
   }, []);
@@ -94,13 +125,13 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
             <Col span={24} md={8}>
               <Select
                 placeholder="Choose a sku"
-                value={selectedSku}
-                options={(productSkus || []).map((e) => ({
-                  label: `${e.name} - SKU: ${e.sku}`,
-                  value: e.sku,
+                value={selectedSkuInventoryId}
+                options={(skuInventoryList || []).map((e) => ({
+                  label: `${e.productSku?.name} - SKU: ${e.sku}`,
+                  value: e.id,
                 }))}
-                onChange={(value: string) => {
-                  onSearchInventoryEntity({ sku: value, page: 1 });
+                onChange={(value: number) => {
+                  onSearchInventoryEntity({ skuInventoryId: value, page: 1 });
                 }}
                 allowClear
                 style={{ width: '100%' }}
