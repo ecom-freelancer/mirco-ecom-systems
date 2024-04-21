@@ -8,10 +8,12 @@ import {
 import { IGetListSkusResponse, IUpsertSkuFormType } from './types/product-skus';
 import { ISeoInfo } from 'modules/seo-info/types';
 import {
+  ICreateInventoryEntityPayload,
   IGetInventoryEntityListParams,
   IGetInventoryEntityListResponse,
   ISkuInventoryDetail,
   ISkuInventoryDto,
+  IUpdateInventoryEntityPayload,
 } from './types';
 
 export const productDetailService = {
@@ -82,5 +84,14 @@ export const productDetailService = {
     return appApi
       .get(`/inventory-entity`, { params: params })
       .then((res) => res.data);
+  },
+
+  createInventoryEntity: async (payload: ICreateInventoryEntityPayload) => {
+    return appApi.post('/inventory-entity', payload).then((res) => res.data);
+  },
+
+  updateInventoryEntity: async (payload: IUpdateInventoryEntityPayload) => {
+    const { id, ...rest } = payload;
+    return appApi.put(`/inventory-entity/${id}`, rest).then((res) => res.data);
   },
 };
