@@ -99,6 +99,7 @@ const ProductInventoryPage: React.FC = () => {
         skuInventoryList={skuInventoryList || []}
         loading={isUpsertingInventoryDetail}
         inventoryEntity={editingInventoryEntity}
+        selectedSkuInventoryId={params.skuInventoryId}
       />
       <FloatingWrapper bottom="30px">
         <Button

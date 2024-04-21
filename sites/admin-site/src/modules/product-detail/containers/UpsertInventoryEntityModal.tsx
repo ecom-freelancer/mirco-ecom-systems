@@ -17,6 +17,7 @@ interface UpsertInventoryEntityModalProps {
   onSubmit: (payload: IUpsertInventoryEntityFormType) => Promise<void>;
   skuInventoryList: ISkuInventoryDto[];
   loading: boolean;
+  selectedSkuInventoryId: number | undefined;
 }
 
 export const UpsertInventoryEntityModal: React.FC<
@@ -29,6 +30,7 @@ export const UpsertInventoryEntityModal: React.FC<
   onSubmit,
   skuInventoryList,
   loading,
+  selectedSkuInventoryId,
 }) => {
   const defaultValues: IUpsertInventoryEntityFormType = inventoryEntity
     ? {
@@ -39,7 +41,8 @@ export const UpsertInventoryEntityModal: React.FC<
       }
     : {
         id: null,
-        skuInventoryId: skuInventoryList?.[0]?.id || 0,
+        skuInventoryId:
+          selectedSkuInventoryId || skuInventoryList?.[0]?.id || 0,
         barCode: '',
         status: InventoryStatus.draft,
       };
