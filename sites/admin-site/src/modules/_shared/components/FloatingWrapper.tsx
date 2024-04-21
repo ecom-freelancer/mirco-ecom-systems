@@ -1,14 +1,31 @@
 import { styled } from '@packages/ds-core';
+import React from 'react';
 
-const Wrapper = styled.div`
+interface FloatingWrapperProps {
+  right?: string;
+  bottom?: string;
+  children: React.ReactNode;
+}
+
+const Wrapper = styled.div(
+  ({ right, bottom }: { right?: string; bottom?: string }) => `
   position: fixed;
-  bottom: -10px;
-  right: 30px;
-`;
+  bottom: ${bottom ? bottom : '-10px'};
+  right: ${right ? right : '30px'};
+`,
+);
 
 // might want to add some more position props soon
-const FloatingWrapper = ({ children }) => {
-  return <Wrapper>{children}</Wrapper>;
+const FloatingWrapper: React.FC<FloatingWrapperProps> = ({
+  right,
+  bottom,
+  children,
+}) => {
+  return (
+    <Wrapper right={right} bottom={bottom}>
+      {children}
+    </Wrapper>
+  );
 };
 
 export default FloatingWrapper;
