@@ -1,6 +1,15 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Heading, styled } from '@packages/ds-core';
-import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Row,
+  Select,
+  Table,
+  Tag,
+  Tooltip,
+} from 'antd';
 import {
   IGetInventoryEntityListParams,
   IInventoryEntity,
@@ -76,7 +85,6 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
           return <Tag color={statusInfo.color}>{value}</Tag>;
         },
       },
-      // { title: 'SKU', key: 'sku', dataIndex: 'sku' },
       {
         title: 'Created Date',
         key: 'createdAt',
@@ -88,11 +96,23 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
       {
         title: 'Action',
         key: 'action',
-        render: (_, inventoryEntity: IInventoryEntity) => (
-          <Button type="link" onClick={() => onClickDetail(inventoryEntity)}>
-            Detail
-          </Button>
-        ),
+        render: (_, inventoryEntity: IInventoryEntity) => {
+          if (inventoryEntity.status === InventoryStatus.sold) {
+            return (
+              <Tooltip title="Cannot manually update sold entity">
+                <Button type="link" disabled>
+                  Detail
+                </Button>
+              </Tooltip>
+            );
+          }
+
+          return (
+            <Button type="link" onClick={() => onClickDetail(inventoryEntity)}>
+              Detail
+            </Button>
+          );
+        },
       },
     ];
   }, []);

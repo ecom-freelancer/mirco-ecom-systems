@@ -30,19 +30,19 @@ const ProductInventoryPage: React.FC = () => {
     useSkuInventoryList();
 
   const { skuInventoryDetail, isLoading: isLoadingSkuInventory } =
-    useSkuInventoryDetail(params.sku);
-
-  const {
-    isUpsertingInventoryDetail,
-    updateInventoryEntity,
-    createInventoryEntity,
-  } = useInventoryEntityDetail();
+    useSkuInventoryDetail(params.skuInventoryId);
 
   const {
     inventoryEntityList,
     totalRecord,
     loading: loadingInventoryEntityList,
   } = useInventoryEntityList(params);
+
+  const {
+    isUpsertingInventoryDetail,
+    updateInventoryEntity,
+    createInventoryEntity,
+  } = useInventoryEntityDetail();
 
   const onSearchInventoryEntity = (
     payload: Partial<IGetInventoryEntityListParams>,
@@ -62,8 +62,7 @@ const ProductInventoryPage: React.FC = () => {
       await createInventoryEntity(values);
     }
 
-    setOpenUpsertModal(false);
-    setEditingInventoryEntity(null);
+    handleCloseUpsertModal();
 
     // trigger reload
     setParams({ ...params });

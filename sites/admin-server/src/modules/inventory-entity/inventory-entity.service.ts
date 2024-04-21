@@ -125,9 +125,7 @@ export class InventoryEntityService {
     }
 
     if (inventoryEntity.status === InventoryStatus.sold) {
-      throw new BadRequestException(
-        'Cannot change inventory entity which is sold',
-      );
+      throw new BadRequestException('Cannot update sold inventory entity');
     }
 
     // I use the sessionId to generate a unique key, don't mind it :)

@@ -1,12 +1,12 @@
 import useSWR from 'swr';
 import { productDetailService } from '../product-detail-service.ts';
 
-export const useSkuInventoryDetail = (sku: string | undefined) => {
+export const useSkuInventoryDetail = (skuInventoryId: number | undefined) => {
   const { data, isLoading, mutate } = useSWR(
-    [sku, 'sku-inventory-detail'],
-    ([sku]) => {
-      if (!sku) return null;
-      return productDetailService.getSkuInventoryDetail(sku);
+    [skuInventoryId, 'sku-inventory-detail'],
+    ([skuInventoryId]) => {
+      if (!skuInventoryId) return null;
+      return productDetailService.getSkuInventoryDetail(skuInventoryId);
     },
     {
       revalidateOnMount: true,

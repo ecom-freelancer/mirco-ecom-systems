@@ -72,9 +72,11 @@ export const productDetailService = {
       .then((res) => res.data);
   },
 
-  getSkuInventoryDetail: async (sku: string): Promise<ISkuInventoryDetail> => {
+  getSkuInventoryDetail: async (
+    skuInventoryId: number,
+  ): Promise<ISkuInventoryDetail> => {
     return appApi
-      .get<ISkuInventoryDetail>(`/sku-inventory/${sku}`)
+      .get<ISkuInventoryDetail>(`/sku-inventory/${skuInventoryId}`)
       .then((res) => res.data);
   },
 
