@@ -26,6 +26,7 @@ export interface IGetInventoryEntityListParams {
   status?: InventoryStatus[];
   startDate?: string;
   endDate?: string;
+  skuInventoryId?: number;
 }
 
 export interface IInventoryEntity {

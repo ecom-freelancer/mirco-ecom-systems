@@ -13,7 +13,7 @@ const useInventoryEntityList = (params: IGetInventoryEntityListParams) => {
   useEffect(() => {
     const fetchInventoryEntityList = async () => {
       try {
-        if (!params.sku) {
+        if (!params.skuInventoryId) {
           setInventoryEntityList([]);
           setTotalRecord(0);
           return;

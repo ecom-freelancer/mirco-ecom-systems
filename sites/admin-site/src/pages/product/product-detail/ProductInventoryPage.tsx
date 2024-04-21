@@ -1,7 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import {
   useInventoryEntityDetail,
-  useProductSkus,
   useSkuInventoryDetail,
   useSkuInventoryList,
 } from 'modules/product-detail/hooks';
@@ -27,7 +26,6 @@ const ProductInventoryPage: React.FC = () => {
   const [editingInventoryEntity, setEditingInventoryEntity] =
     useState<IInventoryEntity | null>(null);
 
-  const { productSkus, loading: loadingSkus } = useProductSkus();
   const { skuInventoryList, isLoading: isLoadingSkuInventoryList } =
     useSkuInventoryList();
 
@@ -58,13 +56,17 @@ const ProductInventoryPage: React.FC = () => {
   };
 
   const handleSubmit = async (values: IUpsertInventoryEntityFormType) => {
-    if (!editingInventoryEntity) {
+    if (editingInventoryEntity) {
       await updateInventoryEntity(values);
     } else {
       await createInventoryEntity(values);
     }
 
     setOpenUpsertModal(false);
+    setEditingInventoryEntity(null);
+
+    // trigger reload
+    setParams({ ...params });
   };
 
   const handleClickDetail = useCallback((inventoryEntity: IInventoryEntity) => {
@@ -76,15 +78,13 @@ const ProductInventoryPage: React.FC = () => {
     <>
       <ProductSkuInventoryList
         loading={
-          loadingSkus ||
           isLoadingSkuInventoryList ||
           isLoadingSkuInventory ||
           loadingInventoryEntityList
         }
         pageSize={params.pageSize || 0}
         totalRecord={totalRecord}
-        productSkus={productSkus || []}
-        selectedSku={params.sku}
+        selectedSkuInventoryId={params.skuInventoryId}
         skuInventoryDetail={skuInventoryDetail}
         inventoryEntityList={inventoryEntityList || []}
         onSearchInventoryEntity={onSearchInventoryEntity}

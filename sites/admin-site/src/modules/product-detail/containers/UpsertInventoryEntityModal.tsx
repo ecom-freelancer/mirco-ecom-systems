@@ -14,7 +14,7 @@ interface UpsertInventoryEntityModalProps {
   title: string;
   onClose: () => void;
   inventoryEntity: IInventoryEntity | null;
-  onSubmit: (payload: IUpsertInventoryEntityFormType) => void;
+  onSubmit: (payload: IUpsertInventoryEntityFormType) => Promise<void>;
   skuInventoryList: ISkuInventoryDto[];
   loading: boolean;
 }

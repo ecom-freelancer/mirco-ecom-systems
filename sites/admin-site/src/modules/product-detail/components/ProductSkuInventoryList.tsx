@@ -1,7 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { Box, Heading, styled } from '@packages/ds-core';
 import { Button, Col, DatePicker, Row, Select, Table, Tag } from 'antd';
-import { IProductSku } from '../types/product-skus';
 import {
   IGetInventoryEntityListParams,
   IInventoryEntity,
@@ -18,9 +17,8 @@ interface ProductInventoryListProps {
   loading: boolean;
   pageSize: number;
   totalRecord: number;
-  productSkus: IProductSku[];
   skuInventoryDetail: ISkuInventoryDetail | null | undefined;
-  selectedSku: string | undefined;
+  selectedSkuInventoryId: number | undefined;
   inventoryEntityList: IInventoryEntity[];
   onSearchInventoryEntity: (
     params: Partial<IGetInventoryEntityListParams>,
@@ -33,9 +31,8 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
   loading,
   pageSize,
   totalRecord,
-  productSkus,
   skuInventoryDetail,
-  selectedSku,
+  selectedSkuInventoryId,
   inventoryEntityList,
   onSearchInventoryEntity,
   skuInventoryList,
@@ -49,7 +46,7 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
     onSearchInventoryEntity({
       page: 1,
       pageSize,
-      sku: selectedSku,
+      skuInventoryId: selectedSkuInventoryId,
       status: statuses,
       startDate: startDate?.format('YYYY-MM-DD') || undefined,
       endDate: endDate?.format('YYYY-MM-DD') || undefined,
@@ -108,13 +105,13 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
             <Col span={24} md={8}>
               <Select
                 placeholder="Choose a sku"
-                value={selectedSku}
-                options={(productSkus || []).map((e) => ({
-                  label: `${e.name} - SKU: ${e.sku}`,
-                  value: e.sku,
+                value={selectedSkuInventoryId}
+                options={(skuInventoryList || []).map((e) => ({
+                  label: `${e.productSku?.name} - SKU: ${e.sku}`,
+                  value: e.id,
                 }))}
-                onChange={(value: string) => {
-                  onSearchInventoryEntity({ sku: value, page: 1 });
+                onChange={(value: number) => {
+                  onSearchInventoryEntity({ skuInventoryId: value, page: 1 });
                 }}
                 allowClear
                 style={{ width: '100%' }}

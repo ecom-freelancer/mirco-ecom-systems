@@ -8,7 +8,7 @@ import { Box, Flex } from '@packages/ds-core';
 
 interface UpsertInventoryEntityFormProps {
   defaultValues: IUpsertInventoryEntityFormType;
-  onSubmit: (values: IUpsertInventoryEntityFormType) => void;
+  onSubmit: (values: IUpsertInventoryEntityFormType) => Promise<void>;
   skuInventoryList: ISkuInventoryDto[];
   onCancel: () => void;
   loading: boolean;
@@ -82,15 +82,17 @@ export const UpsertInventoryEntityForm: React.FC<
             },
           }}
         ></FormBuilder>
+        <Form.Item>
+          <Box marginTop="s16">
+            <Flex justify="end" gapX="s8">
+              <Button onClick={onCancel}>Cancel</Button>
+              <Button type="primary" htmlType="submit" loading={loading}>
+                Save
+              </Button>
+            </Flex>
+          </Box>
+        </Form.Item>
       </Form>
-      <Box marginTop="s16">
-        <Flex justify="end" gapX="s8">
-          <Button onClick={onCancel}>Cancel</Button>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Save
-          </Button>
-        </Flex>
-      </Box>
     </>
   );
 };
