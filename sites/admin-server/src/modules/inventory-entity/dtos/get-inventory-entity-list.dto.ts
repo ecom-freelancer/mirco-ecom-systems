@@ -39,6 +39,11 @@ export class GetInventoryEntityListQuery {
   @IsOptional()
   @IsDate()
   endDate?: Date;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsNumber()
+  skuInventoryId?: number;
 }
 
 export class GetInventoryEntityListResponse {
