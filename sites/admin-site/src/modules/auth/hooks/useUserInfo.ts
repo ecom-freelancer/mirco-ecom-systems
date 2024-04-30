@@ -24,7 +24,7 @@ export const useUserInfo = () => {
     {
       onError: async (error) => {
         if ((error as IApiError).status === 401) {
-          await refreshToken().then(() => mutate());
+          await refreshToken();
         }
       },
       revalidateOnFocus: false,
@@ -36,6 +36,7 @@ export const useUserInfo = () => {
     authService.refreshToken().then((response) => {
       localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
       localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
+      mutate();
     });
   };
 
