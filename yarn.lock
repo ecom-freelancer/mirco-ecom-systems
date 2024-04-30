@@ -4223,6 +4223,37 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@paypal/paypal-js@npm:^8.0.4":
+  version: 8.0.5
+  resolution: "@paypal/paypal-js@npm:8.0.5"
+  dependencies:
+    promise-polyfill: "npm:^8.3.0"
+  checksum: 10/f3a889124d688853482fe640dd875dd9d7a2bb66818cdcf5e90541b46d759c7e890745244ae81053bd26f28311634ec28b93374db4165cb6ee2c7ceaac092ba1
+  languageName: node
+  linkType: hard
+
+"@paypal/react-paypal-js@npm:^8.2.0":
+  version: 8.2.0
+  resolution: "@paypal/react-paypal-js@npm:8.2.0"
+  dependencies:
+    "@paypal/paypal-js": "npm:^8.0.4"
+    "@paypal/sdk-constants": "npm:^1.0.122"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: 10/de2b93beea36163730942f3b29150979958726b05f1dcf870ceac53f6ee59b05cd04178a6b88d35fdb42a8d6777025f547fbeca35ec736434d592e996b3ffac9
+  languageName: node
+  linkType: hard
+
+"@paypal/sdk-constants@npm:^1.0.122":
+  version: 1.0.148
+  resolution: "@paypal/sdk-constants@npm:1.0.148"
+  dependencies:
+    hi-base32: "npm:^0.5.0"
+  checksum: 10/4f7eb20593b73f5860530ca98bfe9c301fcc688383c0200f7c328f960d73f4b316ded0abca5f1e4e71be742a26483d9553e03cbf177615a9b113bc2fd4ef073d
+  languageName: node
+  linkType: hard
+
 "@pkgjs/parseargs@npm:^0.11.0":
   version: 0.11.0
   resolution: "@pkgjs/parseargs@npm:0.11.0"
@@ -5294,6 +5325,7 @@ __metadata:
     "@packages/react-helper": "workspace:^"
     "@packages/react-slape": "workspace:^"
     "@packages/react-user": "npm:^1.0.0"
+    "@paypal/react-paypal-js": "npm:^8.2.0"
     "@types/react": "npm:^18.2.56"
     "@types/react-dom": "npm:^18.2.19"
     "@typescript-eslint/eslint-plugin": "npm:^7.0.2"
@@ -14114,6 +14146,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"hi-base32@npm:^0.5.0":
+  version: 0.5.1
+  resolution: "hi-base32@npm:0.5.1"
+  checksum: 10/f2cd52dca0f73d04786b98401aee2e27c58d015cc040eb35922c4231a06ca9e0cb79ce0a1556f18acf0f33233dbd52f7106fc950a38fdd65e5cb5758e4fcd9a1
+  languageName: node
+  linkType: hard
+
 "highlight.js@npm:^10.7.1":
   version: 10.7.3
   resolution: "highlight.js@npm:10.7.3"
@@ -20516,6 +20555,13 @@ __metadata:
   version: 2.0.3
   resolution: "progress@npm:2.0.3"
   checksum: 10/e6f0bcb71f716eee9dfac0fe8a2606e3704d6a64dd93baaf49fbadbc8499989a610fe14cf1bc6f61b6d6653c49408d94f4a94e124538084efd8e4cf525e0293d
+  languageName: node
+  linkType: hard
+
+"promise-polyfill@npm:^8.3.0":
+  version: 8.3.0
+  resolution: "promise-polyfill@npm:8.3.0"
+  checksum: 10/f735f59e464174f720fec9c41c5029ec1014e62e05d61e39d8d2290a0bc4dd7c36a0782d3202f1775d09d0b33a47fef289db38c437534769b187da22e03bfa23
   languageName: node
   linkType: hard
 

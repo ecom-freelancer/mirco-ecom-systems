@@ -9,6 +9,14 @@ import {
   RouterProvider,
   createBrowserRouter,
 } from 'react-router-dom';
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+
+const initialOptions = {
+  clientId:
+    'Afc_YIO3dmMIlTGGL4xjdsj7l6BEuvXtnyrM-E1SLBRTxgtHFZD0J6O_G_KEnzoe4TqtkRDyjlSGVknf',
+  currency: 'USD',
+  intent: 'capture',
+};
 
 function App() {
   const router = createBrowserRouter(allRoutes as RouteObject[]);
@@ -39,7 +47,9 @@ function App() {
           <Suspense>
             <GlobalProvider>
               <AuthProvider>
-                <RouterProvider router={router} />
+                <PayPalScriptProvider options={initialOptions}>
+                  <RouterProvider router={router} />
+                </PayPalScriptProvider>
               </AuthProvider>
             </GlobalProvider>
           </Suspense>

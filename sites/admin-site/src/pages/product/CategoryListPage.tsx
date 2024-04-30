@@ -11,6 +11,7 @@ import { Button, Flex } from 'antd';
 import React, { useState } from 'react';
 import { styled } from '@packages/ds-core';
 import { IReorderCategoryPayload } from 'modules/products/types';
+import PaypalPayment from '../paypal-payment/PaypalPayment.tsx';
 
 const ActionButtonsWrapper = styled(Flex)`
   margin-bottom: ${({ theme }) => theme.spaces.s16};
@@ -42,6 +43,7 @@ const CategoryListPage: React.FC = () => {
       ]}
       title={t('categories')}
     >
+      <PaypalPayment />
       {mode === Mode.VIEW_MODE && (
         <ActionButtonsWrapper justify="end" gap="small">
           <Button onClick={() => setMode(Mode.REORDER_MODE)}>Reorder</Button>
