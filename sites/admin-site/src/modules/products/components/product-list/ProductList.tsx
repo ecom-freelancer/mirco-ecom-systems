@@ -19,7 +19,7 @@ import {
 import { Link } from 'react-router-dom';
 import { styled, Box } from '@packages/ds-core';
 import { ProductStatus, productStatuses } from 'configs/constants/product.ts';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import {
   EditOutlined,
   StopOutlined,
@@ -100,6 +100,14 @@ const ProductList: React.FC<ProductListProps> = ({
         },
       },
       {
+        title: 'Created Date',
+        key: 'createdAt',
+        dataIndex: 'createdAt',
+        render: (value: Date) => (
+          <span>{dayjs(value).format('YYYY-MM-DD HH:mm')}</span>
+        ),
+      },
+      {
         title: 'Action',
         key: 'action',
         render: (_, product: IProductInfo) => (
@@ -123,8 +131,9 @@ const ProductList: React.FC<ProductListProps> = ({
       pageSize,
       categoryId: categoryId || undefined,
       productStatus: statuses,
-      startDate: startDate?.format('YYYY-MM-DD') || undefined,
-      endDate: endDate?.format('YYYY-MM-DD') || undefined,
+      // auto convert to UTC 0 format
+      startDate: startDate?.startOf('day').toISOString() || undefined,
+      endDate: endDate?.endOf('day').toISOString() || undefined,
     });
   };
 

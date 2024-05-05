@@ -57,8 +57,9 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
       pageSize,
       skuInventoryId: selectedSkuInventoryId,
       status: statuses,
-      startDate: startDate?.format('YYYY-MM-DD') || undefined,
-      endDate: endDate?.format('YYYY-MM-DD') || undefined,
+      // auto convert to UTC 0 format
+      startDate: startDate?.startOf('day').toISOString() || undefined,
+      endDate: endDate?.endOf('day').toISOString() || undefined,
     });
   };
 
@@ -90,7 +91,7 @@ export const ProductSkuInventoryList: React.FC<ProductInventoryListProps> = ({
         key: 'createdAt',
         dataIndex: 'createdAt',
         render: (value: Date) => (
-          <span>{dayjs(value).locale('vi').format('DD-MM-YYYY HH:mm:ss')}</span>
+          <span>{dayjs(value).format('YYYY-MM-DD HH:mm')}</span>
         ),
       },
       {
