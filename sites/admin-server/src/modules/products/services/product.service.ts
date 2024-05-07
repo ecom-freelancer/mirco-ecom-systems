@@ -14,6 +14,7 @@ import {
 } from '@packages/nest-mysql';
 import { UpsertProductDto } from '../dtos';
 import {
+  Between,
   DataSource,
   In,
   IsNull,
@@ -25,6 +26,11 @@ import {
 } from 'typeorm';
 import { GetProductListParams } from '../dtos/get-product.dto';
 import { BatchUpdateStatusDto } from '../dtos/batch-update-status.dto';
+
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 @Injectable()
 export class ProductService {
@@ -216,11 +222,11 @@ export class ProductService {
       productStatus,
     } = params;
     let condition: any = {};
-    if (!!startDate) {
+    if (!!startDate && !!endDate) {
+      condition.createdAt = Between(startDate, endDate);
+    } else if (!!startDate) {
       condition.createdAt = MoreThanOrEqual(startDate);
-    }
-
-    if (!!endDate) {
+    } else if (!!endDate) {
       condition.createdAt = LessThanOrEqual(endDate);
     }
 
@@ -248,7 +254,10 @@ export class ProductService {
     });
 
     return {
-      dataList: productList,
+      dataList: productList.map((product) => ({
+        ...product,
+        createdAt: dayjs(product.createdAt).utc(true).toISOString(),
+      })),
       totalRecord: total,
       totalPage:
         total % pageSize === 0

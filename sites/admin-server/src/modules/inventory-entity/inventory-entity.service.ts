@@ -17,6 +17,7 @@ import {
   In,
   LessThanOrEqual,
   MoreThanOrEqual,
+  Between,
   Repository,
 } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -30,6 +31,10 @@ import {
 import { SkuInventoryService } from '../sku-inventory/sku-inventory.service';
 import { UpdateInventoryEntityDto } from './dtos/update-inventory-entity.dto';
 import { GetInventoryEntityListQuery } from './dtos/get-inventory-entity-list.dto';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 @Injectable()
 export class InventoryEntityService {
@@ -164,11 +169,11 @@ export class InventoryEntityService {
       condition.status = In(status);
     }
 
-    if (!!startDate) {
+    if (!!startDate && !!endDate) {
+      condition.createdAt = Between(startDate, endDate);
+    } else if (!!startDate) {
       condition.createdAt = MoreThanOrEqual(startDate);
-    }
-
-    if (!!endDate) {
+    } else if (!!endDate) {
       condition.createdAt = LessThanOrEqual(endDate);
     }
 
@@ -190,6 +195,8 @@ export class InventoryEntityService {
         ...entity,
         barCode: decryptData(entity.barCode, entity.hashKey, this.encIv),
         sku: entity.skuInventory.sku,
+        // keep UTC 0 to display correctly at FE
+        createdAt: dayjs(entity.createdAt).utc(true).toISOString(),
       })),
       totalRecord: total,
       totalPage:
