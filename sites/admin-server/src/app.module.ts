@@ -18,6 +18,7 @@ import { ProductModule } from './modules/products/product.module';
 import { FileModule } from './modules/files/file.module';
 import { SkuInventoryModule } from './modules/sku-inventory/sku-inventory.module';
 import { InventoryEntityModule } from './modules/inventory-entity/inventory-entity.module';
+import { PaypalModule } from './modules/paypal/paypal.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { InventoryEntityModule } from './modules/inventory-entity/inventory-enti
     FileModule,
     SkuInventoryModule,
     InventoryEntityModule,
+    PaypalModule,
   ],
   controllers: [],
 })

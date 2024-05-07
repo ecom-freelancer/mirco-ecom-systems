@@ -17,6 +17,7 @@
     "@packages/react-helper": "workspace:^",
     "@packages/react-slape": "workspace:^",
     "@packages/react-user": "^1.0.0",
+    "@paypal/react-paypal-js": "^8.2.0",
     "antd": "^5.15.1",
     "axios": "^1.6.7",
     "dayjs": "^1.11.10",
