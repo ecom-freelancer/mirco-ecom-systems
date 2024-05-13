@@ -1,4 +1,0 @@
-dtos
-typeorm
-nvarchar
-skus

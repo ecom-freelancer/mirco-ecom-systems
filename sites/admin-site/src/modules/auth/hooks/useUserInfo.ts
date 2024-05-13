@@ -24,20 +24,23 @@ export const useUserInfo = () => {
     {
       onError: async (error) => {
         if ((error as IApiError).status === 401) {
-          await refreshToken();
+          await refreshToken()
+            .then(() => mutate())
+            .catch(() => logout());
         }
       },
       revalidateOnFocus: false,
       revalidateOnReconnect: true,
+      revalidateIfStale: false,
+      errorRetryCount: 0,
     },
   );
 
   const refreshToken = async () => {
-    authService.refreshToken().then((response) => {
-      localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
-      localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
-      mutate();
-    });
+    const response = await authService.refreshToken();
+
+    localStorage.setItem(ACCESS_TOKEN_KEY, response.accessToken);
+    localStorage.setItem(REFRESH_TOKEN_KEY, response.refreshToken);
   };
 
   useInterval(
