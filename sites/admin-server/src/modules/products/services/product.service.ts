@@ -111,13 +111,14 @@ export class ProductService {
           .map((attr) => attr.id)
           .filter((i) => !!i);
 
-        await queryRunner.manager
-          .getRepository(ProductAttributeEntity)
-          .createQueryBuilder()
-          .delete()
-          .where('productId = :id', { id: newProduct.id })
-          .andWhere(`id NOT IN (${ids.join(',')})`)
-          .execute();
+        if (ids.length > 0)
+          await queryRunner.manager
+            .getRepository(ProductAttributeEntity)
+            .createQueryBuilder()
+            .delete()
+            .where('productId = :id', { id: newProduct.id })
+            .andWhere(`id NOT IN (${ids.join(',')})`)
+            .execute();
 
         // insert new attributes
         for (const attr of newPayload.attributes) {
@@ -138,13 +139,15 @@ export class ProductService {
             const optionIds = attr.options
               .map((opt) => opt.id)
               .filter((i) => !!i);
-            await queryRunner.manager
-              .getRepository(ProductAttributeOptionEntity)
-              .createQueryBuilder()
-              .delete()
-              .where('attributeId = :id', { id: attribute.id })
-              .andWhere(`id NOT IN (${optionIds.join(',')})`)
-              .execute();
+
+            if (optionIds.length > 0)
+              await queryRunner.manager
+                .getRepository(ProductAttributeOptionEntity)
+                .createQueryBuilder()
+                .delete()
+                .where('attributeId = :id', { id: attribute.id })
+                .andWhere(`id NOT IN (${optionIds.join(',')})`)
+                .execute();
           }
 
           await queryRunner.manager.save(
